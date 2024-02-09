@@ -22,4 +22,9 @@ class Category extends Model
         if($user)return $user;
         return false;
     }
+    public function Products()
+    {
+        $products = Product::where("category", $this->id)->get();
+        return $products;
+    }
 }

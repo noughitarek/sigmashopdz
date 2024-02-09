@@ -36,6 +36,21 @@
                         <h3 id="order" class="mx-4">{{ $data['category']->is_active?"True":"False" }}</h3>
                     </div>
                     <div class="mb-3">
+                        <label for="order" class="form-label">Products: </label>
+                        <h3 id="order" class="mx-4">{{ $data['category']->is_active?"True":"False" }}</h3>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="category" class="form-label">Products: </label>
+                        <h3 id="order" class="mx-4">
+                            @foreach($data["category"]->Products() as $product)
+                            <a href="{{route('webmaster_products_show', $product->id)}}">
+                                {{ $product->name }}
+                            </a><br>
+                            @endforeach
+                        </h3>
+                    </div>
+                    <div class="mb-3">
                         <label for="order" class="form-label">Created by: </label>
                         <h3 id="order" class="mx-4">{{ $data['category']->Created_by()->name }} | {{ $data['category']->Created_by()->role }}</h3>
                     </div>

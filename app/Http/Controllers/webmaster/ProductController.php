@@ -5,6 +5,7 @@ namespace App\Http\Controllers\webmaster;
 use App\Models\Product;
 use App\Models\Category;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
 
@@ -35,7 +36,33 @@ class ProductController extends Controller
      */
     public function store(StoreProductRequest $request)
     {
-        //
+        $photos = $request->file('photos');
+        $photosNames = [];
+        foreach($photos as $photo){
+            $photoName = time() . '_' . $photo->getClientOriginalName();
+            $photo->move(public_path('img/products'), $photoName);
+            $photosNames[] = $photoName;
+        }
+        
+
+        $product = Product::create([
+            'name'  => $request->input('name'),
+            'slug'  => $request->input('slug'),
+            'order' => $request->input('order'),
+
+            'price' => $request->input('price'),
+            'old_price' => $request->input('old_price')?$request->input('old_price'):null,
+            
+            'photos' => implode(',', $photosNames),
+            'videos' => implode(',', $request->videos),
+
+            'is_active'  => $request->input('is_active'),
+            'description' => $request->input('description'),
+
+            'created_by' => Auth::user()['id'],
+            'category' => $request->category,
+        ]);
+        return redirect()->route('webmaster_products_index')->with('success', 'Product created successfully');
     }
 
     /**
@@ -43,7 +70,9 @@ class ProductController extends Controller
      */
     public function show(Product $product)
     {
-        //
+        $data["title"] = 'Product '.$product["id"];
+        $data["product"] = $product;
+        return view("webmaster.products.show")->with("data", $data);
     }
 
     /**
@@ -51,7 +80,10 @@ class ProductController extends Controller
      */
     public function edit(Product $product)
     {
-        //
+        $data["title"] = 'Edit product '.$product->id;
+        $data["product"] = $product;
+        $data["categories"] = Category::all();
+        return view("webmaster.products.edit")->with("data", $data);
     }
 
     /**
@@ -59,7 +91,50 @@ class ProductController extends Controller
      */
     public function update(UpdateProductRequest $request, Product $product)
     {
-        //
+        
+        $photos = $request->file('photos');
+        $photosNames = [];
+        if($photos!=null){
+            foreach($photos as $photo){
+                $photoName = time() . '_' . $photo->getClientOriginalName();
+                $photo->move(public_path('img/products'), $photoName);
+                $photosNames[] = $photoName;
+            }
+        }
+        if($request->old_photos!=null){
+            foreach($request->old_photos as $photo){
+                $photosNames[] = $photo;
+            }
+        }
+        $videos = [];
+        if($request->videos!=null){
+            foreach($request->videos as $video){
+                $videos[] = $video;
+            }
+        }
+        if($request->old_videos!=null){
+            foreach($request->old_videos as $video){
+                $videos[] = $photo;
+            }
+        }
+
+        $product->update([
+            'name'  => $request->input('name'),
+            'slug'  => $request->input('slug'),
+            'order' => $request->input('order'),
+
+            'price' => $request->input('price'),
+            'old_price' => $request->input('old_price')?$request->input('old_price'):null,
+            
+            'photos' => implode(',', $photosNames),
+            'videos' => implode(',', $videos),
+
+            'is_active'  => $request->input('is_active'),
+            'description' => $request->input('description'),
+
+            'category' => $request->category,
+        ]);
+        return redirect()->route('webmaster_products_index')->with('success', 'Product updated successfully');
     }
 
     /**

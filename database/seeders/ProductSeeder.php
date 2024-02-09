@@ -19,7 +19,7 @@ class ProductSeeder extends Seeder
             for($i=1;$i<=10;$i++)
             {
                 $price = rand(11, 99)*100;
-                Product::create([
+                /*Product::create([
                     'name' => 'Prod'.$i.$order,
                     'slug' => 'Prod'.$i.$order,
                     
@@ -29,7 +29,7 @@ class ProductSeeder extends Seeder
                     'order' => $order,
                     'created_by' => 1,
                     'category' => $i
-                ]);
+                ]);*/
             }
         }
     }

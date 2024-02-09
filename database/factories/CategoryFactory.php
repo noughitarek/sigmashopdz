@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -16,8 +17,17 @@ class CategoryFactory extends Factory
      */
     public function definition(): array
     {
+        $order = $this->faker->unique()->randomNumber;
         return [
-            //
+            'name' => $this->faker->word,
+            'slug' => $this->faker->unique()->slug,
+            'order' => $order,
+            'is_active' => $this->faker->boolean,
+            'created_by' => function () {
+                return User::factory()->create()->id;
+            },
+            'created_at' => now(),
+            'updated_at' => now(),
         ];
     }
 }

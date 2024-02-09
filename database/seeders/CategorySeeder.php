@@ -16,7 +16,7 @@ class CategorySeeder extends Seeder
         $orders = [1, 5, 3, 2, 4];
         foreach($orders as $order)
         {
-            Category::create([
+            /*Category::create([
                 'name' => 'Cate'.$order,
                 'slug' => 'cate'.$order,
                 'order' => $order,
@@ -29,7 +29,7 @@ class CategorySeeder extends Seeder
                 'order' => $order+5,
                 'is_active' => true,
                 'created_by' => 1
-            ]);
+            ]);*/
         }
     }
 }

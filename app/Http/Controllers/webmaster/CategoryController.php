@@ -98,7 +98,7 @@ class CategoryController extends Controller
             'order' => $order,
             'is_active'  => $request->input('is_active'),
         ]);
-        return redirect()->route('webmaster_categories_index')->with('success', 'Category created successfully');
+        return redirect()->route('webmaster_categories_index')->with('success', 'Category updated successfully');
     }
 
     /**
