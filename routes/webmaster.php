@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\PasswordController;
 use App\Http\Controllers\Webmaster\AuthController;
+use App\Http\Controllers\webmaster\AdminController;
 use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\Auth\VerifyEmailController;
 use App\Http\Controllers\webmaster\ProductController;
@@ -84,7 +85,7 @@ Route::middleware('auth')->name('webmaster_')->namespace('App\Http\Controllers\w
         Route::put('{delivery}/edit', 'update')->name('update')->middleware('permission:edit_delivery');
         Route::delete('{delivery}/destroy', 'destroy')->name('destroy')->middleware('permission:delete_delivery');
     });
-    Route::middleware('permission:consult_admins')->name('admins_')->controller(CategoryController::class)->prefix('admins')->group(function(){
+    Route::middleware('permission:consult_admins')->name('admins_')->controller(AdminController::class)->prefix('admins')->group(function(){
         Route::get('', 'index')->name('index');
         Route::get('create', 'create')->name('create')->middleware('permission:create_admins');
         Route::post('create', 'store')->name('store')->middleware('permission:create_admins');

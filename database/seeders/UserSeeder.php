@@ -14,19 +14,8 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        $permissions = [
-            "dashboard" => ['consult'], 
-            "categories" => ['consult', 'create','edit', 'delete'], 
-            "products" => ['consult', 'create','edit', 'delete'], 
-            "pages" => ['consult', 'create','edit', 'delete'], 
-            "orders" => ['consult_all', 'consult_pending', 'consult_shipped', 'consult_delivered', 'consult_back', 'consult_archived'],
-            "messages" => ['consult'],
-            "stock" => ['consult'],
-            "admins" => ['consult'],
-            "settings" => ['consult']
-        ];
         $p = "";
-        foreach($permissions as $title=>$permission){
+        foreach(config("webmaster.permissions") as $title=>$permission){
             foreach($permission as $sub_title=>$sub_permission){
                 $p .= $sub_permission."_".$title.",";
             }

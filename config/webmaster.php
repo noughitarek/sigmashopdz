@@ -6,6 +6,18 @@ return [
     "ecotrack_link" => "https://rblivraison.ecotrack.dz/",
     "ecotrack_api" => "yRHsVpLcJsT1TGDKComsb9BFWveyz8XGoJOD6KNDxgkGtNmuLKGk8M6RZ4h6",
 
+    "permissions" => [
+        "dashboard" => ['consult'], 
+        "categories" => ['consult', 'create','edit', 'delete'], 
+        "products" => ['consult', 'create','edit', 'delete'], 
+        "pages" => ['consult', 'create','edit', 'delete'], 
+        "orders" => ['consult_all', 'consult_pending', 'consult_shipped', 'consult_delivered', 'consult_back', 'consult_archived'],
+        "messages" => ['consult', 'delete'],
+        "stock" => ['consult', 'create','edit', 'delete'],
+        "admins" => ['consult', 'create','edit', 'delete'],
+        "settings" => ['consult', 'edit']
+    ],
+    
     "sidemenu"=>[
         "Pages",
         ["Dashboard", "webmaster_dashboard_index", "sliders", "consult_dashboard", "dashboard"],
