@@ -17,7 +17,9 @@ class ProductController extends Controller
     public function index()
     {
         $data["title"] = 'Products managments';
-        $data["products"] = Product::orderBy('created_at', 'desc')->paginate(25);
+        $data["can_create"] = Auth::user()->Has_permission("create_products");
+        $data["can_edit"] = Auth::user()->Has_permission("edit_products");
+        $data["products"] = Product::orderBy('created_at', 'desc')->paginate(25)->onEachSide(2);
         return view("webmaster.products.index")->with("data", $data);
     }
 
@@ -72,6 +74,10 @@ class ProductController extends Controller
     {
         $data["title"] = 'Product '.$product["id"];
         $data["product"] = $product;
+        
+        $data["can_create"] = Auth::user()->Has_permission("create_products");
+        $data["can_delete"] = Auth::user()->Has_permission("delete_products");
+        $data["can_edit"] = Auth::user()->Has_permission("edit_products");
         return view("webmaster.products.show")->with("data", $data);
     }
 

@@ -4,7 +4,7 @@
       <span class="align-middle">{{config("app.name")}}</span>
     </a>
     <ul class="sidebar-nav">
-      @foreach(config("webmaster") as $link)
+      @foreach(config("webmaster.sidemenu") as $link)
         @if(is_string($link))
           <li class="sidebar-header"> {{$link}} </li>
         @elseif(is_array($link))

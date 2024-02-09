@@ -31,14 +31,19 @@ return new class extends Migration
             $table->text('confirmation_attempts')->nullable();
 
             $table->timestamp('confirmed_at')->nullable();
+
             $table->timestamp('shipped_at')->nullable();
             $table->timestamp('validated_at')->nullable();
             $table->timestamp('delivery_at')->nullable();
+            
             $table->timestamp('delivered_at')->nullable();
             $table->timestamp('ready_at')->nullable();
             $table->timestamp('recovered_at')->nullable();
+            
             $table->timestamp('back_at')->nullable();
             $table->timestamp('back_ready_at')->nullable();
+            
+            $table->timestamp('failure_at')->nullable();
             $table->timestamp('canceled_at')->nullable();
             $table->timestamp('archived_at')->nullable();
             $table->timestamp('doubled_at')->nullable();

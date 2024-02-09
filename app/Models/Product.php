@@ -31,6 +31,7 @@ class Product extends Model
         if($user)return $user;
         return false;
     }
+    
     public function Category():Category
     {
         $category = Category::where("id", $this->category)->first();

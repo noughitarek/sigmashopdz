@@ -46,6 +46,17 @@ Route::middleware('auth')->name('webmaster_')->namespace('App\Http\Controllers\w
         Route::put('{page}/edit', 'update')->name('update')->middleware('permission:edit_pages');
         Route::delete('{page}/destroy', 'destroy')->name('destroy')->middleware('permission:delete_pages');
     });
+    Route::name('orders_')->controller(OrderController::class)->prefix('orders')->group(function(){
+        Route::get('', 'index')->name('all_index')->middleware('permission:consult_all_orders');
+        Route::get('pending', 'pending_index')->name('pending_index')->middleware("permission:consult_pending_orders");
+        Route::get('shipped', 'shipped_index')->name('shipped_index')->middleware("permission:consult_shipped_orders");
+        Route::get('delivered', 'delivered_index')->name('delivered_index')->middleware("permission:consult_delivered_orders");
+        Route::get('back', 'back_index')->name('back_index')->middleware("permission:consult_back_orders");
+        Route::get('archived', 'archived_index')->name('archived_index')->middleware("permission:consult_archived_orders");
+        Route::get('{order}', 'show')->name('show');
+        Route::get('{order}/edit', 'edit')->name('edit')->middleware('permission:edit_orders');
+        Route::put('{order}/edit', 'update')->name('update')->middleware('permission:edit_orders');
+    });
     Route::middleware('permission:consult_messages')->name('messages_')->controller(CategoryController::class)->prefix('messages')->group(function(){
         Route::get('', 'index')->name('index');
         Route::get('create', 'create')->name('create')->middleware('permission:create_messages');

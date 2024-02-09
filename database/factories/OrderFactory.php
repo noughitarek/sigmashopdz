@@ -36,18 +36,26 @@ class OrderFactory extends Factory
             'tracking' => $this->faker->word,
             'ip' => $this->faker->ipv4,
             'confirmation_attempts' => $this->faker->text,
-            'confirmed_at' => $this->faker->optional()->dateTime,
-            'shipped_at' => $this->faker->optional()->dateTime,
-            'validated_at' => $this->faker->optional()->dateTime,
-            'delivery_at' => $this->faker->optional()->dateTime,
-            'delivered_at' => $this->faker->optional()->dateTime,
-            'ready_at' => $this->faker->optional()->dateTime,
-            'recovered_at' => $this->faker->optional()->dateTime,
-            'back_at' => $this->faker->optional()->dateTime,
-            'back_ready_at' => $this->faker->optional()->dateTime,
-            'canceled_at' => $this->faker->optional()->dateTime,
-            'archived_at' => $this->faker->optional()->dateTime,
-            'doubled_at' => $this->faker->optional()->dateTime,
+
+
+            'confirmed_at' => rand(3, 7)==5?$this->faker->optional()->dateTime:null,
+            
+            'shipped_at' => rand(3, 7)==5?$this->faker->optional()->dateTime:null,
+            'validated_at' => rand(3, 7)==5?$this->faker->optional()->dateTime:null,
+            'delivery_at' => rand(3, 7)==5?$this->faker->optional()->dateTime:null,
+            
+            'delivered_at' => rand(3, 7)==5?$this->faker->optional()->dateTime:null,
+            'ready_at' => rand(3, 7)==5?$this->faker->optional()->dateTime:null,
+            'recovered_at' => rand(3, 7)==5?$this->faker->optional()->dateTime:null,
+            
+            'back_at' => rand(3, 7)==5?$this->faker->optional()->dateTime:null,
+            'back_ready_at' => rand(3, 7)==5?$this->faker->optional()->dateTime:null,
+
+            'canceled_at' => rand(3, 7)==5?$this->faker->optional()->dateTime:null,
+            'failure_at' => rand(3, 7)==5?$this->faker->optional()->dateTime:null,
+            'archived_at' => rand(3, 7)==5?$this->faker->optional()->dateTime:null,
+            'doubled_at' => rand(3, 7)==5?$this->faker->optional()->dateTime:null,
+
             'confirmed_by' => function () {
                 return User::factory()->create()->id;
             },

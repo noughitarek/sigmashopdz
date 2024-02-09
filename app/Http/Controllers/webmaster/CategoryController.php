@@ -16,7 +16,10 @@ class CategoryController extends Controller
     public function index()
     {
         $data["title"] = 'Categories managments';
-        $data["categories"] = Category::orderBy('order', 'desc')->paginate(25);
+        $data["categories"] = Category::orderBy('order', 'desc')->paginate(25)->onEachSide(2);
+        $data["can_create"] = Auth::user()->Has_permission("create_categories");
+        $data["can_edit"] = Auth::user()->Has_permission("edit_categories");
+        $data["can_delete"] = Auth::user()->Has_permission("delete_categories");
         return view("webmaster.categories.index")->with("data", $data);
     }
 
@@ -59,6 +62,10 @@ class CategoryController extends Controller
      */
     public function show(Category $category)
     {
+        
+        $data["can_create"] = Auth::user()->Has_permission("create_categories");
+        $data["can_edit"] = Auth::user()->Has_permission("edit_categories");
+        $data["can_delete"] = Auth::user()->Has_permission("delete_categories");
         $data["title"] = 'Category '.$category["id"];
         $data["category"] = $category;
         return view("webmaster.categories.show")->with("data", $data);

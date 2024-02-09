@@ -5,7 +5,9 @@
     <div class="card flex-fill">
       <div class="card-header d-flex justify-content-between align-items-center">
         <h5 class="card-title mb-0">{{$data["title"]}}</h5>
+        @if($data["can_create"])
         <a href="{{route('webmaster_categories_create')}}" class="btn btn-primary" > Create a category </a>
+        @endif
       </div>
     </div>
   </div>
@@ -34,12 +36,18 @@
               <td class="d-xl-table-cell">{{ $category->is_active?"True":"False" }}</td>
               <td class="d-none d-xl-table-cell">{{$category["created_at"]}}</td>
               <td>
+                
+                @if($data["can_edit"])
                 <a href="{{route('webmaster_categories_edit', $category['id'])}}" class="btn btn-primary btn-icon rounded-pill" >
                   <i class="align-middle" data-feather="edit"></i>
                 </a>
+                @endif
+                
+                @if($data["can_delete"])
                 <button type="button" class="btn btn-danger rounded-pill" data-bs-toggle="modal" data-bs-target="#deleteConfirmationModal9">
                   <i class="align-middle" data-feather="trash"></i>
                 </button>
+                @endif
               </td>
             </tr>
             @endforeach

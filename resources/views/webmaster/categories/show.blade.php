@@ -6,8 +6,13 @@
             <div class="card-header d-flex justify-content-between align-items-center">
                 <h5 class="card-title mb-0">{{$data["title"]}}</h5>
                 <div>
-                    <a href="{{route('webmaster_categories_index')}}" class="btn btn-danger" > Back </a>
+                    <a href="{{route('webmaster_categories_index')}}" class="btn btn-secondary" > Back </a>
+                    @if($data["can_delete"])
+                    <a  class="btn btn-danger" > Delete </a>
+                    @endif
+                    @if($data["can_edit"])
                     <a href="{{route('webmaster_categories_edit', $data['category']->id)}}" class="btn btn-primary" > Edit </a>
+                    @endif
                 </div>
             </div>
             </div>

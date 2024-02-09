@@ -5,7 +5,9 @@
     <div class="card flex-fill">
       <div class="card-header d-flex justify-content-between align-items-center">
         <h5 class="card-title mb-0">{{$data["title"]}}</h5>
+        @if($data["can_create"])
         <a href="{{route('webmaster_products_create')}}" class="btn btn-primary" > Create a product </a>
+        @endif
       </div>
     </div>
   </div>
