@@ -42,6 +42,32 @@ class OrderFactory extends Factory
             'clean_price' => $cleanPrice*$quantity,
             'tracking' => null,
             'ip' => $this->faker->ipv4,
+
+
+            'confirmed_at' => rand(3, 7)==5?$this->faker->optional()->dateTime:null,
+            
+            'shipped_at' => rand(3, 7)==5?$this->faker->optional()->dateTime:null,
+            'validated_at' => rand(3, 7)==5?$this->faker->optional()->dateTime:null,
+            'delivery_at' => rand(3, 7)==5?$this->faker->optional()->dateTime:null,
+            
+            'delivered_at' => rand(3, 7)==5?$this->faker->optional()->dateTime:null,
+            'ready_at' => rand(3, 7)==5?$this->faker->optional()->dateTime:null,
+            'recovered_at' => rand(3, 7)==5?$this->faker->optional()->dateTime:null,
+            
+            'back_at' => rand(3, 7)==5?$this->faker->optional()->dateTime:null,
+            'back_ready_at' => rand(3, 7)==5?$this->faker->optional()->dateTime:null,
+
+            'canceled_at' => rand(3, 7)==5?$this->faker->optional()->dateTime:null,
+            'failure_at' => rand(3, 7)==5?$this->faker->optional()->dateTime:null,
+            'archived_at' => rand(3, 7)==5?$this->faker->optional()->dateTime:null,
+            'doubled_at' => rand(3, 7)==5?$this->faker->optional()->dateTime:null,
+
+            'confirmed_by' => function () {
+                return User::factory()->create()->id;
+            },
+            'recovered_by' => function () {
+                return User::factory()->create()->id;
+            },
             'created_at' => now(),
             'updated_at' => now(),
         ];

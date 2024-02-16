@@ -8,10 +8,11 @@ return [
 
     "permissions" => [
         "dashboard" => ['consult'], 
+        "campaigns" => ['consult', 'create','edit', 'delete'], 
         "categories" => ['consult', 'create','edit', 'delete'], 
         "products" => ['consult', 'create','edit', 'delete'], 
         "pages" => ['consult', 'create','edit', 'delete'], 
-        "orders" => ['consult_all', 'consult_pending', 'consult_shipped', 'consult_delivered', 'consult_back', 'consult_archived'],
+        "orders" => ['consult_all', 'confirm', 'shipp', 'validate', 'consult_pending', 'consult_shipped', 'consult_delivered', 'consult_back', 'consult_archived'],
         "messages" => ['consult', 'delete'],
         "stock" => ['consult', 'create','edit', 'delete'],
         "admins" => ['consult', 'create','edit', 'delete'],
@@ -21,6 +22,7 @@ return [
     "sidemenu"=>[
         "Pages",
         ["Dashboard", "webmaster_dashboard_index", "sliders", "consult_dashboard", "dashboard"],
+        ["Campaigns", "webmaster_campaigns_index", "volume-2", "consult_campaigns", "campaigns"],
         ["Categories", "webmaster_categories_index", "align-left", "consult_categories", "categories"],
         ["Products", "webmaster_products_index", "package", "consult_products", "products"],
         ["Pages", "webmaster_pages_index", "book", "consult_pages", "pages"],

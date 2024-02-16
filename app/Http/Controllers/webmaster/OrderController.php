@@ -3,9 +3,12 @@
 namespace App\Http\Controllers\webmaster;
 
 use App\Models\Order;
+use App\Models\confirmation_attempt;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\StoreOrderRequest;
 use App\Http\Requests\UpdateOrderRequest;
+use App\Http\Requests\Storeconfirmation_attemptRequest;
 
 class OrderController extends Controller
 {
@@ -15,7 +18,7 @@ class OrderController extends Controller
     public function index()
     {
         $data["title"] = 'Orders managments';
-        $data["orders"] = Order::orderBy('created_at', 'desc')->paginate(25)->onEachSide(2);;
+        $data["orders"] = Order::orderBy('created_at', 'desc')->get();
         return view("webmaster.orders.pending")->with("data", $data);
     }
 
@@ -26,6 +29,8 @@ class OrderController extends Controller
     {
         $data["title"] = 'Pending orders managments';
         $data["orders"] = Order::Pending();
+        $data["can_confirm"] = Auth::user()->Has_permission("confirm_orders");
+        $data["can_shipp"] = Auth::user()->Has_permission("shipp_orders");
         return view("webmaster.orders.pending")->with("data", $data);
     }
 
@@ -107,6 +112,48 @@ class OrderController extends Controller
     public function update(UpdateOrderRequest $request, Order $order)
     {
         //
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function confirm(Storeconfirmation_attemptRequest $request, Order $order)
+    {
+        $confirmation_attempt = confirmation_attempt::create([
+            'response'  => $request->input('response'),
+            'state'  => $request->input('state'),
+            'order' => $order->id,
+            'attempt_by' => Auth::user()['id'],
+        ]);
+        if($request->input("state") == "confirmed ecotrack"){
+            $order->update([
+                "confirmed_by" => Auth::user()->id,
+                "confirmed_at" => now(),
+            ]);
+            $this->shipp($order);
+        }
+        if($request->input("state") == "confirmed"){
+            $order->update([
+                "confirmed_by" => Auth::user()->id,
+                "confirmed_at" => now(),
+            ]);
+        }elseif($request->input("state") == "canceled"){
+            $order->update([
+                "confirmed_by" => Auth::user()->id,
+                "canceled_at" => now(),
+            ]);
+        }
+        return redirect()->route('webmaster_orders_pending_index')->with('success', 'Order confirmed successfully');
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function shipp(Order $order)
+    {
+        if($order->tracking != null) return false;
+        $order->Add_to_ecotrack();
+        return redirect()->route('webmaster_orders_shipped_index')->with('success', 'Order shipped successfully');
     }
 
     /**

@@ -1,0 +1,6 @@
+.single-line{
+    white-space: nowrap;
+    overflow: hidden;
+    max-width: 20ch;
+    text-overflow: ellipsis;
+}

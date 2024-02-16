@@ -1,17 +1,28 @@
 @extends('layouts.webmaster')
 @section('content')
-<div class="row">
-  <div class="col-12 col-lg-12 col-xxl-12 d-flex">
-    <div class="card flex-fill">
-      <div class="card-header d-flex justify-content-between align-items-center">
-        <h5 class="card-title mb-0">{{$data["title"]}}</h5>
-      </div>
-    </div>
+<div class="container-fluid p-0">
+  <div class="mb-3">
+    <h1>{{$data["title"]}} </h1>
   </div>
-  <div class="col-12 col-lg-12 col-xxl-12 d-flex">
-    <div class="card flex-fill">
-      <div class="table-responsive">
-        <table class="table table-hover my-0" id="datatables-orders">
+  <div class="card">
+		<div class="card-header pb-0">
+			<div class="card-actions float-end">
+				<div class="dropdown position-relative">
+					<a href="#" data-bs-toggle="dropdown" data-bs-display="static">
+						<i class="align-middle" data-feather="more-horizontal"></i>
+					</a>
+					<div class="dropdown-menu dropdown-menu-end">
+						<a class="dropdown-item" href="#">Action</a>
+						<a class="dropdown-item" href="#">Another action</a>
+						<a class="dropdown-item" href="#">Something else here</a>
+					</div>
+				</div>
+			</div>
+			<h5 class="card-title mb-0">Pending orders</h5>
+		</div>
+		<div class="card-body">
+      
+    <table class="table table-hover my-0" id="datatables-orders">
           <thead>
             <tr>
               <th class="d-xl-table-cell">Order</th>
@@ -21,6 +32,7 @@
               <th class="d-xl-table-cell">Prices</th>
               <th>Confirmation attempts</th>
               <th>Confirmed by</th>
+              <th>State</th>
               <th>Action</th>
             </tr>
           </thead>
@@ -29,67 +41,63 @@
             <tr>
               <td class="d-xl-table-cell single-line">
                 <p>
-                  <i class="align-middle me-2 fas fa-fw fa-hashtag"></i> <a href="{{route('webmaster_orders_show', $order->id)}}">{{$order->id}}</a><br>
-                  <i class="align-middle me-2 fas fa-fw fa-calendar"></i> {{$order->created_at}}<br>
-                  <i class="align-middle me-2 fas fa-fw fa-shopping-cart"></i>
-                  <span class="badge bg-{{$order->State()=='Pending'?'danger':'warning'}}">
-                    {{$order->State()}}
-                  </span>
+                  <i class="align-left" data-feather="hash"></i> <a href="{{route('webmaster_orders_show', $order->id)}}">{{$order->id}}</a><br>
+                  <i class="align-left" data-feather="paperclip"></i> <a href="https://suivi.ecotrack.dz/suivi/{{$order->tracking}}" traget="_blank">{{$order->tracking}}</a><br>
+                  <i class="align-left" data-feather="calendar"></i> {{$order->created_at}}
                 </p>
               </td>
               <td class="d-xl-table-cell single-line">
                 <p>
-                  <i class="align-middle me-2 fas fa-fw fa-user-tie"></i> {{$order->name}}<br>
-                  <i class="align-middle me-2 fas fa-fw fa-phone"></i> <a href="tel:{{$order->phone}}">{{$order->phone}}</a><br>
-                  <i class="align-middle me-2 fas fa-fw"></i> <a href="tel:{{$order->phone}}">{{$order->phone2}}</a>
+                  <i class="align-left" data-feather="user"></i> {{$order->name}}<br>
+                  <i class="align-left" data-feather="phone"></i> <a href="tel:{{$order->phone}}">{{$order->phone}}</a><br>
+                  <i class="align-left" data-feather="phone"></i> <a href="tel:{{$order->phone}}">{{$order->phone2}}</a>
                 </p>
               </td>
               <td class="d-xl-table-cell single-line">
                 <p>
-                  <i class="align-middle me-2 fas fa-fw fa-map-pin"></i> {{$order->address}}<br>
-                  <i class="align-middle me-2 fas fa-fw fa-map"></i> {{$order->Commune()->name}} - {{$order->Wilaya()->name}}<br>
-                  <i class="align-middle me-2 fas fa-fw fa-globe"></i> {{$order->ip}}
+                  <i class="align-left" data-feather="map-pin"></i> {{$order->address}}<br>
+                  <i class="align-left" data-feather="map"></i> {{$order->Commune()->name}} - {{$order->Wilaya()->name}}<br>
+                  <i class="align-left" data-feather="globe"></i> {{$order->ip}}
                 </p>
               </td>
               <td class="d-xl-table-cell single-line">
                 <p>
-                <i class="align-middle me-2 fas fa-fw fa-ad"></i> <a href="{{route('webmaster_campaigns_show', $order->campaign)}}">{{$order->Campaign()->name}}</a><br>
-                  <i class="align-middle me-2 fas fa-fw fa-box"></i> <a href="{{route('webmaster_products_show', $order->product)}}">{{$order->Product()->name}}</a><br>
-                  <i class="align-middle me-2 fas fa-fw fa-boxes"></i> {{$order->quantity}}
+                  <i class="align-left" data-feather="volume-2"></i> <a href="{{route('webmaster_campaigns_show', $order->campaign)}}">{{$order->Campaign()->name}}</a><br>
+                  <i class="align-left" data-feather="package"></i> <a href="{{route('webmaster_products_show', $order->product)}}">{{$order->Product()->name}}</a><br>
+                  <i class="align-left" data-feather="list"></i> {{$order->quantity}}
                 </p>
               </td>
               <td class="d-xl-table-cell single-line">
                 <p>
-                <i class="align-middle me-2 fas fa-fw fa-wallet"></i> {{$order->total_price}} DZD<br>
-                <i class="align-middle me-2 fas fa-fw fa-truck-loading"></i> {{$order->delivery_price}} DZD<br>
-                <i class="align-middle me-2 fas fa-fw fa-dollar-sign"></i> {{$order->clean_price}} DZD
+                <i class="align-left" data-feather="dollar-sign"></i> {{$order->total_price}} DZD<br>
+                <i class="align-left" data-feather="truck"></i>  {{$order->delivery_price}} DZD<br>
+                <i class="align-left" data-feather="dollar-sign"></i>  {{$order->clean_price}} DZD
                 </p>
               </td>
               <td>
-                <p class="px-0 py-0 mx-0 my-0">
+                <p>
                   @foreach($order->Confirmation_attempts() as $attempt)
-                  <p class="border px-1 py-1">
-                    <span class="badge bg-primary">{{$attempt->Attempt_by()->name}}</span> {{$attempt->response}}
-                  </p>
+                  <span class="badge bg-{{$attempt->state=='confirmed'?'success':($attempt->state=='not confirmed'?'warning':'danger')}}">
+                    <span class="badge bg-primary rounded-pill">{{$attempt->Attempt_by()->name}}</span>
+                    {{$attempt->response}}
+                  </span><br>
                   @endforeach
                 </p>
               </td>
-              <td class="single-line">
+              <td>
                 <p>
-                  <i class="align-middle me-2 fas fa-fw fa-user"></i> {{$order->Confirmed_by()->name}}<br>
-                  <i class="align-middle me-2 fas fa-fw fa-calendar"></i> {{$order->confirmed_at}}
+                  Confirmed by: <b>{{$order->Confirmed_by()->name}}</b><br>
+                  Confirmed at: <b>{{$order->confirmed_at}}</b>
                 </p>
               </td>
-              <td class="single-line">
+              <td>
+              {{$order->State()}}
+              </td>
+              <td>
                 @if($data['can_confirm'] && $order->State() == "Pending")
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addAttempt{{$order->id}}">
+                <button type="button" class="btn btn-secondary rounded-pill" data-bs-toggle="modal" data-bs-target="#addAttempt{{$order->id}}">
                   Add an attempt
                 </button>
-                @endif
-                @if($data['can_shipp'] && $order->State() == "Confirmed")
-                <a href="{{route('webmaster_orders_shipp', $order->id)}}" class="btn btn-primary" >
-                  Add to ecotrack
-                </a>
                 @endif
               </td>
             </tr>
@@ -97,8 +105,6 @@
           </tbody>
         </table>
 		</div>
-    
-  {{ $data["orders"]->links('components.pagination') }}
   </div>
 </div>
 
@@ -153,12 +159,6 @@
                 <input class="form-check-input" type="radio" name="response" value="Reçeption du bureau">
                 <span class="form-check-label">Reçeption du bureau</span>
               </label>
-              <label class="form-check">
-                <input class="form-check-input" type="radio" name="response" value="Autre">
-                <span class="form-check-label">Autre</span>
-                <input class="form-input" type="text" id="otherResponse" name="response" disabled>
-              </label>
-              
             </div>
             <div class="col-6 mb-3">
               <label for="state" class="form-label">State</label>
@@ -169,10 +169,6 @@
               <label class="form-check">
                 <input class="form-check-input" type="radio" name="state" value="confirmed">
                 <span class="form-check-label">Confirmed</span>
-              </label>
-              <label class="form-check">
-                <input class="form-check-input" type="radio" name="state" value="confirmed ecotrack">
-                <span class="form-check-label">Confirmed (add to ecotrack)</span>
               </label>
               <label class="form-check">
                 <input class="form-check-input" type="radio" name="state" value="canceled">
@@ -192,13 +188,13 @@
 @endif
 @endsection
 @section("scripts")
-<script>
-  document.querySelectorAll('input[name="response"]').forEach(function(radioButton) {
-    radioButton.addEventListener('change', function() {
-        var textInput = document.getElementById('otherResponse');
-        var autreRadioButton = document.querySelector('input[name="response"][value="Autre"]');
-        textInput.disabled = !autreRadioButton.checked;
-    });
-});
-</script>
+<script src="{{asset('js/datatables.js')}}"></script>
+
+	<script>
+		document.addEventListener("DOMContentLoaded", function() {
+        $("#datatables-orders").DataTable({
+            responsive: true
+        });
+      });
+	</script>
 @endsection

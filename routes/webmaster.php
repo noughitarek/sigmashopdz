@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\CampaignController;
 use App\Http\Controllers\Auth\PasswordController;
 use App\Http\Controllers\Webmaster\AuthController;
 use App\Http\Controllers\webmaster\AdminController;
@@ -19,6 +20,15 @@ use App\Http\Controllers\Auth\EmailVerificationNotificationController;
 Route::middleware('auth')->name('webmaster_')->namespace('App\Http\Controllers\webmaster')->prefix("webmaster")->group(function() {
     Route::middleware('permission:consult_dashboard')->name('dashboard_')->controller(CategoryController::class)->prefix('dashboard')->group(function(){
         Route::get('', 'index')->name('index');
+    });
+    Route::middleware('permission:consult_campaigns')->name('campaigns_')->controller(CampaignController::class)->prefix('campaigns')->group(function(){
+        Route::get('', 'index')->name('index');
+        Route::get('create', 'create')->name('create')->middleware('permission:create_campaigns');
+        Route::post('create', 'store')->name('store')->middleware('permission:create_campaigns');
+        Route::get('{campaign}', 'show')->name('show');
+        Route::get('{campaign}/edit', 'edit')->name('edit')->middleware('permission:edit_campaigns');
+        Route::put('{campaign}/edit', 'update')->name('update')->middleware('permission:edit_campaigns');
+        Route::delete('{campaign}/destroy', 'destroy')->name('destroy')->middleware('permission:delete_campaigns');
     });
     Route::middleware('permission:consult_categories')->name('categories_')->controller(CategoryController::class)->prefix('categories')->group(function(){
         Route::get('', 'index')->name('index');
@@ -55,6 +65,8 @@ Route::middleware('auth')->name('webmaster_')->namespace('App\Http\Controllers\w
         Route::get('back', 'back_index')->name('back_index')->middleware("permission:consult_back_orders");
         Route::get('archived', 'archived_index')->name('archived_index')->middleware("permission:consult_archived_orders");
         Route::get('{order}', 'show')->name('show');
+        Route::post('{order}/confirm', 'confirm')->name('confirm')->middleware('permission:confirm_orders');
+        Route::get('{order}/shipp', 'shipp')->name('shipp')->middleware('permission:shipp_orders');
         Route::get('{order}/edit', 'edit')->name('edit')->middleware('permission:edit_orders');
         Route::put('{order}/edit', 'update')->name('update')->middleware('permission:edit_orders');
     });

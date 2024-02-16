@@ -88,6 +88,51 @@
                 <div class="card-header d-flex justify-content-between align-items-center row">
                     <div class="mb-3">
                         <label for="description" class="form-label">Description</label>
+						<div id="quill-toolbar">
+						    <span class="ql-formats">
+						    	<select class="ql-font"></select>
+						    	<select class="ql-size"></select>
+						    </span>
+						    <span class="ql-formats">
+						    	<button class="ql-bold"></button>
+						    	<button class="ql-italic"></button>
+						    	<button class="ql-underline"></button>
+						    	<button class="ql-strike"></button>
+						    </span>
+						    <span class="ql-formats">
+						    	<select class="ql-color"></select>
+						    	<select class="ql-background"></select>
+						    </span>
+						    <span class="ql-formats">
+						    	<button class="ql-script" value="sub"></button>
+						    	<button class="ql-script" value="super"></button>
+						    </span>
+						    <span class="ql-formats">
+						    	<button class="ql-header" value="1"></button>
+						    	<button class="ql-header" value="2"></button>
+						    	<button class="ql-blockquote"></button>
+						    	<button class="ql-code-block"></button>
+						    </span>
+						    <span class="ql-formats">
+						    	<button class="ql-list" value="ordered"></button>
+						    	<button class="ql-list" value="bullet"></button>
+						    	<button class="ql-indent" value="-1"></button>
+						    	<button class="ql-indent" value="+1"></button>
+						    </span>
+						    <span class="ql-formats">
+						    	<button class="ql-direction" value="rtl"></button>
+						    	<select class="ql-align"></select>
+						    </span>
+						    <span class="ql-formats">
+						    	<button class="ql-link"></button>
+						    	<button class="ql-image"></button>
+						    	<button class="ql-video"></button>
+						    </span>
+						    <span class="ql-formats">
+						    	<button class="ql-clean"></button>
+						    </span>
+						<div>
+						<div id="quill-editor"></div>
                         <textarea name="description" id="description" class="form-control"></textarea>
                         @error('description')
                         <div class="text-danger">{{ $message }}</div>
@@ -124,4 +169,24 @@
         </div>
     </div>
 </form>
+@endsection
+@section("scripts")
+<script>
+		document.addEventListener("DOMContentLoaded", function() {
+			var editor = new Quill("#quill-editor", {
+				modules: {
+					toolbar: "#quill-toolbar"
+				},
+				placeholder: "Type something",
+				theme: "snow"
+			});
+			var bubbleEditor = new Quill("#quill-bubble-editor", {
+				placeholder: "Compose an epic...",
+				modules: {
+					toolbar: "#quill-bubble-toolbar"
+				},
+				theme: "bubble"
+			});
+		});
+	</script>
 @endsection
