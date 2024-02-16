@@ -53,21 +53,121 @@ class Order extends Model
             return "Pending";
         }
     }
-    
     public function Confirmed_by():User
     {
         $user = User::where("id", $this->confirmed_by)->first();
         if($user)return $user;
         return new User(['name'=>'n/a']);
     }
+    public function Shipped_by():User
+    {
+        $user = User::where("id", $this->shipped_by)->first();
+        if($user)return $user;
+        return new User(['name'=>'n/a']);
+    }
+    public function Recovered_by():User
+    {
+        $user = User::where("id", $this->recovered_by)->first();
+        if($user)return $user;
+        return new User(['name'=>'n/a']);
+    }
+    public function Validated_by():User
+    {
+        $user = User::where("id", $this->validated_by)->first();
+        if($user)return $user;
+        return new User(['name'=>'n/a']);
+    }
+    public function Get_information()
+    {
+        $data = array(
+            'tracking' => $this->tracking,
+            'api_token' => config("webmaster.ecotrack_api")
+        );
+        $apiUrl = config("webmaster.ecotrack_link")."api/v1/get/maj";
+        $apiUrl .= '?' . http_build_query($data);
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $apiUrl);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+            'Authorization: Bearer ' . config("webmaster.ecotrack_api"),
+            'Content-Type: application/x-www-form-urlencoded',
+        ));
 
+        $result = curl_exec($ch);
+        $responseData = json_decode($result, true);
+        foreach($responseData as $attempt){
+            $oldAttempt = delivery_attempt::where("created_at", $attempt["created_at"])->first();
+            if(!$oldAttempt){
+                delivery_attempt::create([
+                    "response" => $attempt["remarque"],
+                    "order" =>  $this->id,
+                    "delivery_man" => $attempt["livreur"], 
+                    "station" => $attempt["station"],
+                    "created_at" => $attempt["created_at"]
+                ]);
+            }
+        }
+        curl_close($ch);
+    }
+    public function Add_information($information)
+    {
+        $data = array(
+            'content' => $information,
+            'tracking' => $this->tracking,
+            'api_token' => config("webmaster.ecotrack_api")
+        );
+        $apiUrl = config("webmaster.ecotrack_link")."api/v1/add/maj";
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $apiUrl);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+            'Authorization: Bearer ' . config("webmaster.ecotrack_api"),
+            'Content-Type: application/x-www-form-urlencoded',
+        ));
+        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
+        $response = curl_exec($ch);
+        if (curl_errno($ch))
+        {
+            return false;
+        }
+        curl_close($ch);
+        if ($response)
+        {
+            $responseData = json_decode($response, true);
+            if ($responseData && isset($responseData['success']) && $responseData['success'])
+            {
+                delivery_attempt::create([
+                    "response" => $information,
+                    "order" =>  $this->id,
+                    "delivery_man" => null, 
+                    "station" => null,
+                    "attempt_by" => Auth::user()->id,
+                ]);
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        else
+        {
+            return false;
+        }
+    }
+    public function Delivery_attempts()
+    {
+        $attempts = delivery_attempt::where("order", $this->id)->orderBy('created_at', 'desc')->get();
+        if($attempts)return $attempts;
+        return false;
+    }
     public function Confirmation_attempts()
     {
         $attempts = confirmation_attempt::where("order", $this->id)->get();
         if($attempts)return $attempts;
         return false;
     }
-    
     public function Product()
     {
         $product = Product::where("id", $this->product)->first();
@@ -92,7 +192,18 @@ class Order extends Model
         if($commune)return $commune;
         return false;
     }
-    public function Add_to_ecotrack(){
+    public function Add_to_ecotrack()
+    {
+        $response = ""; 
+        foreach($this->Confirmation_attempts() as $attempt){
+            if($attempt->state == "confirmed" || $attempt->state == "confirmed ecotrack"){
+                $response .= $attempt->response.' ';
+            }
+        }
+        $remarques = array(
+            $this->quantity==1?$this->quantity." piece":$this->quantity." pieces",
+            $response,
+        );
         $data = array(
             'referece' => config("webmaster.id").$this->id,
             'nom_client' => $this->name,
@@ -102,7 +213,7 @@ class Order extends Model
             'code_wilaya' => $this->wilaya,
             'commune' =>  $this->Commune()->name,
             'montant' => $this->total_price,
-            'remarque' => $this->quantity." piece(s)",
+            'remarque' => implode(', ', $remarques),
             'produit' => $this->Product()->name,
             'type' => 1,
             'api_token' => config("webmaster.ecotrack_api")
@@ -144,6 +255,145 @@ class Order extends Model
         {
             return false;
         }
+    }
+    public function Validate_order()
+    {
+        $data = array(
+            "tracking" => $this->tracking,
+            'api_token' => config("webmaster.ecotrack_api")
+        );
+
+        $apiUrl = config("webmaster.ecotrack_link")."api/v1/valid/order";
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $apiUrl);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+            'Authorization: Bearer ' . config("webmaster.ecotrack_api"),
+            'Content-Type: application/x-www-form-urlencoded',
+        ));
+        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
+        $response = curl_exec($ch);
+        if (curl_errno($ch))
+        {
+            return false;
+        }
+        curl_close($ch);
+        if ($response)
+        {
+            $responseData = json_decode($response, true);
+            if ($responseData && isset($responseData['success']) && $responseData['success'])
+            {
+                $this->validated_at = now();
+                $this->validated_by = Auth::user()->id;
+                $this->save();
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        else
+        {
+            return false;
+        }
+    }
+    public function Update_state()
+    {
+        $data = array(
+            'tracking' => $this->tracking,
+            'api_token' => config("webmaster.ecotrack_api")
+        );
+        $apiUrl = config("webmaster.ecotrack_link")."api/v1/get/tracking/info";
+        $apiUrl .= '?' . http_build_query($data);
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $apiUrl);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+            'Authorization: Bearer ' . config("webmaster.ecotrack_api"),
+            'Content-Type: application/x-www-form-urlencoded',
+        ));
+
+        $result = curl_exec($ch);
+        $responseData = json_decode($result, true);
+        if(isset($responseData["activity"])){
+            foreach($responseData["activity"] as $activity){
+                if($activity['status']== "order_information_received_by_carrier" && $this->shipped_at == null){
+                    $this->shipped_at = $activity['date']." ".$activity['time'];
+                    $this->save();
+                }elseif($activity['status']== "notification_on_order" && $this->validated_at == null){
+                    $this->validated_at = $activity['date']." ".$activity['time'];
+                    $this->save();
+                }elseif($activity['status']== "accepted_by_carrier" && $this->delivery_at == null){
+                    $this->delivery_at = $activity['date']." ".$activity['time'];
+                    $this->save();
+                }elseif($activity['status']== "livred" && $this->delivered_at == null){
+                    $this->delivered_at = $activity['date']." ".$activity['time'];
+                    $this->save();
+                }elseif($activity['status']== "encaissed" && $this->ready_at == null){
+                    $this->ready_at = $activity['date']." ".$activity['time'];
+                    $this->save();
+                }elseif($activity['status']== "payed" && $this->recovered_at == null){
+                    $this->recovered_at = $activity['date']." ".$activity['time'];
+                    $this->save();
+                }elseif($activity['status']== "return_in_transit" && $this->back_at == null){
+                    $this->back_at = $activity['date']." ".$activity['time'];
+                    $this->save(); 
+                }elseif($activity['status']== "returned" && $this->back_ready_at == null){
+                    $this->back_ready_at = $activity['date']." ".$activity['time'];
+                    $this->save();
+                }
+            }
+        }else{
+            $this->archived_at = now();
+            $this->save();
+        }
+        curl_close($ch);
+    }
+    public function Status()
+    {
+        $status = [];
+        if($this->confirmed_at != null){
+            $status[] = ["success", "Confirmed"];
+        }
+        if($this->shipped_at != null){
+            $status[] = ["success", "Shipped"];
+        }
+        if($this->validated_at != null){
+            $status[] = ["success", "Validated"];
+        }
+        if($this->delivery_at != null){
+            $status[] = ["success", "Delivery"];
+        }
+        if($this->delivered_at != null){
+            $status[] = ["success", "Delivered"];
+        }
+        if($this->ready_at != null){
+            $status[] = ["success", "Ready"];
+        }
+        if($this->recovered_at != null){
+            $status[] = ["success", "Recovered"];
+        }
+        if($this->back_at != null){
+            $status[] = ["danger", "Back"];
+        }
+        if($this->back_ready_at != null){
+            $status[] = ["danger", "Back ready"];
+        }
+        if($this->failure_at != null){
+            $status[] = ["danger", "Failure"];
+        }
+        if($this->canceled_at != null){
+            $status[] = ["danger", "Canceled"];
+        }
+        if($this->doubled_at != null){
+            $status[] = ["danger", "Doubled"];
+        }
+        if($this->archived_at != null){
+            $status[] = ["danger", "Archived"];
+        }
+        return $status;
     }
     public static function Pending()
     {

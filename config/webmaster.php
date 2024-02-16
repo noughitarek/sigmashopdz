@@ -12,7 +12,7 @@ return [
         "categories" => ['consult', 'create','edit', 'delete'], 
         "products" => ['consult', 'create','edit', 'delete'], 
         "pages" => ['consult', 'create','edit', 'delete'], 
-        "orders" => ['consult_all', 'confirm', 'shipp', 'validate', 'consult_pending', 'consult_shipped', 'consult_delivered', 'consult_back', 'consult_archived'],
+        "orders" => ['consult_all', 'confirm', 'shipp', 'validate', 'archive', 'add_information', 'consult_pending', 'consult_shipped', 'consult_delivered', 'consult_back', 'consult_archived'],
         "messages" => ['consult', 'delete'],
         "stock" => ['consult', 'create','edit', 'delete'],
         "admins" => ['consult', 'create','edit', 'delete'],

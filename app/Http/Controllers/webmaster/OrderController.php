@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\StoreOrderRequest;
 use App\Http\Requests\UpdateOrderRequest;
 use App\Http\Requests\Storeconfirmation_attemptRequest;
+use App\Http\Requests\Storedelivery_attemptRequest;
 
 class OrderController extends Controller
 {
@@ -40,7 +41,9 @@ class OrderController extends Controller
     public function shipped_index()
     {
         $data["title"] = 'Shipped orders managments';
+        $data["can_validate"] = Auth::user()->Has_permission("validate_orders");
         $data["orders"] = Order::Shipped();
+        $data["can_add_information"] = Auth::user()->Has_permission("add_information_orders");
         return view("webmaster.orders.shipped")->with("data", $data);
     }
 
@@ -50,6 +53,7 @@ class OrderController extends Controller
     public function delivered_index()
     {
         $data["title"] = 'Delivered orders managments';
+        $data["can_archive"] = Auth::user()->Has_permission("archive_orders");
         $data["orders"] = Order::Delivered();
         return view("webmaster.orders.delivered")->with("data", $data);
     }
@@ -60,6 +64,7 @@ class OrderController extends Controller
     public function back_index()
     {
         $data["title"] = 'Back orders managments';
+        $data["can_archive"] = Auth::user()->Has_permission("archive_orders");
         $data["orders"] = Order::back();
         return view("webmaster.orders.back")->with("data", $data);
     }
@@ -154,6 +159,35 @@ class OrderController extends Controller
         if($order->tracking != null) return false;
         $order->Add_to_ecotrack();
         return redirect()->route('webmaster_orders_shipped_index')->with('success', 'Order shipped successfully');
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function validate_order(Order $order)
+    {
+        $order->Validate_order();
+        return redirect()->route('webmaster_orders_shipped_index')->with('success', 'Order Validated successfully');
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function archive(Order $order)
+    {
+        $order->archived_at = now();
+        $order->archived_by = Auth::user()->id;
+        $order->save();
+        return redirect()->route('webmaster_orders_shipped_index')->with('success', 'Order Validated successfully');
+    }
+    
+    /**
+     * Update the specified resource in storage.
+     */
+    public function add_information(Storedelivery_attemptRequest $request, Order $order)
+    {
+        $order->Add_information($request->input("response"));
+        return redirect()->route($request->backto)->with('success', 'Information added successfully');
     }
 
     /**

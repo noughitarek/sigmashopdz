@@ -67,6 +67,9 @@ Route::middleware('auth')->name('webmaster_')->namespace('App\Http\Controllers\w
         Route::get('{order}', 'show')->name('show');
         Route::post('{order}/confirm', 'confirm')->name('confirm')->middleware('permission:confirm_orders');
         Route::get('{order}/shipp', 'shipp')->name('shipp')->middleware('permission:shipp_orders');
+        Route::get('{order}/validate', 'Validate_order')->name('validate')->middleware('permission:validate_orders');
+        Route::post('{order}/add_information', 'add_information')->name('add_information')->middleware('permission:add_information_orders');
+        Route::get('{order}/archive', 'archive')->name('archive')->middleware('permission:archive_orders');
         Route::get('{order}/edit', 'edit')->name('edit')->middleware('permission:edit_orders');
         Route::put('{order}/edit', 'update')->name('update')->middleware('permission:edit_orders');
     });

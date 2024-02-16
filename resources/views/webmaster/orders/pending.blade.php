@@ -20,7 +20,7 @@
               <th class="d-xl-table-cell">Product</th>
               <th class="d-xl-table-cell">Prices</th>
               <th>Confirmation attempts</th>
-              <th>Confirmed by</th>
+              <th>Confirmed</th>
               <th>Action</th>
             </tr>
           </thead>
@@ -32,7 +32,7 @@
                   <i class="align-middle me-2 fas fa-fw fa-hashtag"></i> <a href="{{route('webmaster_orders_show', $order->id)}}">{{$order->id}}</a><br>
                   <i class="align-middle me-2 fas fa-fw fa-calendar"></i> {{$order->created_at}}<br>
                   <i class="align-middle me-2 fas fa-fw fa-shopping-cart"></i>
-                  <span class="badge bg-{{$order->State()=='Pending'?'danger':'warning'}}">
+                  <span class="badge bg-{{$order->State()=='Pending'?'danger':'success'}}">
                     {{$order->State()}}
                   </span>
                 </p>
@@ -80,7 +80,7 @@
                   <i class="align-middle me-2 fas fa-fw fa-calendar"></i> {{$order->confirmed_at}}
                 </p>
               </td>
-              <td class="single-line">
+              <td >
                 @if($data['can_confirm'] && $order->State() == "Pending")
                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addAttempt{{$order->id}}">
                   Add an attempt
@@ -134,29 +134,29 @@
             <div class="col-6 mb-3">
               <label for="response" class="form-label">Response</label>
               <label class="form-check">
-                <input class="form-check-input" type="radio" name="response" value="Pas de réponse">
+                <input class="form-check-input" class="order-{{$order->id}}" type="radio" name="response" value="Pas de réponse">
                 <span class="form-check-label">Ne repond pas</span>
               </label>
               <label class="form-check">
-                <input class="form-check-input" type="radio" name="response" value="Injoingnable">
+                <input class="form-check-input" class="order-{{$order->id}}" type="radio" name="response" value="Injoingnable">
                 <span class="form-check-label">Injoingnable</span>
               </label>
               <label class="form-check">
-                <input class="form-check-input" type="radio" name="response" value="Code">
+                <input class="form-check-input" class="order-{{$order->id}}" type="radio" name="response" value="Code">
                 <span class="form-check-label">Code</span>
               </label>
               <label class="form-check">
-                <input class="form-check-input" type="radio" name="response" value="Annulé par le client">
+                <input class="form-check-input" class="order-{{$order->id}}" type="radio" name="response" value="Annulé par le client">
                 <span class="form-check-label">Annulé par le client</span>
               </label>
               <label class="form-check">
-                <input class="form-check-input" type="radio" name="response" value="Reçeption du bureau">
+                <input class="form-check-input" class="order-{{$order->id}}" type="radio" name="response" value="Reçeption du bureau">
                 <span class="form-check-label">Reçeption du bureau</span>
               </label>
               <label class="form-check">
-                <input class="form-check-input" type="radio" name="response" value="Autre">
+                <input class="form-check-input" class="order-{{$order->id}}" type="radio" name="response" value="Autre">
                 <span class="form-check-label">Autre</span>
-                <input class="form-input" type="text" id="otherResponse" name="response" disabled>
+                <input class="form-input" type="text" id="otherResponse-{{$order->id}}" name="response" disabled>
               </label>
               
             </div>
@@ -170,10 +170,12 @@
                 <input class="form-check-input" type="radio" name="state" value="confirmed">
                 <span class="form-check-label">Confirmed</span>
               </label>
+              @if($data['can_shipp'])
               <label class="form-check">
                 <input class="form-check-input" type="radio" name="state" value="confirmed ecotrack">
                 <span class="form-check-label">Confirmed (add to ecotrack)</span>
               </label>
+              @endif
               <label class="form-check">
                 <input class="form-check-input" type="radio" name="state" value="canceled">
                 <span class="form-check-label">Canceled</span>
@@ -193,12 +195,14 @@
 @endsection
 @section("scripts")
 <script>
-  document.querySelectorAll('input[name="response"]').forEach(function(radioButton) {
+  @foreach($data['orders'] as $order)
+  document.querySelectorAll('input[name="response"].order-{{$order->id}}').forEach(function(radioButton) {
     radioButton.addEventListener('change', function() {
-        var textInput = document.getElementById('otherResponse');
-        var autreRadioButton = document.querySelector('input[name="response"][value="Autre"]');
+        var textInput = document.getElementById('otherResponse-{{$order->id}}');
+        var autreRadioButton = document.querySelector('input[name="response"][value="Autre"].order-{{$order->id}}');
         textInput.disabled = !autreRadioButton.checked;
     });
-});
+  });
+  @endforeach
 </script>
 @endsection

@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\webmaster;
 
-use App\Models\confirmation_attempt;
-use App\Http\Requests\Storeconfirmation_attemptRequest;
-use App\Http\Requests\Updateconfirmation_attemptRequest;
+use App\Models\campaign;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\StorecampaignRequest;
+use App\Http\Requests\UpdatecampaignRequest;
 
-class ConfirmationAttemptController extends Controller
+class CampaignController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -27,7 +28,7 @@ class ConfirmationAttemptController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Storeconfirmation_attemptRequest $request)
+    public function store(StorecampaignRequest $request)
     {
         //
     }
@@ -35,7 +36,7 @@ class ConfirmationAttemptController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(confirmation_attempt $confirmation_attempt)
+    public function show(campaign $campaign)
     {
         //
     }
@@ -43,7 +44,7 @@ class ConfirmationAttemptController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(confirmation_attempt $confirmation_attempt)
+    public function edit(campaign $campaign)
     {
         //
     }
@@ -51,7 +52,7 @@ class ConfirmationAttemptController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Updateconfirmation_attemptRequest $request, confirmation_attempt $confirmation_attempt)
+    public function update(UpdatecampaignRequest $request, campaign $campaign)
     {
         //
     }
@@ -59,7 +60,7 @@ class ConfirmationAttemptController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(confirmation_attempt $confirmation_attempt)
+    public function destroy(campaign $campaign)
     {
         //
     }
