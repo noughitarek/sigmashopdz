@@ -1,9 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\CampaignController;
+use App\Http\Controllers\webmaster\CampaignController;
 use App\Http\Controllers\Auth\PasswordController;
-use App\Http\Controllers\Webmaster\AuthController;
 use App\Http\Controllers\webmaster\AdminController;
 use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\Auth\VerifyEmailController;

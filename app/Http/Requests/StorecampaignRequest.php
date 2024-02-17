@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StorecampaignRequest extends FormRequest
@@ -11,7 +12,7 @@ class StorecampaignRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return Auth::user()->Has_Permission("create_campaigns");
     }
 
     /**

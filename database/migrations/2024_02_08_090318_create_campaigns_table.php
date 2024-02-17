@@ -15,10 +15,18 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('slug')->unique();
+
             $table->double('daily_budget');
+            $table->double('total_budget');
+
             $table->boolean('is_active')->default(true);
-            $table->timestamp('started_at');
-            $table->timestamp('ended_at')->nullable();
+            $table->date('changed_at')->nullable();
+            $table->date('started_at')->nullable();
+            $table->date('ended_at')->nullable();
+            
+            $table->unsignedBigInteger('created_by');
+            $table->foreign('created_by')->references('id')->on('users');
+
             $table->timestamps();
         });
     }

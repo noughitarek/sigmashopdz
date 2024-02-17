@@ -134,31 +134,32 @@
             <div class="col-6 mb-3">
               <label for="response" class="form-label">Response</label>
               <label class="form-check">
-                <input class="form-check-input" class="order-{{$order->id}}" type="radio" name="response" value="Pas de réponse">
+                <input class="form-check-input order-{{$order->id}}" type="radio" name="response" value="Pas de réponse">
                 <span class="form-check-label">Ne repond pas</span>
               </label>
               <label class="form-check">
-                <input class="form-check-input" class="order-{{$order->id}}" type="radio" name="response" value="Injoingnable">
+                <input class="form-check-input order-{{$order->id}}" type="radio" name="response" value="Injoingnable">
                 <span class="form-check-label">Injoingnable</span>
               </label>
               <label class="form-check">
-                <input class="form-check-input" class="order-{{$order->id}}" type="radio" name="response" value="Code">
+                <input class="form-check-input order-{{$order->id}}" type="radio" name="response" value="Code">
                 <span class="form-check-label">Code</span>
               </label>
               <label class="form-check">
-                <input class="form-check-input" class="order-{{$order->id}}" type="radio" name="response" value="Annulé par le client">
+                <input class="form-check-input order-{{$order->id}}" type="radio" name="response" value="Annulé par le client">
                 <span class="form-check-label">Annulé par le client</span>
               </label>
               <label class="form-check">
-                <input class="form-check-input" class="order-{{$order->id}}" type="radio" name="response" value="Reçeption du bureau">
+                <input class="form-check-input order-{{$order->id}}" type="radio" name="response" value="Reçeption du bureau">
                 <span class="form-check-label">Reçeption du bureau</span>
               </label>
               <label class="form-check">
-                <input class="form-check-input" class="order-{{$order->id}}" type="radio" name="response" value="Autre">
+                <input class="form-check-input order-{{$order->id}}" type="radio" name="response" value="Autre">
                 <span class="form-check-label">Autre</span>
-                <input class="form-input" type="text" id="otherResponse-{{$order->id}}" name="response" disabled>
               </label>
-              
+            </div>
+            <div class="mb-3">
+              <textarea class="form-control" id="otherResponse-{{$order->id}}" name="response" disabled></textarea>
             </div>
             <div class="col-6 mb-3">
               <label for="state" class="form-label">State</label>

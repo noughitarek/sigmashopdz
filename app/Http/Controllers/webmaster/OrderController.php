@@ -19,8 +19,8 @@ class OrderController extends Controller
     public function index()
     {
         $data["title"] = 'Orders managments';
-        $data["orders"] = Order::orderBy('created_at', 'desc')->get();
-        return view("webmaster.orders.pending")->with("data", $data);
+        $data["orders"] = Order::orderBy('created_at', 'desc')->paginate(25)->onEachSide(2);
+        return view("webmaster.orders.index")->with("data", $data);
     }
 
     /**

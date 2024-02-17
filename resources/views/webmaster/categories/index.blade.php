@@ -17,24 +17,67 @@
         <table class="table table-hover my-0">
           <thead>
             <tr>
-              <th>#</th>
-              <th class="d-xl-table-cell">Name</th>
-              <th class="d-xl-table-cell">Label</th>
-              <th class="d-xl-table-cell">Order</th>
-              <th class="d-xl-table-cell">Active</th>
-              <th class="d-none d-xl-table-cell">Date</th>
-              <th>Action</th>
+              <th>Category</th>
+              <th class="d-xl-table-cell">Information</th>
+              <th class="d-xl-table-cell">Products</th>
+              <th class="d-xl-table-cell">Orders</th>
+              <th class="d-xl-table-cell">Created</th>
+              <th class="d-xl-table-cell">Action</th>
             </tr>
           </thead>
           <tbody>
             @foreach($data["categories"] as $category)
             <tr>
-              <td><a href="{{route('webmaster_categories_show', $category['id'])}}">{{$category["id"]}}</a></td>
-              <td class="d-xl-table-cell">{{$category["name"]}}</td>
-              <td class="d-xl-table-cell">{{$category["slug"]}}</td>
-              <td class="d-xl-table-cell">{{$category["order"]}}</td>
-              <td class="d-xl-table-cell">{{ $category->is_active?"True":"False" }}</td>
-              <td class="d-none d-xl-table-cell">{{$category["created_at"]}}</td>
+              <td class="d-xl-table-cell single-line">
+                <i class="align-middle me-2 fas fa-fw fa-hashtag"></i> <a href="{{route('webmaster_categories_show', $category['id'])}}">{{$category["id"]}}</a><br>
+                <i class="align-middle me-2 fas fa-fw fa-list-alt"></i> {{$category->name}}<br>
+                <i class="align-middle me-2 fas fa-fw fa-qrcode"></i> {{$category->slug}}
+              </td>
+              <td class="d-xl-table-cell single-line">
+                <i class="align-middle me-2 fas fa-fw fa-arrows-alt-v"></i>{{$category->order}}<br>
+                <i class="align-middle me-2 fas fa-fw fa-toggle-on"></i>{{ $category->is_active?"Active":"Not active" }}<br>
+                <i class="align-middle me-2 fas fa-fw fa-calendar"></i>{{$category->created_at}}
+              </td>
+              <td class="d-xl-table-cell single-line">
+                @for($i=0;$i<count($category->Products());$i++)
+                  @if($i>=2)
+                  Showing {{$i}} of {{count($category->Products())}} products
+                  @break
+                  @endif
+                  @if($i==0)
+                  <i class="align-middle me-2 fas fa-fw fa-box"></i>
+                  @else
+                  <i class="align-middle me-2 fas fa-fw"></i>
+                  @endif
+                  <a href="{{route('webmaster_products_show', $category->Products()[$i]->id)}}">{{$category->Products()[$i]->name}}</a><br>
+                @endfor
+              </td>
+              <td class="d-xl-table-cell single-line">
+                <i class="align-middle me-2 fas fa-fw fa-box"></i>
+                <span class="text-primary">{{$category->Total_delivery_orders_number()}}</span>
+                |
+                <span class="text-success">{{$category->Total_delivered_orders_number()}}</span>
+                |
+                <span class="text-danger">{{$category->Total_back_orders_number()}}</span>
+                |
+                <span>{{$category->Total_orders_number()}}</span><br>
+                <span class="text-primary">
+                  <i class="align-middle me-2 fas fa-fw fa-dollar-sign"></i>{{$category->Total_delivery_orders_amount()}} DZD
+                </span><br>
+                <span class="text-success">
+                  <i class="align-middle me-2 fas fa-fw fa-dollar-sign"></i>{{$category->Total_delivered_orders_number()}} DZD
+                </span><br>
+                <span class="text-danger">
+                  <i class="align-middle me-2 fas fa-fw fa-dollar-sign"></i>{{$category->Total_back_orders_amount()}} DZD
+                </span><br>
+                <span>
+                  <i class="align-middle me-2 fas fa-fw fa-dollar-sign"></i>{{$category->Total_orders_amount()}} DZD
+                </span>
+              </td>
+              <td class="d-xl-table-cell single-line">
+                <i class="align-middle me-2 fas fa-fw fa-user"></i>{{$category->Created_by()->name}}<br>
+                <i class="align-middle me-2 fas fa-fw fa-calendar"></i>{{$category->created_at}}
+              </td>
               <td>
                 
                 @if($data["can_edit"])

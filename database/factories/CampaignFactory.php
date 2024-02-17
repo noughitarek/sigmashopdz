@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -19,9 +20,18 @@ class CampaignFactory extends Factory
         return [
             'name' => $this->faker->name,
             'slug' => $this->faker->unique()->slug,
-            'daily_budget' => $this->faker->randomFloat(2, 0, 1000),
-            'started_at' => $this->faker->optional()->dateTime,
-            'ended_at' => $this->faker->optional()->dateTime
+
+            'daily_budget' => rand(5, 10),
+            'total_budget' => rand(5, 10)*5,
+            
+            'is_active' => $this->faker->boolean,
+            'changed_at' => $this->faker->dateTime,
+            'started_at' => $this->faker->dateTime,
+            'ended_at' => $this->faker->optional()->dateTime,
+            
+            'created_by' => function () {
+                return User::factory()->create()->id;
+            }
         ];
     }
 }
