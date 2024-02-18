@@ -47,7 +47,7 @@ Route::middleware('auth')->name('webmaster_')->namespace('App\Http\Controllers\w
         Route::put('{product}/edit', 'update')->name('update')->middleware('permission:edit_products');
         Route::delete('{product}/destroy', 'destroy')->name('destroy')->middleware('permission:delete_products');
     });
-    Route::middleware('permission:consult_pages')->name('pages_')->controller(CategoryController::class)->prefix('pages')->group(function(){
+    Route::middleware('permission:consult_pages')->name('pages_')->controller(PageController::class)->prefix('pages')->group(function(){
         Route::get('', 'index')->name('index');
         Route::get('create', 'create')->name('create')->middleware('permission:create_pages');
         Route::post('create', 'store')->name('store')->middleware('permission:create_pages');
