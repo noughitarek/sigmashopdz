@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Order;
+use App\Models\Stock;
 use App\Models\Category;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Collection;
@@ -41,6 +42,15 @@ class Product extends Model
         return false;
     }
     
+    public function Spend():float
+    {
+        $campaigns = Campaign::where('product', $this->id)->get();
+        $total = 0;
+        foreach($campaigns as $campaign){
+            $total += $campaign->total_budget;
+        }
+        return $total;
+    }
     public function Orders():?Collection
     {
         $orders = Order::where("product", $this->id)
@@ -106,4 +116,62 @@ class Product extends Model
         return $orders;
     }
     
+    public function Orders_amount():?float
+    {
+        $orders = $this->Orders();
+        $total = 0;
+        foreach($orders as $order){
+            $total += $order->clean_price;
+        }
+        return $total;
+    }
+    
+    public function Delivered_orders_amount():?float
+    {
+        $orders = $this->Delivered_orders();
+        $total = 0;
+        foreach($orders as $order){
+            $total += $order->clean_price;
+        }
+        return $total;
+    }
+    
+    public function Delivery_orders_amount():?float
+    {
+        $orders = $this->Delivery_orders();
+        $total = 0;
+        foreach($orders as $order){
+            $total += $order->clean_price;
+        }
+        return $total;
+    }
+    
+    public function Back_orders_amount():?float
+    {
+        $orders = $this->Back_orders();
+        $total = 0;
+        foreach($orders as $order){
+            $total += $order->clean_price;
+        }
+        return $total;
+    }
+    
+    public function Stock():?int
+    {
+        $restock = Stock::where('product', $this->id)->get();
+        $stock = 0;
+        foreach($restock as $order){
+            $stock += $order->quantity;
+        }
+        foreach($this->Delivery_orders() as $order){
+            $stock -= $order->quantity;
+        }
+        foreach($this->Delivered_orders() as $order){
+            $stock -= $order->quantity;
+        }
+        foreach($this->Back_orders() as $order){
+            $stock += $order->quantity;
+        }
+        return $stock;
+    }
 }

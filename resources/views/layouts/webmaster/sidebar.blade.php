@@ -6,7 +6,11 @@
     <ul class="sidebar-nav">
       @foreach(config("webmaster.sidemenu") as $link)
         @if(is_string($link))
+          @if($link == "break")
+          <hr>
+          @else
           <li class="sidebar-header"> {{$link}} </li>
+          @endif
         @elseif(is_array($link))
           @if(Auth::user()->Has_Permission($link[3]))
             @if(substr(explode("webmaster_", Route::currentRouteName())[1], 0, strlen($link[4])) === $link[4])

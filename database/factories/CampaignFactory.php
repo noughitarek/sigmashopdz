@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\User;
+use App\Models\Product;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -28,7 +29,10 @@ class CampaignFactory extends Factory
             'changed_at' => $this->faker->dateTime,
             'started_at' => $this->faker->dateTime,
             'ended_at' => $this->faker->optional()->dateTime,
-            
+            'product' => function () {
+                return Product::factory()->create()->id;
+            },
+
             'created_by' => function () {
                 return User::factory()->create()->id;
             }

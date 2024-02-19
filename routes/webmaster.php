@@ -1,12 +1,13 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\webmaster\CampaignController;
 use App\Http\Controllers\Auth\PasswordController;
 use App\Http\Controllers\webmaster\AdminController;
+use App\Http\Controllers\webmaster\StockController;
 use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\Auth\VerifyEmailController;
 use App\Http\Controllers\webmaster\ProductController;
+use App\Http\Controllers\webmaster\CampaignController;
 use App\Http\Controllers\webmaster\CategoryController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
@@ -18,7 +19,7 @@ use App\Http\Controllers\Auth\EmailVerificationNotificationController;
 
 Route::middleware('auth')->name('webmaster_')->namespace('App\Http\Controllers\webmaster')->prefix("webmaster")->group(function() {
     Route::middleware('permission:consult_dashboard')->name('dashboard_')->controller(CategoryController::class)->prefix('dashboard')->group(function(){
-        Route::get('', 'index')->name('index');
+        Route::get('', function(){return "";})->name('index');
     });
     Route::middleware('permission:consult_campaigns')->name('campaigns_')->controller(CampaignController::class)->prefix('campaigns')->group(function(){
         Route::get('', 'index')->name('index');
@@ -81,7 +82,7 @@ Route::middleware('auth')->name('webmaster_')->namespace('App\Http\Controllers\w
         Route::put('{message}/edit', 'update')->name('update')->middleware('permission:edit_messages');
         Route::delete('{message}/destroy', 'destroy')->name('destroy')->middleware('permission:delete_messages');
     });
-    Route::middleware('permission:consult_stock')->name('stock_')->controller(CategoryController::class)->prefix('stock')->group(function(){
+    Route::middleware('permission:consult_stock')->name('stock_')->controller(StockController::class)->prefix('stock')->group(function(){
         Route::get('', 'index')->name('index');
         Route::get('create', 'create')->name('create')->middleware('permission:create_stock');
         Route::post('create', 'store')->name('store')->middleware('permission:create_stock');

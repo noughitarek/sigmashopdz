@@ -23,5 +23,6 @@
 @endsection
 @section('main_scripts')
 	<script src="{{asset('js/app.js')}}"></script>
+	<!--<script src="{{asset('js/settings.js')}}"></script>-->
     @yield('scripts')
 @endsection

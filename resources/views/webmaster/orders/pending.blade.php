@@ -68,7 +68,7 @@
               <td>
                 <p class="px-0 py-0 mx-0 my-0">
                   @foreach($order->Confirmation_attempts() as $attempt)
-                  <p class="border px-1 py-1">
+                  <p class="border px-1 py-1" title="{{$attempt->created_at}}">
                     <span class="badge bg-primary">{{$attempt->Attempt_by()->name}}</span> {{$attempt->response}}
                   </p>
                   @endforeach
