@@ -66,13 +66,14 @@
                 </p>
               </td>
               <td>
-                <p class="px-0 py-0 mx-0 my-0">
+                <div class="border">
                   @foreach($order->Confirmation_attempts() as $attempt)
-                  <p class="border px-1 py-1" title="{{$attempt->created_at}}">
-                    <span class="badge bg-primary">{{$attempt->Attempt_by()->name}}</span> {{$attempt->response}}
-                  </p>
+                  <div class="m-1 m-1" title="{{$attempt->created_at}}" data-bs-toggle="tooltip" data-bs-placement="left">
+                    <span class="px-1 py-1 badge bg-primary">{{$attempt->Attempt_by()->name}}</span> 
+                    <small>{{$attempt->response}}</small>
+                  </div>
                   @endforeach
-                </p>
+                </div>
               </td>
               <td class="single-line">
                 <p>

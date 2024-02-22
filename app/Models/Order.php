@@ -197,7 +197,7 @@ class Order extends Model
         $response = ""; 
         foreach($this->Confirmation_attempts() as $attempt){
             if($attempt->state == "confirmed" || $attempt->state == "confirmed ecotrack"){
-                $response .= $attempt->response.' ';
+                $response .= $attempt->Attempt_by()->name.':'.$attempt->response.' | ';
             }
         }
         $remarques = array(
@@ -213,7 +213,7 @@ class Order extends Model
             'code_wilaya' => $this->wilaya,
             'commune' =>  $this->Commune()->name,
             'montant' => $this->total_price,
-            'remarque' => implode(', ', $remarques),
+            'remarque' => implode(' | ', $remarques),
             'produit' => $this->Product()->name,
             'type' => 1,
             'api_token' => config("webmaster.ecotrack_api")
