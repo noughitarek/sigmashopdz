@@ -28,9 +28,7 @@ class ProductFactory extends Factory
             'videos' => $this->faker->optional()->word,
             'is_active' => $this->faker->boolean,
             'description' => $this->faker->optional()->paragraph,
-            'created_by' => function () {
-                return User::factory()->create()->id;
-            },
+            'created_by' => rand(1, 2),
             'category' => function () {
                 return Category::factory()->create()->id;
             },

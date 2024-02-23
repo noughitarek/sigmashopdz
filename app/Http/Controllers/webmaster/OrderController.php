@@ -32,6 +32,7 @@ class OrderController extends Controller
         $data["orders"] = Order::Pending();
         $data["can_confirm"] = Auth::user()->Has_permission("confirm_orders");
         $data["can_shipp"] = Auth::user()->Has_permission("shipp_orders");
+        $data["can_validate"] = Auth::user()->Has_permission("validate_orders");
         return view("webmaster.orders.pending")->with("data", $data);
     }
 
@@ -124,30 +125,54 @@ class OrderController extends Controller
      */
     public function confirm(Storeconfirmation_attemptRequest $request, Order $order)
     {
-        $confirmation_attempt = confirmation_attempt::create([
-            'response'  => $request->input('response'),
-            'state'  => $request->input('state'),
-            'order' => $order->id,
-            'attempt_by' => Auth::user()['id'],
-        ]);
-        if($request->input("state") == "confirmed ecotrack"){
+        switch($request->input("state")){
+            case 'confirmed':
+                $data = array(
+                    'response' => $request->input('remarque'),
+                    "state" => "confirmed",
+                    'order' => $order->id,
+                    'attempt_by' => Auth::user()->id,
+                );
+                $order->update([
+                    "confirmed_by" => Auth::user()->id,
+                    "confirmed_at" => now(),
+                ]);
+                break;
+            case 'not confirmed':
+                $data = array(
+                    'response'  => $request->input('response'),
+                    "state" => "not confirmed",
+                    'order' => $order->id,
+                    'attempt_by' => Auth::user()->id,
+                );
+                break;
+            case 'canceled':
+                $data = array(
+                    'response'  => $request->input('response'),
+                    "state" => "canceled",
+                    'order' => $order->id,
+                    'attempt_by' => Auth::user()->id,
+                );
+                $order->update([
+                    "confirmed_by" => Auth::user()->id,
+                    "canceled_at" => now(),
+                ]);
+                break;
+        }
+
+        $confirmation_attempt = confirmation_attempt::create($data);
+        if($request->has("stopdesk")){
             $order->update([
-                "confirmed_by" => Auth::user()->id,
-                "confirmed_at" => now(),
+                "stopdesk" => 1
             ]);
+        }
+        if($request->has("shipp")){
             $this->shipp($order);
         }
-        if($request->input("state") == "confirmed"){
-            $order->update([
-                "confirmed_by" => Auth::user()->id,
-                "confirmed_at" => now(),
-            ]);
-        }elseif($request->input("state") == "canceled"){
-            $order->update([
-                "confirmed_by" => Auth::user()->id,
-                "canceled_at" => now(),
-            ]);
+        if($request->has("validate")){
+            $this->validate_order($order);
         }
+
         return redirect()->route('webmaster_orders_pending_index')->with('success', 'Order confirmed successfully');
     }
 

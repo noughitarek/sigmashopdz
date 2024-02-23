@@ -40,7 +40,7 @@
               </td>
 
               <td class="d-xl-table-cell single-line">
-                <i class="align-middle me-2 fas fa-fw fa-user"></i>{{$page->Created_by()->name}}<br>
+                <i class="align-middle me-2 fas fa-fw fa-user-gear"></i>{{$page->Created_by()->name}}<br>
                 <i class="align-middle me-2 fas fa-fw fa-calendar"></i>{{$page->created_at}}
               </td>
               <td>

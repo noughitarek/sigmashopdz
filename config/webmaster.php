@@ -1,11 +1,5 @@
 <?php
 return [
-    "id" => "SSD",
-    "title" => "Sigmashop",
-
-    "ecotrack_link" => "https://rblivraison.ecotrack.dz/",
-    "ecotrack_api" => "yRHsVpLcJsT1TGDKComsb9BFWveyz8XGoJOD6KNDxgkGtNmuLKGk8M6RZ4h6",
-
     "permissions" => [
         "dashboard" => ['consult'], 
         "campaigns" => ['consult', 'create','edit', 'delete'], 
@@ -14,8 +8,9 @@ return [
         "pages" => ['consult', 'create','edit', 'delete'], 
         "orders" => ['consult_all', 'confirm', 'shipp', 'validate', 'archive', 'add_information', 'consult_pending', 'consult_shipped', 'consult_delivered', 'consult_back', 'consult_archived'],
         "messages" => ['consult', 'delete'],
+        "delivery" => ['consult', 'edit'],
         "stock" => ['consult', 'create','edit', 'delete'],
-        "admins" => ['consult', 'create','edit', 'delete'],
+        "admins" => ['consult', 'create','edit', 'edit_role', 'make_payement', 'delete'],
         "settings" => ['consult', 'edit']
     ],
     

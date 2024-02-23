@@ -75,7 +75,7 @@
                 </span>
               </td>
               <td class="d-xl-table-cell single-line">
-                <i class="align-middle me-2 fas fa-fw fa-user"></i>{{$category->Created_by()->name}}<br>
+                <i class="align-middle me-2 fas fa-fw fa-user-gear"></i>{{$category->Created_by()->name}}<br>
                 <i class="align-middle me-2 fas fa-fw fa-calendar"></i>{{$category->created_at}}
               </td>
               <td>

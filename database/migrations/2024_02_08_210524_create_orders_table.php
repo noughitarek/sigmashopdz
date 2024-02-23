@@ -27,7 +27,7 @@ return new class extends Migration
             $table->double('clean_price');
             $table->string('tracking')->nullable();
             $table->string('ip');
-
+            $table->boolean('stopdesk')->default(false);
             $table->timestamp('confirmed_at')->nullable();
             $table->unsignedBigInteger('confirmed_by')->nullable();
             $table->foreign('confirmed_by')->references('id')->on('users');

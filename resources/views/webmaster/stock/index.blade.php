@@ -5,7 +5,7 @@
     <div class="card flex-fill">
       <div class="card-header d-flex justify-content-between align-items-center">
         <h5 class="card-title mb-0">{{$data["title"]}}</h5>
-        @if($data["can_create"])
+        @if($data["can_restock"])
         <a href="{{route('webmaster_stock_create')}}" class="btn btn-primary" > Create a stock </a>
         @endif
       </div>
@@ -77,21 +77,15 @@
                 <h2><b>{{$product->Stock()}}</b></h2>
               </td>
               <td class="d-xl-table-cell single-line">
-                <i class="align-middle me-2 fas fa-fw fa-user"></i>{{$product->Created_by()->name}}<br>
+                <i class="align-middle me-2 fas fa-fw fa-user-gear"></i>{{$product->Created_by()->name}}<br>
                 <i class="align-middle me-2 fas fa-fw fa-calendar"></i>{{$product->created_at}}
               </td>
               <td>
                 
-                @if($data["can_edit"])
-                <a href="{{route('webmaster_products_edit', $product['id'])}}" class="btn btn-primary btn-icon rounded-pill" >
-                  <i class="align-middle" data-feather="edit"></i>
+                @if($data["can_restock"])
+                <a href="{{route('webmaster_stock_create_for_product', $product->id)}}" type="button" class="btn btn-secondary rounded-pill">
+                  <i class="align-middle" data-feather="dollar-sign"></i>
                 </a>
-                @endif
-                
-                @if($data["can_delete"])
-                <button type="button" class="btn btn-danger rounded-pill" data-bs-toggle="modal" data-bs-target="#deleteConfirmationModal9">
-                  <i class="align-middle" data-feather="trash"></i>
-                </button>
                 @endif
               </td>
             </tr>

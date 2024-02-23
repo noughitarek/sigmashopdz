@@ -70,21 +70,24 @@
               <td>
                 <p class="px-0 py-0 mx-0 my-0">
                   @foreach($order->Delivery_attempts() as $attempt)
-                  <p class="border px-1 py-1">
-                    <span class="badge bg-primary">{{$attempt->Attempt_by()->name}}</span> {{$attempt->response}}
-                  </p>
+                  <div class="m-1 m-1" title="{{$attempt->created_at}}" data-bs-toggle="tooltip" data-bs-placement="left">
+                    <span class="px-1 py-1 badge bg-primary w-full">
+                      {{$attempt->Attempt_by()->name}}
+                    </span> 
+                    <small>{{$attempt->response}}</small>
+                  </div>
                   @endforeach
                 </p>
               </td>
               <td class="single-line">
                 <p>
-                  <i class="align-middle me-2 fas fa-fw fa-user"></i> {{$order->Shipped_by()->name}}<br>
+                  <i class="align-middle me-2 fas fa-fw fa-user-gear"></i> {{$order->Shipped_by()->name}}<br>
                   <i class="align-middle me-2 fas fa-fw fa-calendar"></i> {{$order->shipped_at}}
                 </p>
               </td>
               <td class="single-line">
                 <p>
-                  <i class="align-middle me-2 fas fa-fw fa-user"></i> {{$order->Validated_by()->name}}<br>
+                  <i class="align-middle me-2 fas fa-fw fa-user-gear"></i> {{$order->Validated_by()->name}}<br>
                   <i class="align-middle me-2 fas fa-fw fa-calendar"></i> {{$order->validated_at}}
                 </p>
               </td>

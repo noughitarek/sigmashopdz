@@ -67,7 +67,7 @@
               </td>
               <td class="single-line">
                 <p>
-                  <i class="align-middle me-2 fas fa-fw fa-user"></i> {{$order->Recovered_by()->name}}<br>
+                  <i class="align-middle me-2 fas fa-fw fa-user-gear"></i> {{$order->Recovered_by()->name}}<br>
                   <i class="align-middle me-2 fas fa-fw fa-calendar"></i> {{$order->recovered_at}}
                 </p>
               </td>

@@ -73,7 +73,7 @@
               </td>
               
               <td class="d-xl-table-cell single-line">
-                <i class="align-middle me-2 fas fa-fw fa-user"></i>{{$campaign->Created_by()->name}}<br>
+                <i class="align-middle me-2 fas fa-fw fa-user-gear"></i>{{$campaign->Created_by()->name}}<br>
                 <i class="align-middle me-2 fas fa-fw fa-calendar"></i>{{$campaign->created_at}}
               </td>
               <td>

@@ -137,11 +137,7 @@
           <i class="align-middle" data-feather="settings"></i>
         </a>
         <a class="nav-link dropdown-toggle d-none d-sm-inline-block" href="#" data-bs-toggle="dropdown">
-          @if(Auth::user()["profile_image"] != NULL)
-          <img src="{{asset('img/avatars/'.Auth::user()["profile_image"])}}" class="avatar img-fluid rounded me-1" alt="{{Auth::user()["name"]}}" />
-          @else
-          <img src="{{asset('img/avatars/unknown.png')}}" class="avatar img-fluid rounded me-1" alt="{{Auth::user()["name"]}}" />
-          @endif
+          <img src="{{Auth::user()->Profile_image()}}" class="avatar img-fluid rounded me-1" alt="{{Auth::user()["name"]}}" />
           <span class="text-dark">{{Auth::user()["name"]}}</span>
         </a>
         <div class="dropdown-menu dropdown-menu-end">
@@ -149,7 +145,7 @@
               {{Auth::user()["role"]}}
           </span>
           <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="pages-profile.html">
+          <a class="dropdown-item" href="{{route('webmaster_profile_index')}}">
             <i class="align-middle me-1" data-feather="user"></i> Profile </a>
           <a class="dropdown-item" href="#">
             <i class="align-middle me-1" data-feather="pie-chart"></i> Analytics </a>

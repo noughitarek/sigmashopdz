@@ -17,28 +17,76 @@
         <table class="table table-hover my-0">
           <thead>
             <tr>
-              <th>#</th>
-              <th class="d-xl-table-cell">Name</th>
-              <th class="d-xl-table-cell">Email</th>
-              <th class="d-xl-table-cell">Role</th>
-              <th class="d-xl-table-cell">Active</th>
-              <th class="d-none d-xl-table-cell">Date</th>
+              <th class="d-xl-table-cell">Admin</th>
+              <th class="d-xl-table-cell">Contact</th>
+              @if($data["can_make_payement"])
+              <th class="d-xl-table-cell">Amount</th>
+              @endif
+              <th class="d-xl-table-cell">Permissions</th>
+              <th class="d-xl-table-cell">Created</th>
               <th>Action</th>
             </tr>
           </thead>
           <tbody>
             @foreach($data["admins"] as $admin)
             <tr>
-              <td><a href="{{route('webmaster_admins_show', $admin->id)}}">{{$admin->id}}</a></td>
-              <td class="d-xl-table-cell">{{$admin->name}}</td>
-              <td class="d-xl-table-cell">{{$admin->email}}</td>
-              <td class="d-xl-table-cell">{{$admin->role}}</td>
-              <td class="d-xl-table-cell">{{ $admin->is_active?"True":"False" }}</td>
-              <td class="d-none d-xl-table-cell">{{$admin->last_login_at}}</td>
+              
+              <td class="d-xl-table-cell single-line">
+                <p>
+                  <i class="align-middle me-2 fas fa-fw fa-hashtag"></i>
+                  <a href="{{route('webmaster_admins_show', $admin->id)}}">{{$admin->id}}</a><br>
+                  <i class="align-middle me-2 fas fa-fw fa-user-tie"></i> {{$admin->name}}<br>
+                  <i class="align-middle me-2 fas fa-fw fa-user-cog"></i> {{$admin->role}}<br>
+                <i class="align-middle me-2 fas fa-fw fa-toggle-on"></i>{{ $admin->is_active?"Active":"Not active" }}<br>
+                <i class="align-middle me-2 fas fa-fw fa-calendar"></i>{{$admin->last_login_at}}
+                </p>
+              </td>
+              <td class="d-xl-table-cell single-line">
+                  <i class="align-middle me-2 fas fa-fw fa-envelope-open-text"></i> <a href="mailto:{{$admin->email}}">{{$admin->email}}</a><br>
+                  <i class="align-middle me-2 fas fa-fw fa-phone"></i> <a href="tel:{{$admin->phone}}">{{$admin->phone}}</a><br>
+                  <i class="align-middle me-2 fas fa-fw"></i> <a href="tel:{{$admin->phone2}}">{{$admin->phone2}}</a>
+                </p>
+              </td>
+              @if($data["can_make_payement"])
+              <td class="d-xl-table-cell single-line">
+                <h5><b>{{$admin->Amount()}}</b> DZD</h5>
+              </td>
+              @endif
+                
+              <td class="d-xl-table-cell">
+                <p>
+                  @foreach(config('webmaster.sidemenu') as $permission)
+                    @if(is_array($permission))
+                      @foreach(config('webmaster.permissions') as $key=>$sub_permissions)
+                        @foreach($sub_permissions as $sub_permission)
+                          @if($key == $permission[4] || ($key == explode('_', $permission[4])[0] && $permission[0]=='Orders'))
+                            @if($admin->Has_Permission($sub_permission.'_'.$key))
+                            <span title="{{$sub_permission.'_'.$key}}" data-bs-toggle="tooltip" data-bs-placement="left"> <i class="align-middle text-success" data-feather="{{$permission[2]}}"></i></span>
+                            @else 
+                            <span title="{{$sub_permission.'_'.$key}}" data-bs-toggle="tooltip" data-bs-placement="left"> <i class="align-middle text-danger" data-feather="{{$permission[2]}}"></i></span>
+                            @endif
+                          @endif
+                          
+                        @endforeach
+                      @endforeach
+                    @endif
+                  @endforeach
+                </p>
+              </td>
+              <td class="d-xl-table-cell single-line">
+                <i class="align-middle me-2 fas fa-fw fa-user-gear"></i>{{ $admin->Created_by()->name }}<br>
+                <i class="align-middle me-2 fas fa-fw fa-calendar"></i>{{$admin->created_at}}
+              </td>
               <td>
                 
+                @if($data["can_make_payement"])
+                <a href="{{route('webmaster_admins_payement', $admin->id)}}" type="button" class="btn btn-secondary rounded-pill">
+                  <i class="align-middle" data-feather="dollar-sign"></i>
+                </a>
+                @endif
+
                 @if($data["can_edit"])
-                <a href="{{route('webmaster_admins_edit', $admin['id'])}}" class="btn btn-primary btn-icon rounded-pill" >
+                <a href="{{route('webmaster_admins_edit', $admin->id)}}" class="btn btn-primary btn-icon rounded-pill" >
                   <i class="align-middle" data-feather="edit"></i>
                 </a>
                 @endif

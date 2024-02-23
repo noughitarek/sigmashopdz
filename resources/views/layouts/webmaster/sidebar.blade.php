@@ -1,7 +1,7 @@
 <nav id="sidebar" class="sidebar js-sidebar">
   <div class="sidebar-content js-simplebar">
-    <a class="sidebar-brand" href="index.html">
-      <span class="align-middle">{{config("app.name")}}</span>
+    <a class="sidebar-brand" href="{{route('webmaster_dashboard_index')}}">
+      <img src="{{asset('img/'.config('settings.logo_tall'))}}" id="webmaster_logo">
     </a>
     <ul class="sidebar-nav">
       @foreach(config("webmaster.sidemenu") as $link)

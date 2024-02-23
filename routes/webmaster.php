@@ -6,7 +6,9 @@ use App\Http\Controllers\webmaster\AdminController;
 use App\Http\Controllers\webmaster\StockController;
 use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\Auth\VerifyEmailController;
+use App\Http\Controllers\webmaster\WilayaController;
 use App\Http\Controllers\webmaster\ProductController;
+use App\Http\Controllers\webmaster\SettingController;
 use App\Http\Controllers\webmaster\CampaignController;
 use App\Http\Controllers\webmaster\CategoryController;
 use App\Http\Controllers\Auth\RegisteredUserController;
@@ -87,18 +89,18 @@ Route::middleware('auth')->name('webmaster_')->namespace('App\Http\Controllers\w
         Route::get('create', 'create')->name('create')->middleware('permission:create_stock');
         Route::post('create', 'store')->name('store')->middleware('permission:create_stock');
         Route::get('{stock}', 'show')->name('show');
+        
+        Route::get('{product}/create', 'create_for_product')->name('create_for_product')->middleware('permission:create_stock');
+        Route::post('{product}/create', 'store_for_product')->name('store_for_product')->middleware('permission:create_stock');
+
         Route::get('{stock}/edit', 'edit')->name('edit')->middleware('permission:edit_stock');
         Route::put('{stock}/edit', 'update')->name('update')->middleware('permission:edit_stock');
         Route::delete('{stock}/destroy', 'destroy')->name('destroy')->middleware('permission:delete_stock');
     });
-    Route::middleware('permission:consult_delivery')->name('delivery_')->controller(CategoryController::class)->prefix('delivery')->group(function(){
+    Route::middleware('permission:consult_delivery')->name('delivery_')->controller(WilayaController::class)->prefix('delivery')->group(function(){
         Route::get('', 'index')->name('index');
-        Route::get('create', 'create')->name('create')->middleware('permission:create_delivery');
-        Route::post('create', 'store')->name('store')->middleware('permission:create_delivery');
-        Route::get('{delivery}', 'show')->name('show');
-        Route::get('{delivery}/edit', 'edit')->name('edit')->middleware('permission:edit_delivery');
-        Route::put('{delivery}/edit', 'update')->name('update')->middleware('permission:edit_delivery');
-        Route::delete('{delivery}/destroy', 'destroy')->name('destroy')->middleware('permission:delete_delivery');
+        Route::put('edit', 'update')->name('update')->middleware('permission:edit_delivery');
+        Route::get('update_api', 'update_api')->name('api')->middleware('permission:edit_delivery');
     });
     Route::middleware('permission:consult_admins')->name('admins_')->controller(AdminController::class)->prefix('admins')->group(function(){
         Route::get('', 'index')->name('index');
@@ -106,30 +108,27 @@ Route::middleware('auth')->name('webmaster_')->namespace('App\Http\Controllers\w
         Route::post('create', 'store')->name('store')->middleware('permission:create_admins');
         Route::get('{admin}', 'show')->name('show');
         Route::get('{admin}/edit', 'edit')->name('edit')->middleware('permission:edit_admins');
+        Route::get('{admin}/role/edit', 'edit')->name('role_edit')->middleware('permission:edit_role_admins');
         Route::put('{admin}/edit', 'update')->name('update')->middleware('permission:edit_admins');
+        Route::get('{admin}/payement', 'payement')->name('payement')->middleware('permission:make_payement_admins');
+        Route::post('{admin}/payement', 'payement_store')->name('payement_store')->middleware('permission:make_payement_admins');
         Route::delete('{admin}/destroy', 'destroy')->name('destroy')->middleware('permission:delete_admins');
     });
-    Route::middleware('permission:consult_settings')->name('settings_')->controller(CategoryController::class)->prefix('settings')->group(function(){
+    Route::middleware('permission:consult_settings')->name('settings_')->controller(SettingController::class)->prefix('settings')->group(function(){
         Route::get('', 'index')->name('index');
-        Route::get('create', 'create')->name('create')->middleware('permission:create_settings');
-        Route::post('create', 'store')->name('store')->middleware('permission:create_settings');
-        Route::get('{setting}', 'show')->name('show');
-        Route::get('{setting}/edit', 'edit')->name('edit')->middleware('permission:edit_settings');
-        Route::put('{setting}/edit', 'update')->name('update')->middleware('permission:edit_settings');
-        Route::delete('{setting}/destroy', 'destroy')->name('destroy')->middleware('permission:delete_settings');
+        Route::post('edit', 'edit')->name('edit')->middleware('permission:edit_settings');
+    });
+    Route::name('profile_')->controller(SettingController::class)->prefix('profile')->group(function(){
+        Route::get('', 'profile')->name('index');
+        Route::post('edit', 'update')->name('edit');
+        Route::post('password/edit', 'password_edit')->name('password_edit');
     });
     Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
 });
 
 
 Route::middleware('guest')->name('webmaster_')->prefix("webmaster")->group(function() {
-    Route::get('register', [RegisteredUserController::class, 'create'])->name('register');
-    Route::post('register', [RegisteredUserController::class, 'store']);
     Route::get('login', [AuthenticatedSessionController::class, 'create'])->name('login');
     Route::post('login', [AuthenticatedSessionController::class, 'store']);
-    Route::get('forgot-password', [PasswordResetLinkController::class, 'create'])->name('password.request');
-    Route::post('forgot-password', [PasswordResetLinkController::class, 'store'])->name('password.email');
-    Route::get('reset-password/{token}', [NewPasswordController::class, 'create'])->name('password.reset');
-    Route::post('reset-password', [NewPasswordController::class, 'store'])->name('password.store');
 
 });

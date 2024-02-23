@@ -11,11 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('wilayas', function (Blueprint $table) {
+        Schema::create('settings', function (Blueprint $table) {
             $table->id();
-            $table->string("name");
-            $table->integer("shown_price")->nullable();
-            $table->integer("real_price")->nullable();
+            $table->string("title")->unique();
+            $table->string("content")->nullable();
+            $table->unsignedBigInteger('updated_by');
+            $table->foreign('updated_by')->references('id')->on('users');
             $table->timestamps();
         });
     }
@@ -25,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('wilayas');
+        Schema::dropIfExists('settings');
     }
 };

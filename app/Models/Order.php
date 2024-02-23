@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Order extends Model
 {
     use HasFactory;
-    protected $fillable = ["confirmed_at", "confirmed_by", "canceled_at", "shipped_at"];
+    protected $fillable = ["confirmed_at", "confirmed_by", "canceled_at", "shipped_at", "stopdesk"];
     public function State()
     {
         if($this->archived_at != NULL){
@@ -81,21 +81,22 @@ class Order extends Model
     {
         $data = array(
             'tracking' => $this->tracking,
-            'api_token' => config("webmaster.ecotrack_api")
+            'api_token' => config("settings.ecotrack_api")
         );
-        $apiUrl = config("webmaster.ecotrack_link")."api/v1/get/maj";
+        $apiUrl = config("settings.ecotrack_link")."api/v1/get/maj";
         $apiUrl .= '?' . http_build_query($data);
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $apiUrl);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-            'Authorization: Bearer ' . config("webmaster.ecotrack_api"),
+            'Authorization: Bearer ' . config("settings.ecotrack_api"),
             'Content-Type: application/x-www-form-urlencoded',
         ));
 
         $result = curl_exec($ch);
         $responseData = json_decode($result, true);
         foreach($responseData as $attempt){
+            if(!isset($attempt["created_at"]))continue;
             $oldAttempt = delivery_attempt::where("created_at", $attempt["created_at"])->first();
             if(!$oldAttempt){
                 delivery_attempt::create([
@@ -114,15 +115,15 @@ class Order extends Model
         $data = array(
             'content' => $information,
             'tracking' => $this->tracking,
-            'api_token' => config("webmaster.ecotrack_api")
+            'api_token' => config("settings.ecotrack_api")
         );
-        $apiUrl = config("webmaster.ecotrack_link")."api/v1/add/maj";
+        $apiUrl = config("settings.ecotrack_link")."api/v1/add/maj";
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $apiUrl);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-            'Authorization: Bearer ' . config("webmaster.ecotrack_api"),
+            'Authorization: Bearer ' . config("settings.ecotrack_api"),
             'Content-Type: application/x-www-form-urlencoded',
         ));
         curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
@@ -205,27 +206,28 @@ class Order extends Model
             $response,
         );
         $data = array(
-            'referece' => config("webmaster.id").$this->id,
+            'referece' => config("settings.id").$this->id,
             'nom_client' => $this->name,
             'telephone' => $this->phone,
             'telephone_2' => $this->phone2,
             'adresse' => $this->address,
             'code_wilaya' => $this->wilaya,
             'commune' =>  $this->Commune()->name,
+            'stop_desk' => $this->stopdesk,
             'montant' => $this->total_price,
             'remarque' => implode(' | ', $remarques),
             'produit' => $this->Product()->name,
             'type' => 1,
-            'api_token' => config("webmaster.ecotrack_api")
+            'api_token' => config("settings.ecotrack_api")
         );
 
-        $apiUrl = config("webmaster.ecotrack_link")."api/v1/create/order";
+        $apiUrl = config("settings.ecotrack_link")."api/v1/create/order";
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $apiUrl);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-            'Authorization: Bearer ' . config("webmaster.ecotrack_api"),
+            'Authorization: Bearer ' . config("settings.ecotrack_api"),
             'Content-Type: application/x-www-form-urlencoded',
         ));
         curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
@@ -260,16 +262,16 @@ class Order extends Model
     {
         $data = array(
             "tracking" => $this->tracking,
-            'api_token' => config("webmaster.ecotrack_api")
+            'api_token' => config("settings.ecotrack_api")
         );
 
-        $apiUrl = config("webmaster.ecotrack_link")."api/v1/valid/order";
+        $apiUrl = config("settings.ecotrack_link")."api/v1/valid/order";
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $apiUrl);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-            'Authorization: Bearer ' . config("webmaster.ecotrack_api"),
+            'Authorization: Bearer ' . config("settings.ecotrack_api"),
             'Content-Type: application/x-www-form-urlencoded',
         ));
         curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
@@ -303,15 +305,15 @@ class Order extends Model
     {
         $data = array(
             'tracking' => $this->tracking,
-            'api_token' => config("webmaster.ecotrack_api")
+            'api_token' => config("settings.ecotrack_api")
         );
-        $apiUrl = config("webmaster.ecotrack_link")."api/v1/get/tracking/info";
+        $apiUrl = config("settings.ecotrack_link")."api/v1/get/tracking/info";
         $apiUrl .= '?' . http_build_query($data);
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $apiUrl);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-            'Authorization: Bearer ' . config("webmaster.ecotrack_api"),
+            'Authorization: Bearer ' . config("settings.ecotrack_api"),
             'Content-Type: application/x-www-form-urlencoded',
         ));
 

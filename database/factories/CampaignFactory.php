@@ -33,9 +33,7 @@ class CampaignFactory extends Factory
                 return Product::factory()->create()->id;
             },
 
-            'created_by' => function () {
-                return User::factory()->create()->id;
-            }
+            'created_by' => rand(1, 2)
         ];
     }
 }

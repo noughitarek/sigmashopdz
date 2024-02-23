@@ -9,4 +9,10 @@ class Stock extends Model
 {
     use HasFactory;
     protected $fillable = ["quantity", "total_price", "created_by", "payed_by", "product"];
+    
+    public function Product()
+    {
+        $product = Product::where("id", $this->product)->first();
+        return $product;
+    }
 }

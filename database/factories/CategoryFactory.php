@@ -23,9 +23,7 @@ class CategoryFactory extends Factory
             'slug' => $this->faker->unique()->slug,
             'order' => $order,
             'is_active' => $this->faker->boolean,
-            'created_by' => function () {
-                return User::factory()->create()->id;
-            },
+            'created_by' => rand(1, 2),
             'created_at' => now(),
             'updated_at' => now(),
         ];

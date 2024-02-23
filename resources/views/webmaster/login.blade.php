@@ -1,7 +1,7 @@
 @extends('layouts.base')
 @section('head')
     @yield('subhead')
-	<title>{{config('main.title')}} | Login</title>
+	<title>{{config('settings.title')}} | Login</title>
 	<link rel="preconnect" href="https://fonts.gstatic.com">
 	<link rel="shortcut icon" href="{{asset('/img/icons/icon-48x48.png')}}" />
 	<link href="{{asset('/css/app.css')}}" rel="stylesheet">

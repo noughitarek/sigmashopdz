@@ -6,8 +6,8 @@ use Carbon\Carbon;
 use App\Models\Campaign;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Requests\StorecampaignRequest;
-use App\Http\Requests\UpdatecampaignRequest;
+use App\Http\Requests\StoreCampaignRequest;
+use App\Http\Requests\UpdateCampaignRequest;
 
 class CampaignController extends Controller
 {
@@ -36,7 +36,7 @@ class CampaignController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StorecampaignRequest $request)
+    public function store(StoreCampaignRequest $request)
     {
         $data = array(
             "name" => $request->input("name"),
@@ -76,7 +76,7 @@ class CampaignController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdatecampaignRequest $request, campaign $campaign)
+    public function update(UpdateCampaignRequest $request, campaign $campaign)
     {
         $data = array(
             "name" => $request->input("name"),

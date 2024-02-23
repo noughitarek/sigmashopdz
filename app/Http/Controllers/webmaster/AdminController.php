@@ -3,11 +3,13 @@
 namespace App\Http\Controllers\webmaster;
 
 use App\Models\Admin;
+use App\Models\Payement;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\StoreAdminRequest;
+use App\Http\Requests\UpdateAdminRequest;
 
 class AdminController extends Controller
 {
@@ -21,15 +23,42 @@ class AdminController extends Controller
        $data["can_create"] = Auth::user()->Has_permission("create_admins");
        $data["can_edit"] = Auth::user()->Has_permission("edit_admins");
        $data["can_delete"] = Auth::user()->Has_permission("delete_admins");
+       $data["can_make_payement"] = Auth::user()->Has_permission("make_payement_admins");
        return view("webmaster.admins.index")->with("data", $data);
    }
 
+   /**
+   * Display a listing of the resource.
+   */
+    public function payement(Admin $admin)
+    {
+        $data["title"] = 'Payement from '.$admin->name;
+        $data["admin"] = $admin;
+        $data["admins"] = Admin::all();
+        return view("webmaster.admins.payement")->with("data", $data);
+    }
+
+       /**
+    * Store a newly created resource in storage.
+    */
+    public function payement_store(Request $request, Admin $admin)
+    {
+        $data = array(
+            "amount" => $request->input('amount'), 
+            "payed_by" => $admin->id, 
+            "payed_to" => $request->input('payed_to'), 
+            "description" => $request->input('description')
+        );
+        Payement::create($data);
+        return redirect()->route('webmaster_admins_index')->with('success', 'Paiement created successfully');
+    }
    /**
     * Show the form for creating a new resource.
     */
    public function create()
    {
        $data["title"] = 'Create an admin';
+       $data["can_edit_role"] = Auth::user()->Has_permission("edit_role_admins");
        return view("webmaster.admins.create")->with("data", $data);
    }
 
@@ -45,13 +74,17 @@ class AdminController extends Controller
         }
         $admin = Admin::create([
            'name'  => $request->input('name'),
-           'role'  => $request->input('role'),
            'email'  => $request->input('email'),
-           'password' => Hash::make($request->input('password')),
+           'phone'  => $request->input('phone'),
+           'phone2'  => $request->input('phone2'),
+
+           'role'  => $request->input('role'),
            'permissions'  => implode(",", $request->permissions),
+
+           'password' => Hash::make($request->input('password')),
            'profile_image' => $photoName,
            'is_active'  => $request->input('is_active'),
-           'created_by' => Auth::user()['id'],
+           'created_by' => Auth::user()->id,
        ]);
        return redirect()->route('webmaster_admins_index')->with('success', 'Admin created successfully');
    }
@@ -75,6 +108,7 @@ class AdminController extends Controller
    public function edit(Admin $admin)
    {
        $data["title"] = 'Edit admin '.$admin["id"];
+       $data["can_edit_role"] = Auth::user()->Has_permission("edit_role_admins");
        $data["admin"] = $admin;
        return view("webmaster.admins.edit")->with("data", $data);
    }
@@ -89,16 +123,24 @@ class AdminController extends Controller
             $photoName = time() . '_' . $request->photo->getClientOriginalName();
             $request->photo->move(public_path('img/avatars'), $photoName);
         }
+        $permissions = $admin->permissions;
+        if(Auth::user()->Has_permission("edit_role_admins")){
+            $permissions = implode(",", $request->permissions);
+        }
         $admin->update([
-            'name'  => $request->input('name'),
-            'role'  => $request->input('role'),
-            'email'  => $request->input('email'),
-            'password' => Hash::make($request->input('password')),
-            'permissions'  => implode(",", $request->permissions),
-            'profile_image' => $photoName,
-            'is_active'  => $request->input('is_active'),
-            'created_by' => Auth::user()['id'],
-        ]);
+           'name'  => $request->input('name'),
+           'email'  => $request->input('email'),
+           'phone'  => $request->input('phone'),
+           'phone2'  => $request->input('phone2'),
+
+           'role'  => $request->input('role'),
+           'permissions'  => $permissions,
+
+           'password' => Hash::make($request->input('password')),
+           'profile_image' => $photoName,
+           'is_active'  => $request->input('is_active'),
+           'created_by' => Auth::user()->id,
+       ]);
         return redirect()->route('webmaster_admins_index')->with('success', 'Admin updated successfully');
    }
 

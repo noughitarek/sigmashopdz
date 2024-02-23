@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Wilaya extends Model
 {
     use HasFactory;
-    protected $fillable = ['id', 'name'];
+    protected $fillable = ['id', 'name', 'real_price', 'shown_price'];
 
     
     public function Communes()
