@@ -40,9 +40,9 @@
                     <div class="mb-3 col-6">
                         <label for="position" class="form-label">Position</label>
                         <select class="form-select mb-3" name="position">
-                            <option value="Bottom" >Bottom</option>
-                            <option value="Top">Top</option>
-                            <option value="Both">Both</option>
+                            <option>Header</option>
+                            <option>Footer1</option>
+                            <option>Footer2</option>
                         </select>
                         @error('position')
                         <div class="text-danger">{{ $message }}</div>

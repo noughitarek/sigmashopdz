@@ -74,7 +74,7 @@
               </td>
               <td class="d-xl-table-cell single-line">
                 <p>
-                <i class="align-middle me-2 fas fa-fw fa-ad"></i> <a href="{{route('webmaster_campaigns_show', $order->campaign)}}">{{$order->Campaign()->name}}</a><br>
+                <i class="align-middle me-2 fas fa-fw fa-ad"></i> <a href="{{$order->campaign==null?"":route('webmaster_campaigns_show', $order->campaign)}}">{{$order->campaign==null?"":$order->Campaign()->name}}</a><br>
                   <i class="align-middle me-2 fas fa-fw fa-box"></i> <a href="{{route('webmaster_products_show', $order->product)}}">{{$order->Product()->name}}</a><br>
                   <i class="align-middle me-2 fas fa-fw fa-boxes"></i> {{$order->quantity}}
                 </p>
@@ -213,7 +213,7 @@
               <li>Address: <b>{{$order->address}}</b></li>
               <li>Commune: <b>{{$order->Commune()->name}}</b></li>
               <li>Wilaya: <b>{{$order->Wilaya()->name}}</b></li><br>
-              <li>Campaign: <b>{{$order->Campaign()->name}}</b></li>
+              <li>Campaign: <b>{{$order->campaign==null?"":$order->Campaign()->name}}</b></li>
               <li>Product: <b>{{$order->Product()->name}}</b></li>
               <li>Quantity: <b>{{$order->quantity}}</b></li><br>
               <li>Total price: <b>{{$order->total_price}} DZD</b></li>

@@ -41,9 +41,9 @@
                     <div class="mb-3 col-6">
                         <label for="position" class="form-label">Position</label>
                         <select class="form-select mb-3" name="position">
-                            <option value="Bottom" {{$data['page']->position=='Bottom'?'selected':''}}>Bottom</option>
-                            <option value="Top" {{$data['page']->position=='Top'?'selected':''}}>Top</option>
-                            <option value="Both" {{$data['page']->position=='Both'?'selected':''}}>Both</option>
+                            <option {{$data['page']->position=='Header'?'selected':''}}>Header</option>
+                            <option {{$data['page']->position=='Footer1'?'selected':''}}>Footer1</option>
+                            <option {{$data['page']->position=='Footer2'?'selected':''}}>Footer2</option>
                         </select>
                         @error('position')
                         <div class="text-danger">{{ $message }}</div>

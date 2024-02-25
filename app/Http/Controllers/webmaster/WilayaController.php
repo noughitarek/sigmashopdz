@@ -41,4 +41,10 @@ class WilayaController extends Controller
         }
         return redirect()->route('webmaster_delivery_index')->with('success', 'Delivery prices updated successfully');
     }
+    public function update_api()
+    {
+        Wilaya::Update_API();
+
+        return redirect()->route('webmaster_delivery_index')->with('success', 'Delivery prices updated successfully');
+    }
 }

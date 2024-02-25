@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string("slug")->unique();
 
             $table->string("position");
-            $table->text("content")->unique();
+            $table->text("content")->nullable();
             $table->boolean("is_active")->default(true);
 
             $table->unsignedBigInteger('created_by')->nullable();

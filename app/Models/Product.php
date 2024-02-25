@@ -51,6 +51,10 @@ class Product extends Model
         }
         return $total;
     }
+    public function Reduction()
+    {
+        return (int)(($this->price/($this->old_price))*100);
+    }
     public function Orders():?Collection
     {
         $orders = Order::where("product", $this->id)

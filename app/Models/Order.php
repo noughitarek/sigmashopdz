@@ -12,7 +12,10 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Order extends Model
 {
     use HasFactory;
-    protected $fillable = ["confirmed_at", "confirmed_by", "canceled_at", "shipped_at", "stopdesk"];
+    protected $fillable = ["name", "phone", "phone2", "address", "commune", "wilaya", "quantity", "total_price", "delivery_price", "clean_price", "ip",
+        "stopdesk", "confirmed_at", "confirmed_by", "shipped_at", "shipped_by", "validated_at", "validated_by", 
+        "delivery_at", "delivered_at", "ready_at", "recovered_at", "recovered_by", "back_at", "back_ready_at",
+        "failure_at", "canceled_at", "archived_at", "doubled_at", "product", "campaign"];
     public function State()
     {
         if($this->archived_at != NULL){
