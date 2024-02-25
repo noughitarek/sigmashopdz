@@ -53,7 +53,12 @@ class Product extends Model
     }
     public function Reduction()
     {
-        return (int)(($this->price/($this->old_price))*100);
+        $res = 0;
+        if ($this->old_price != 0) {
+            $res = (int)(($this->price / $this->old_price) * 100);
+        }
+        return $res;
+        
     }
     public function Orders():?Collection
     {

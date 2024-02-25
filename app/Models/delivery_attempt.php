@@ -17,7 +17,7 @@ class delivery_attempt extends Model
             return $user;
         }
         elseif($this->delivery_man != "" || $this->station != ""){
-            return new User(['name' => $this->delivery_man.':'.$this->station]);
+            return new User(['name' => $this->delivery_man]);
         }
         return new User(['name'=> 'n/a']);
     }

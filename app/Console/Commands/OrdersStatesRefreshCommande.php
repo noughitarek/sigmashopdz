@@ -31,10 +31,5 @@ class OrdersStatesRefreshCommande extends Command
             $order->Update_state();
             $order->Get_information();
         }
-        $orders = Order::Delivery();
-        foreach($orders as $order){
-            $order->Update_state();
-            $order->Get_information();
-        }
     }
 }

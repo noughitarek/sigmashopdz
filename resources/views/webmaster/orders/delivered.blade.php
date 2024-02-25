@@ -53,8 +53,8 @@
               </td>
               <td class="d-xl-table-cell single-line">
                 <p>
-                <i class="align-middle me-2 fas fa-fw fa-ad"></i> <a href="{{route('webmaster_campaigns_show', $order->campaign)}}">{{$order->Campaign()->name}}</a><br>
-                  <i class="align-middle me-2 fas fa-fw fa-box"></i> <a href="{{route('webmaster_products_show', $order->product)}}">{{$order->Product()->name}}</a><br>
+                <i class="align-middle me-2 fas fa-fw fa-ad"></i> <a href="{{$order->campaign!=null?route('webmaster_campaigns_show', $order->campaign):'#'}}">{{$order->Campaign()->name}}</a><br>
+                  <i class="align-middle me-2 fas fa-fw fa-box"></i> <a href="{{$order->product!=null?route('webmaster_products_show', $order->product):'#'}}">{{$order->Product()->name}}</a><br>
                   <i class="align-middle me-2 fas fa-fw fa-boxes"></i> {{$order->quantity}}
                 </p>
               </td>
