@@ -74,7 +74,7 @@ class User extends Authenticatable
     public function Amount():float
     {
         $payements = Payement::where("payed_by", $this->id)->orWhere('payed_to', $this->id)->get();
-        $orders = Order::where("recovered_by", $this->id)->get();
+        $orders = Order::where("recovered_by", $this->id)->where("recovered_at", "!=", null)->get();
         $amount = 0;
         foreach($payements as $payement){
             if($payement->payed_by == $this->id){

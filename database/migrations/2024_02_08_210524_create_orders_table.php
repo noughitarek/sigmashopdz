@@ -58,7 +58,7 @@ return new class extends Migration
             $table->foreign('archived_by')->references('id')->on('users');
             $table->timestamp('doubled_at')->nullable();
 
-            $table->unsignedBigInteger('product');
+            $table->unsignedBigInteger('product')->nullable();
             $table->foreign('product')->references('id')->on('products');
             $table->unsignedBigInteger('campaign')->nullable();
             $table->foreign('campaign')->references('id')->on('campaigns');

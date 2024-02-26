@@ -22,10 +22,18 @@
                 <del style="color: red;">{{$data['product']->old_price}} DZD</del>
                 <span>{{$data['product']->price}} DZD</span>
             </h4>
+            
+			<div class="container">
+				<h4 class="text-content">
+                    متبقي للعرض
+                    <div style="color: red;" id="timer">00:00:00</div>
+                </h4>
+			</div>
         </center>
         <section id="form-details">
 			<form id="orderForm" action="{{route('main_products_order', $data['product']->slug)}}" method="POST">
                 @csrf
+                
 			    <h2 id="order">للطلب</h2>
                 <div class="container" style="width: 100%;">
                     <div class="label-container">
@@ -171,7 +179,7 @@
 </script>
 <script>
     const communes_names = {@foreach ($data['communes'] as $commune)"{{$commune->id}}":{'name': "{!!$commune->name!!}", 'wilaya': "{{$commune->Wilaya()->id}}"}, @endforeach}
-    const deliveryPrices = {@foreach ($data['wilayas'] as $wilaya){{$wilaya->id}}:{{$wilaya->shown_price}}, @endforeach}
+    const deliveryPrices = {@foreach ($data['wilayas'] as $wilaya){{$wilaya->id}}:{{$wilaya->shown_price ?? '-1'}}, @endforeach}
 
 	const submitButton = document.getElementById("submitButton");
 	const name = document.getElementById("name");
