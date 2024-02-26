@@ -80,6 +80,27 @@ class Order extends Model
         if($user)return $user;
         return new User(['name'=>'n/a']);
     }
+    public static function Send_API($url, $data, $type="POST")
+    {
+        if($type == "GET"){
+            $url .= '?' . http_build_query($data);
+        }
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        if($type == "POST"){
+            
+            curl_setopt($ch, CURLOPT_POST, 1);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
+        }
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+            'Authorization: Bearer ' . config("settings.ecotrack_api"),
+            'Content-Type: application/x-www-form-urlencoded',
+        ));
+        $result = curl_exec($ch);
+        $responseData = json_decode($result, true);
+
+    }
     public function Get_information()
     {
         $data = array(
