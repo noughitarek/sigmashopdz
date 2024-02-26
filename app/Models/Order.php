@@ -12,10 +12,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Order extends Model
 {
     use HasFactory;
-    protected $fillable = ["name", "phone", "phone2", "address", "commune", "wilaya", "quantity", "total_price", "delivery_price", "clean_price", "ip",
+    protected $fillable = ["name", "intern_tracking", "phone", "phone2", "address", "commune", "wilaya", "quantity", "total_price", "delivery_price", "clean_price", "ip",
         "stopdesk", "confirmed_at", "confirmed_by", "shipped_at", "shipped_by", "validated_at", "validated_by", "tracking",
         "delivery_at", "delivered_at", "ready_at", "recovered_at", "recovered_by", "back_at", "back_ready_at",
         "failure_at", "canceled_at", "archived_at", "doubled_at", "product", "campaign", "created_at"];
+    
     public function State()
     {
         if($this->archived_at != NULL){
@@ -56,171 +57,82 @@ class Order extends Model
             return "Pending";
         }
     }
+
+    public function Transactions()
+    {
+        $transactions = [];
+        $transactions[$this->created_at->format('Y-m-d H:i:s')] = "تم إستقبال الطلب";
+        
+        if($this->confirmed_at!=null){
+            $transactions[$this->confirmed_at] = "تم تأكيد الطلب";
+        }
+        if($this->shipped_at!=null){
+            $transactions[$this->shipped_at] = "تم شحن الطرد";
+        }
+        if($this->validated_at!=null){
+            $transactions[$this->validated_at] = "تحويل الطرد لمركز الطرود لولاية الجزائر";
+        }
+        if($this->delivery_at!=null && $this->Wilaya()->id!=16){
+            $transactions[$this->delivery_at] = "تحويل الطرد لمركز الطرود لولاية ".$this->Wilaya()->name_ar;
+        }
+        if($this->delivery_at!=null){
+            $transactions[$this->delivery_at." "] = "شحن الطرد ".($this->stopdesk?"لمكتب التوصيل":"لمنزل الزبون");
+        }
+        if($this->delivered_at!=null){
+            $transactions[$this->delivered_at] = "وصول الطرد للزبون";
+        }
+        if($this->back_at!=null){
+            $transactions[$this->back_at] = "إرجاع الطرد";
+        }
+        if($this->canceled_at!=null){
+            $transactions[$this->canceled_at] = "إلغاء الطلب";
+        }
+        if($this->failure!=null){
+            $transactions[$this->failure] = "فشل العملية";
+        }
+        uksort($transactions, array($this, 'compareDates'));
+        return $transactions;
+    }
+    public function compareDates($a, $b)
+    {
+        $dateA = strtotime($a);
+        $dateB = strtotime($b);
+    
+        if ($dateA == $dateB) {
+            return 0;
+        }
+    
+        return ($dateA < $dateB) ? -1 : 1;
+    }
     public function Confirmed_by():User
     {
         $user = User::where("id", $this->confirmed_by)->first();
         if($user)return $user;
         return new User(['name'=>'n/a']);
     }
+
     public function Shipped_by():User
     {
         $user = User::where("id", $this->shipped_by)->first();
         if($user)return $user;
         return new User(['name'=>'n/a']);
     }
+
     public function Recovered_by():User
     {
         $user = User::where("id", $this->recovered_by)->first();
         if($user)return $user;
         return new User(['name'=>'n/a']);
     }
+
     public function Validated_by():User
     {
         $user = User::where("id", $this->validated_by)->first();
         if($user)return $user;
         return new User(['name'=>'n/a']);
     }
-    public static function Send_API($url, $data, $type="POST")
-    {
-        if($type == "GET"){
-            $url .= '?' . http_build_query($data);
-        }
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        if($type == "POST"){
-            
-            curl_setopt($ch, CURLOPT_POST, 1);
-            curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
-        }
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-            'Authorization: Bearer ' . config("settings.ecotrack_api"),
-            'Content-Type: application/x-www-form-urlencoded',
-        ));
-        $result = curl_exec($ch);
-        $responseData = json_decode($result, true);
-
-    }
-    public function Get_information()
-    {
-        $data = array(
-            'tracking' => $this->tracking,
-            'api_token' => config("settings.ecotrack_api")
-        );
-        $apiUrl = config("settings.ecotrack_link")."api/v1/get/maj";
-        $apiUrl .= '?' . http_build_query($data);
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $apiUrl);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-            'Authorization: Bearer ' . config("settings.ecotrack_api"),
-            'Content-Type: application/x-www-form-urlencoded',
-        ));
-
-        $result = curl_exec($ch);
-        $responseData = json_decode($result, true);
-        foreach($responseData as $attempt){
-            if(!isset($attempt["created_at"]))continue;
-            $oldAttempt = delivery_attempt::where("created_at", $attempt["created_at"])->first();
-            if(!$oldAttempt){
-                delivery_attempt::create([
-                    "response" => $attempt["remarque"],
-                    "order" =>  $this->id,
-                    "delivery_man" => $attempt["livreur"], 
-                    "station" => $attempt["station"],
-                    "created_at" => $attempt["created_at"]
-                ]);
-            }
-        }
-        curl_close($ch);
-    }
-    public function Add_information($information)
-    {
-        $data = array(
-            'content' => $information,
-            'tracking' => $this->tracking,
-            'api_token' => config("settings.ecotrack_api")
-        );
-        $apiUrl = config("settings.ecotrack_link")."api/v1/add/maj";
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $apiUrl);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_POST, 1);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-            'Authorization: Bearer ' . config("settings.ecotrack_api"),
-            'Content-Type: application/x-www-form-urlencoded',
-        ));
-        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
-        $response = curl_exec($ch);
-        if (curl_errno($ch))
-        {
-            return false;
-        }
-        curl_close($ch);
-        if ($response)
-        {
-            $responseData = json_decode($response, true);
-            if ($responseData && isset($responseData['success']) && $responseData['success'])
-            {
-                delivery_attempt::create([
-                    "response" => $information,
-                    "order" =>  $this->id,
-                    "delivery_man" => null, 
-                    "station" => null,
-                    "attempt_by" => Auth::user()->id,
-                ]);
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-        else
-        {
-            return false;
-        }
-    }
-    public function Delivery_attempts()
-    {
-        $attempts = delivery_attempt::where("order", $this->id)->orderBy('created_at', 'desc')->get();
-        if($attempts)return $attempts;
-        return false;
-    }
-    public function Confirmation_attempts()
-    {
-        $attempts = confirmation_attempt::where("order", $this->id)->get();
-        if($attempts)return $attempts;
-        return false;
-    }
-    public function Product()
-    {
-        $product = Product::where("id", $this->product)->first();
-        if($product)return $product;
-        return new Product([
-            "name" => "n/a"
-        ]);
-    }
-    public function Campaign()
-    {
-        $campaign = Campaign::where("id", $this->campaign)->first();
-        if($campaign)return $campaign;
-        return new Campaign([
-            "name" => "n/a"
-        ]);
-    }
-    public function Wilaya()
-    {
-        $wilaya = Wilaya::where("id", $this->wilaya)->first();
-        if($wilaya)return $wilaya;
-        return false;
-    }
-    public function Commune()
-    {
-        $commune = Commune::where("id", $this->commune)->first();
-        if($commune)return $commune;
-        return false;
-    }
+    
+    
     public function Add_to_ecotrack()
     {
         $response = ""; 
@@ -234,11 +146,13 @@ class Order extends Model
             $response,
         );
         $data = array(
-            'referece' => config("settings.id").$this->id,
+            'referece' => $this->intern_tracking,
             'nom_client' => $this->name,
             'telephone' => $this->phone,
             'telephone_2' => $this->phone2,
             'adresse' => $this->address,
+            'fragile' => true,
+            'quantity' => 5,
             'code_wilaya' => $this->wilaya,
             'commune' =>  $this->Commune()->name,
             'stop_desk' => $this->stopdesk,
@@ -248,87 +162,43 @@ class Order extends Model
             'type' => 1,
             'api_token' => config("settings.ecotrack_api")
         );
-
         $apiUrl = config("settings.ecotrack_link")."api/v1/create/order";
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $apiUrl);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_POST, 1);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-            'Authorization: Bearer ' . config("settings.ecotrack_api"),
-            'Content-Type: application/x-www-form-urlencoded',
-        ));
-        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
-        $response = curl_exec($ch);
-        if (curl_errno($ch))
+        $resultData = self::Send_API($apiUrl, $data, "POST");
+        if ($resultData && isset($resultData['tracking']))
         {
-            return false;
-        }
-        curl_close($ch);
-        if ($response)
-        {
-            $responseData = json_decode($response, true);
-            if ($responseData && isset($responseData['tracking']))
-            {
-                $this->tracking = $responseData['tracking'];
-                $this->shipped_at = now();
-                $this->shipped_by = Auth::user()->id;
-                $this->save();
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            $this->tracking = $resultData['tracking'];
+            $this->shipped_at = now();
+            $this->shipped_by = Auth::user()->id;
+            $this->save();
+            return true;
         }
         else
         {
             return false;
         }
     }
+
     public function Validate_order()
     {
         $data = array(
             "tracking" => $this->tracking,
             'api_token' => config("settings.ecotrack_api")
         );
-
         $apiUrl = config("settings.ecotrack_link")."api/v1/valid/order";
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $apiUrl);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_POST, 1);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-            'Authorization: Bearer ' . config("settings.ecotrack_api"),
-            'Content-Type: application/x-www-form-urlencoded',
-        ));
-        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
-        $response = curl_exec($ch);
-        if (curl_errno($ch))
+
+        if ($resultData && isset($resultData['success']) && $resultData['success'])
         {
-            return false;
-        }
-        curl_close($ch);
-        if ($response)
-        {
-            $responseData = json_decode($response, true);
-            if ($responseData && isset($responseData['success']) && $responseData['success'])
-            {
-                $this->validated_at = now();
-                $this->validated_by = Auth::user()->id;
-                $this->save();
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            $this->validated_at = now();
+            $this->validated_by = Auth::user()->id;
+            $this->save();
+            return true;
         }
         else
         {
             return false;
         }
     }
+
     public function Update_state()
     {
         $data = array(
@@ -337,24 +207,9 @@ class Order extends Model
             'api_token' => config("settings.ecotrack_api")
         );
         $apiUrl = config("settings.ecotrack_link")."api/v1/get/orders/status";
-        $apiUrl .= '?' . http_build_query($data);
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $apiUrl);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-            'Authorization: Bearer ' . config("settings.ecotrack_api"),
-            'Content-Type: application/x-www-form-urlencoded',
-        ));
-        $result = curl_exec($ch);
-        $responseData = json_decode($result, true);
-        if(isset($responseData['message']) && $responseData['message'] == "Too Many Attempts.")
-        {
-            echo 'sleeping';
-            sleep(10);
-            $this->Update_state();
-        }
-        if(isset($responseData["data"])){
-            foreach($responseData["data"] as $token=>$activity){
+        $resultData = self::Send_API($apiUrl, $data, "GET");
+        if(isset($resultData["data"])){
+            foreach($resultData["data"] as $token=>$activity){
                 $s = $activity['status'];
                 if($this->shipped_at == null && ($s == "prete_a_expedier")){
                     $this->shipped_at = now();
@@ -375,10 +230,12 @@ class Order extends Model
                 }
                 $this->save();
             }
+        }else{
+            return false;
         }
 
     }
-
+    
     public function Update_state2()
     {
         $data = array(
@@ -386,21 +243,9 @@ class Order extends Model
             'api_token' => config("settings.ecotrack_api")
         );
         $apiUrl = config("settings.ecotrack_link")."api/v1/get/tracking/info";
-        $apiUrl .= '?' . http_build_query($data);
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $apiUrl);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-            'Authorization: Bearer ' . config("settings.ecotrack_api"),
-            'Content-Type: application/x-www-form-urlencoded',
-        ));
-
-        $result = curl_exec($ch);
-        $responseData = json_decode($result, true);
-        print_r($responseData);
-        exit;
-        if(isset($responseData["activity"])){
-            foreach($responseData["activity"] as $activity){
+        $resultData = self::Send_API($apiUrl, $data, "GET");
+        if(isset($resultData["activity"])){
+            foreach($resultData["activity"] as $activity){
                 if($activity['status']== "order_information_received_by_carrier" && $this->shipped_at == null){
                     $this->shipped_at = $activity['date']." ".$activity['time'];
                     $this->save();
@@ -433,18 +278,125 @@ class Order extends Model
         }
         curl_close($ch);
     }
+
+    public function Get_information()
+    {
+        $data = array(
+            'tracking' => $this->tracking,
+            'api_token' => config("settings.ecotrack_api")
+        );
+        $apiUrl = config("settings.ecotrack_link")."api/v1/get/maj";
+        $resultData = self::Send_API($apiUrl, $data, "GET");
+
+        foreach($resultData as $attempt){
+            if(!isset($attempt["created_at"]))continue;
+            $oldAttempt = delivery_attempt::where("created_at", $attempt["created_at"])->first();
+            if(!$oldAttempt){
+                delivery_attempt::create([
+                    "response" => $attempt["remarque"],
+                    "order" =>  $this->id,
+                    "delivery_man" => $attempt["livreur"], 
+                    "station" => $attempt["station"],
+                    "created_at" => $attempt["created_at"]
+                ]);
+            }
+        }
+    }
+
+    public function Add_information($information)
+    {
+        $data = array(
+            'content' => $information,
+            'tracking' => $this->tracking,
+            'api_token' => config("settings.ecotrack_api")
+        );
+        $apiUrl = config("settings.ecotrack_link")."api/v1/add/maj";
+        $resultData = self::Send_API($apiUrl, $data, "POST");
+        
+        if ($resultData && isset($resultData['success']) && $resultData['success'])
+        {
+            delivery_attempt::create([
+                "response" => $information,
+                "order" =>  $this->id,
+                "delivery_man" => null, 
+                "station" => null,
+                "attempt_by" => Auth::user()->id,
+            ]);
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    public function Delivery_attempts()
+    {
+        $attempts = delivery_attempt::where("order", $this->id)->orderBy('created_at', 'desc')->get();
+        if($attempts)return $attempts;
+        return false;
+    }
+
+    public function Confirmation_attempts()
+    {
+        $attempts = confirmation_attempt::where("order", $this->id)->get();
+        if($attempts)return $attempts;
+        return false;
+    }
+
+    public function Product()
+    {
+        $product = Product::where("id", $this->product)->first();
+        if($product)return $product;
+        return new Product([
+            "name" => "n/a"
+        ]);
+    }
+
+    public function Campaign()
+    {
+        $campaign = Campaign::where("id", $this->campaign)->first();
+        if($campaign)return $campaign;
+        return new Campaign([
+            "name" => "n/a"
+        ]);
+    }
+
+    public function Wilaya()
+    {
+        $wilaya = Wilaya::where("id", $this->wilaya)->first();
+        if($wilaya)return $wilaya;
+        return false;
+    }
+
+    public function Commune()
+    {
+        $commune = Commune::where("id", $this->commune)->first();
+        if($commune)return $commune;
+        return false;
+    }
+
     public function Status()
     {
         $status = [];
         if($this->confirmed_at != null){
             $status[] = ["success", "Confirmed"];
+        }else{
+            $status[] = ["danger", "Not confirmed"];
         }
+        
         if($this->shipped_at != null){
             $status[] = ["success", "Shipped"];
+        }else{
+            $status[] = ["danger", "Not shipped"];
         }
+        
         if($this->validated_at != null){
             $status[] = ["success", "Validated"];
+        }else{
+            $status[] = ["danger", "Not validated"];
         }
+
         if($this->delivery_at != null){
             $status[] = ["success", "Delivery"];
         }
@@ -480,8 +432,14 @@ class Order extends Model
     
     public static function Save_orders()
     {
+
         $orders = self::Get_orders();
         foreach($orders as $order){
+        
+            $timestamp = now()->timestamp;
+            $randomNumber = str_pad(mt_rand(1, 9999), 4, '0', STR_PAD_LEFT);
+            $uniqueNumber = $timestamp . $randomNumber;
+            $intern_tracking = str_pad($uniqueNumber, 14, '0', STR_PAD_RIGHT);
             $data = array(
                 "name" => $order['client'],
                 "phone" => $order['phone'],
@@ -490,7 +448,7 @@ class Order extends Model
                 "commune" => Commune::where("name", $order['commune'])->first()->id,
                 "wilaya" => $order['wilaya_id'],
                 "quantity" => 0,
-    
+                "intern_tracking" => config("settings.id").$intern_tracking,
                 "total_price" => $order['montant'],
                 "delivery_price" => $order['tarif_prestation'],
                 "clean_price" => $order['montant']-$order['tarif_prestation'],
@@ -499,41 +457,6 @@ class Order extends Model
                 "ip" => "n/a",
             );
             Order::create($data);
-        }
-    }
-    public static function Get_orders($page=1)
-    {
-        $data = array(
-            'api_token' => config("settings.ecotrack_api"),
-            'start_date' => '2023-01-01',
-            "page" => $page,
-        );
-        $apiUrl = config("settings.ecotrack_link")."api/v1/get/orders";
-        $apiUrl .= '?' . http_build_query($data);
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $apiUrl);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-            'Authorization: Bearer ' . config("settings.ecotrack_api"),
-            'Content-Type: application/x-www-form-urlencoded',
-        ));
-        $result = curl_exec($ch);
-        $responseData = json_decode($result, true);
-        if(isset($responseData['message']) && $responseData['message'] == "Too Many Attempts.")
-        {
-            echo 'sleeping';
-            sleep(10);
-            return self::Get_orders($page);
-        }
-        else
-        {
-            if(count($responseData["data"])>0){
-                return array_merge(self::Get_orders($page+1), $responseData["data"]);
-            }
-            else
-            {
-                return [];
-            };
         }
     }
 
@@ -552,9 +475,10 @@ class Order extends Model
             "canceled_at" => NULL,
             "archived_at" => NULL,
             "doubled_at" => NULL,
-        ])->orderBy('created_at', 'desc')->paginate(25)->onEachSide(2);
+        ])->orderBy('created_at', 'desc')->get();
         
     }
+
     public static function Shipped()
     {
         return Order::where(function ($query) {
@@ -573,10 +497,9 @@ class Order extends Model
             ->where('archived_at', null)
             ->where('doubled_at', null);
         })
-        ->orderBy('created_at', 'desc')
-        ->paginate(25)
-        ->onEachSide(2);
+        ->orderBy('created_at', 'desc')->get();
     }
+
     public static function Delivered()
     {
         return Order::where(function ($query) {
@@ -592,10 +515,9 @@ class Order extends Model
             ->where('archived_at', null)
             ->where('doubled_at', null);
         })
-        ->orderBy('created_at', 'desc')
-        ->paginate(25)
-        ->onEachSide(2);
+        ->orderBy('created_at', 'desc')->get();
     }
+
     public static function Back()
     {
         return Order::where(function ($query) {
@@ -608,10 +530,9 @@ class Order extends Model
             ->where('archived_at', null)
             ->where('doubled_at', null);
         })
-        ->orderBy('created_at', 'desc')
-        ->paginate(25)
-        ->onEachSide(2);
+        ->orderBy('created_at', 'desc')->get();
     }
+
     public static function Archived()
     {
         return Order::where(function ($query) {
@@ -620,9 +541,71 @@ class Order extends Model
                   ->orWhere('archived_at', '<>', null)
                   ->orWhere('doubled_at', '<>', null);
         })
-        ->orderBy('created_at', 'desc')
-        ->paginate(25)
-        ->onEachSide(2);
+        ->orderBy('created_at', 'desc')->get();
+    }
+    
+    public static function Get_orders($page=1)
+    {
+        $data = array(
+            'api_token' => config("settings.ecotrack_api"),
+            'start_date' => '2024-02-15',
+            "page" => $page,
+        );
+        $apiUrl = config("settings.ecotrack_link")."api/v1/get/orders";
+        $resultData = self::Send_API($apiUrl, $data, "GET");
+        if(count($resultData["data"])>0){
+            return array_merge(self::Get_orders($page+1), $resultData["data"]);
+        }else{
+            return [];
+        }
     }
 
+    public static function Send_API($url, $data, $type="POST")
+    {
+        if($type == "GET"){
+            $url .= '?' . http_build_query($data);
+        }
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        if($type == "POST"){
+            
+            curl_setopt($ch, CURLOPT_POST, 1);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
+        }
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+            'Authorization: Bearer ' . config("settings.ecotrack_api"),
+            'Content-Type: application/x-www-form-urlencoded',
+        ));
+        $result = curl_exec($ch);
+        
+        if (curl_errno($ch))
+        {
+            echo 'Error: Can\'t send api request\n';
+            sleep(10);
+            return Send_API($url, $data, $type);
+        }
+        elseif($result)
+        {
+            $resultData = json_decode($result, true);
+            curl_close($ch);
+            if(isset($resultData['message']) && $resultData['message'] == "Too Many Attempts.")
+            {
+                echo 'Error: Too Many Attempts\n';
+                sleep(10);
+                return Send_API($url, $data, $type);
+            }
+            else
+            {
+                return $resultData;
+            }
+        }
+        else
+        {
+            echo 'Error: Can\'t send api request 2\n';
+            sleep(10);
+            return Send_API($url, $data, $type);
+        }
+
+    }
 }

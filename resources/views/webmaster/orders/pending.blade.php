@@ -10,8 +10,9 @@
   </div>
   <div class="col-12 col-lg-12 col-xxl-12 d-flex">
     <div class="card flex-fill">
-      <div class="table-responsive">
-        <table class="table table-hover my-0" id="datatables-orders">
+      <div class="card-header"></div>
+      <div class="card-body">
+        <table class="table table-hover my-0" id="orders_table">
           <thead>
             <tr>
               <th class="d-xl-table-cell">Order</th>
@@ -90,7 +91,7 @@
                 <div class="border">
                   @foreach($order->Confirmation_attempts() as $attempt)
                   <div class="m-1 m-1" title="{{$attempt->created_at}}" data-bs-toggle="tooltip" data-bs-placement="left">
-                    <span class="px-1 py-1 badge bg-primary w-full">
+                    <span class="px-1 py-1 badge bg-{{$attempt->state=='confirmed'?'success':'danger'}} primary w-full">
                       <img src="{{$attempt->Attempt_by()->Profile_image()}}" class="feather img-fluid rounded">
                       {{$attempt->Attempt_by()->name}}
                     </span> 
@@ -110,8 +111,6 @@
           </tbody>
         </table>
 		</div>
-    
-  {{ $data["orders"]->links('components.pagination') }}
   </div>
 </div>
 
@@ -278,5 +277,14 @@
     });
   });
   @endforeach
+</script>
+<script src="{{asset('js/datatables.js')}}"></script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+	$("#orders_table").DataTable({
+		responsive: true
+	});
+});
 </script>
 @endsection

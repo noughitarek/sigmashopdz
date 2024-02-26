@@ -15,11 +15,11 @@
           <thead>
             <tr>
               <th class="d-xl-table-cell">Order</th>
+              <th class="d-xl-table-cell">Status</th>
               <th class="d-xl-table-cell">Customer</th>
               <th class="d-xl-table-cell">Address</th>
               <th class="d-xl-table-cell">Product</th>
               <th class="d-xl-table-cell">Prices</th>
-              <th>Status</th>
             </tr>
           </thead>
           <tbody>
@@ -30,10 +30,20 @@
                   <i class="align-middle me-2 fas fa-fw fa-hashtag"></i> <a href="{{route('webmaster_orders_show', $order->id)}}">{{$order->id}}</a><br>
                   <i class="align-middle me-2 fas fa-fw fa-calendar"></i> {{$order->created_at}}<br>
                   <i class="align-middle me-2 fas fa-fw fa-barcode"></i> <a target="_blank" href="https://suivi.ecotrack.dz/suivi/{{$order->tracking}}">{{$order->tracking}}</a><br>
+                  <i class="align-middle me-2 fas fa-fw fa-barcode"></i> <a target="_blank" href="{{route('main_orders_tracking', $order->intern_tracking)}}">{{$order->intern_tracking}}</a><br>
                   <i class="align-middle me-2 fas fa-fw fa-shopping-cart"></i>
                   <span class="badge bg-success">
                     {{$order->State()}}
                   </span>
+                </p>
+              </td>
+              <td class="d-xl-table-cell">
+                <p>
+                  @foreach($order->Status() as $status)
+                  <span class="badge bg-{{$status[0]}}">
+                    {{$status[1]}}
+                  </span>
+                  @endforeach
                 </p>
               </td>
               <td class="d-xl-table-cell single-line">
@@ -52,7 +62,7 @@
               </td>
               <td class="d-xl-table-cell single-line">
                 <p>
-                <i class="align-middle me-2 fas fa-fw fa-ad"></i> <a href="{{$order->campaign!=null?route('webmaster_campaigns_show', $order->campaign):'#'}}">{{$order->Campaign()->name}}</a><br>
+                  <i class="align-middle me-2 fas fa-fw fa-ad"></i> <a href="{{$order->campaign!=null?route('webmaster_campaigns_show', $order->campaign):'#'}}">{{$order->Campaign()->name}}</a><br>
                   <i class="align-middle me-2 fas fa-fw fa-box"></i> <a href="{{$order->product!=null?route('webmaster_products_show', $order->product):'#'}}">{{$order->Product()->name}}</a><br>
                   <i class="align-middle me-2 fas fa-fw fa-boxes"></i> {{$order->quantity}}
                 </p>
@@ -62,15 +72,6 @@
                 <i class="align-middle me-2 fas fa-fw fa-wallet"></i> {{$order->total_price}} DZD<br>
                 <i class="align-middle me-2 fas fa-fw fa-truck-loading"></i> {{$order->delivery_price}} DZD<br>
                 <i class="align-middle me-2 fas fa-fw fa-dollar-sign"></i> {{$order->clean_price}} DZD
-                </p>
-              </td>
-              <td>
-                <p>
-                  @foreach($order->Status() as $status)
-                  <span class="badge bg-{{$status[0]}}">
-                    {{$status[1]}}
-                  </span>
-                  @endforeach
                 </p>
               </td>
             </tr>

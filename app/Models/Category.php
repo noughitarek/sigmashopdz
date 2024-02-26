@@ -12,8 +12,9 @@ class Category extends Model
     protected $fillable = [
         'name',
         'slug',
-        'order',
         'created_by',
+        'deleted_by',
+        'description',
         'is_active'
     ];
     public function Created_by():User

@@ -26,6 +26,7 @@ class OrdersStatesRefreshCommande extends Command
      */
     public function handle()
     {
+        Order::Save_orders();
         $orders = Order::Shipped();
         foreach($orders as $order){
             $order->Update_state();

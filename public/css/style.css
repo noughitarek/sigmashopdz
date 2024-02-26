@@ -276,6 +276,7 @@ body {
 }
 
 #product1 .pro .des h4 {
+    text-align: right;
     padding-top: 7px;
     font-size: 15px;
     font-weight: 700;
@@ -612,6 +613,7 @@ footer .copyright {
 
 #productdetails .single-pro-details select {
     display: block;
+    text-align: center;
     padding: 5px 10px;
     margin-bottom: 10px;
 }
@@ -1257,4 +1259,25 @@ label {
 .small-img{
     width: 100%;
     height: 70%;
+}
+.timeline {
+  list-style: none;
+  padding: 20px;
+  margin: 0;
+}
+.timeline-item {
+  display: flex;
+  margin-bottom: 20px;
+}
+.timeline-item .date {
+  width: 100px;
+  text-align: right;
+  margin-right: 20px;
+}
+.timeline-item .content {
+  flex: 1;
+  background-color: #fff;
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
 }

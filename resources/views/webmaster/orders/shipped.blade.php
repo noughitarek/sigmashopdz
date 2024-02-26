@@ -108,7 +108,6 @@
           </tbody>
         </table>
 		</div>
-  {{ $data["orders"]->links('components.pagination') }}
   </div>
 </div>
 @if($data['can_add_information'])
@@ -158,4 +157,16 @@
   </div>
   @endforeach
 @endif
+@endsection
+@section("scripts")
+
+<script src="{{asset('js/datatables.js')}}"></script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+	$("#orders_table").DataTable({
+		responsive: true
+	});
+});
+</script>
 @endsection

@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('wilayas', function (Blueprint $table) {
             $table->id();
             $table->string("name");
+            $table->string("name_ar");
             $table->integer("shown_price")->nullable();
             $table->integer("real_price")->nullable();
             $table->timestamps();

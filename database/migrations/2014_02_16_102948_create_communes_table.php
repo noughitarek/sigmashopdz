@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('communes', function (Blueprint $table) {
             $table->id();
             $table->string("name");
+            $table->string("name_ar");
             $table->unsignedBigInteger('wilaya')->nullable();
             $table->foreign('wilaya')->references('id')->on('wilayas');
             $table->timestamps();

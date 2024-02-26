@@ -33,21 +33,12 @@
                         <h3 id="slug" class="mx-4">{{ $data['category']->slug }}</h3>
                     </div>
                     <div class="mb-3">
-                        <label for="order" class="form-label">Order: </label>
-                        <h3 id="order" class="mx-4">{{ $data['category']->order }}</h3>
+                        <label for="is_active" class="form-label">Active: </label>
+                        <h3 id="is_active" class="mx-4">{{ $data['category']->is_active?"True":"False" }}</h3>
                     </div>
-                    <div class="mb-3">
-                        <label for="order" class="form-label">Active: </label>
-                        <h3 id="order" class="mx-4">{{ $data['category']->is_active?"True":"False" }}</h3>
-                    </div>
-                    <div class="mb-3">
-                        <label for="order" class="form-label">Products: </label>
-                        <h3 id="order" class="mx-4">{{ $data['category']->is_active?"True":"False" }}</h3>
-                    </div>
-                    
                     <div class="mb-3">
                         <label for="category" class="form-label">Products: </label>
-                        <h3 id="order" class="mx-4">
+                        <h3 id="products" class="mx-4">
                             @foreach($data["category"]->Products() as $product)
                             <a href="{{route('webmaster_products_show', $product->id)}}">
                                 {{ $product->name }}
@@ -56,8 +47,8 @@
                         </h3>
                     </div>
                     <div class="mb-3">
-                        <label for="order" class="form-label">Created by: </label>
-                        <h3 id="order" class="mx-4">{{ $data['category']->Created_by()->name }} | {{ $data['category']->Created_by()->role }}</h3>
+                        <label for="created_by" class="form-label">Created by: </label>
+                        <h3 id="created_by" class="mx-4">{{ $data['category']->Created_by()->name }} | {{ $data['category']->Created_by()->role }}</h3>
                     </div>
                     <div class="mb-3">
                         <label for="created_at" class="form-label">Created at: </label>

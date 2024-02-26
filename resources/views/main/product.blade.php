@@ -14,7 +14,7 @@
     <div class="single-pro-details">
         <h6 id="product_navigation" >
             <a href="{{route('main_index')}}">الصفحة الرئيسية</a> /
-            <a href="{{route('main_categories_show', $data['product']->Category()->slug)}}">{{$data['product']->Category()->name}}</a>
+            {{$data['product']->Category()->name}}
         </h6>
         <h4 id="product_name">{{$data['product']->name}}</h4>
         <center dir="ltr">
@@ -72,7 +72,7 @@
                             @if($wilaya->shown_price == null)
                                 @continue
                             @endif
-                            <option value="{{$wilaya->id}}">{{$wilaya->id.'. '.$wilaya->name}}</option>
+                            <option value="{{$wilaya->id}}">{{$wilaya->id}}. {{$wilaya->name}}&nbsp;-&nbsp;{{$wilaya->name_ar}}</option>
                         @endforeach
                     </select>
                     <span id="wilayaErr" style="color: red;font-size: 15px;">يرجى إدخال الولاية بالشكل الصحيح</span>
@@ -178,7 +178,7 @@
 
 </script>
 <script>
-    const communes_names = {@foreach ($data['communes'] as $commune)"{{$commune->id}}":{'name': "{!!$commune->name!!}", 'wilaya': "{{$commune->Wilaya()->id}}"}, @endforeach}
+    const communes_names = {@foreach ($data['communes'] as $commune)"{{$commune->id}}":{'name': "{!!$commune->name!!}", 'name_ar': "{!!$commune->name_ar!!}", 'wilaya': "{{$commune->Wilaya()->id}}"}, @endforeach}
     const deliveryPrices = {@foreach ($data['wilayas'] as $wilaya){{$wilaya->id}}:{{$wilaya->shown_price ?? '-1'}}, @endforeach}
 
 	const submitButton = document.getElementById("submitButton");
@@ -256,7 +256,7 @@
 		{
 			if(communes_names[communeId].wilaya == selectedWilaya)
 			{
-				var option = new Option(communes_names[communeId].name, communeId);
+				var option = new Option(communes_names[communeId].name+" - "+communes_names[communeId].name_ar, communeId);
 				commune.appendChild(option);
 			}
 		}

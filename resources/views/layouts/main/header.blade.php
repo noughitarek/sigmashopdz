@@ -12,6 +12,12 @@
                 <a class="{{$data['current_page']==$page->slug?'active':''}}" href="{{route('main_pages_show', $page->slug)}}">{{$page->title}}</a>
             </li>
             @endforeach
+            <li>
+                <a class="{{$data['current_page']=='echange'?'active':''}}" href="{{route('main_echange')}}">طلب تغيير منتج</a>
+            </li>
+            <li>
+                <a class="{{$data['current_page']=='contact'?'active':''}}" href="{{route('main_contact')}}">إتصل بنا</a>
+            </li>
             <li id="lg-bag"><a href="cart.html"><i class="far fa-shopping-bag"></i></a></li>
             <a href="#" id="close"><i class="far fa-times"></i></a>
         </ul>

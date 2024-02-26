@@ -10,16 +10,17 @@
   </div>
   <div class="col-12 col-lg-12 col-xxl-12 d-flex">
     <div class="card flex-fill">
-      <div class="table-responsive">
-        <table class="table table-hover my-0" id="datatables-orders">
+      <div class="card-header"></div>
+      <div class="card-body">
+        <table class="table table-hover my-0" id="orders_table">
           <thead>
             <tr>
               <th class="d-xl-table-cell">Order</th>
+              <th class="d-xl-table-cell">Status</th>
               <th class="d-xl-table-cell">Customer</th>
               <th class="d-xl-table-cell">Address</th>
               <th class="d-xl-table-cell">Product</th>
               <th class="d-xl-table-cell">Prices</th>
-              <th>Status</th>
             </tr>
           </thead>
           <tbody>
@@ -30,10 +31,20 @@
                   <i class="align-middle me-2 fas fa-fw fa-hashtag"></i> <a href="{{route('webmaster_orders_show', $order->id)}}">{{$order->id}}</a><br>
                   <i class="align-middle me-2 fas fa-fw fa-calendar"></i> {{$order->created_at}}<br>
                   <i class="align-middle me-2 fas fa-fw fa-barcode"></i> <a target="_blank" href="https://suivi.ecotrack.dz/suivi/{{$order->tracking}}">{{$order->tracking}}</a><br>
+                  <i class="align-middle me-2 fas fa-fw fa-barcode"></i> <a target="_blank" href="{{route('main_orders_tracking', $order->intern_tracking)}}">{{$order->intern_tracking}}</a><br>
                   <i class="align-middle me-2 fas fa-fw fa-shopping-cart"></i>
                   <span class="badge bg-success">
                     {{$order->State()}}
                   </span>
+                </p>
+              </td>
+              <td class="d-xl-table-cell">
+                <p>
+                  @foreach($order->Status() as $status)
+                  <span class="badge bg-{{$status[0]}}">
+                    {{$status[1]}}
+                  </span>
+                  @endforeach
                 </p>
               </td>
               <td class="d-xl-table-cell single-line">
@@ -64,23 +75,23 @@
                 <i class="align-middle me-2 fas fa-fw fa-dollar-sign"></i> {{$order->clean_price}} DZD
                 </p>
               </td>
-              <td>
-                <p>
-                  @foreach($order->Status() as $status)
-                  <span class="badge bg-{{$status[0]}}">
-                    {{$status[1]}}
-                  </span>
-                  @endforeach
-                </p>
-              </td>
             </tr>
             @endforeach
           </tbody>
         </table>
 		</div>
-    
-  {{ $data["orders"]->links('components.pagination') }}
   </div>
 </div>
 
+@endsection
+@section('scripts')
+<script src="{{asset('js/datatables.js')}}"></script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+	$("#orders_table").DataTable({
+		responsive: true
+	});
+});
+</script>
 @endsection

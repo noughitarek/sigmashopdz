@@ -25,6 +25,7 @@ return new class extends Migration
             $table->double('total_price');
             $table->double('delivery_price');
             $table->double('clean_price');
+            $table->string('intern_tracking')->unique();
             $table->string('tracking')->nullable();
             $table->string('ip');
             $table->boolean('stopdesk')->default(false);

@@ -1,5 +1,6 @@
 @extends('layouts.webmaster')
 @section('content')
+
 <div class="row">
   <div class="col-12 col-lg-12 col-xxl-12 d-flex">
     <div class="card flex-fill">
@@ -13,8 +14,9 @@
   </div>
   <div class="col-12 col-lg-12 col-xxl-12 d-flex">
     <div class="card flex-fill">
-      <div class="table-responsive">
-        <table class="table table-hover my-0">
+      <div class="card-header"></div>
+      <div class="card-body">
+        <table class="table table-hover my-0" id="categories_table">
           <thead>
             <tr>
               <th>Category</th>
@@ -34,7 +36,6 @@
                 <i class="align-middle me-2 fas fa-fw fa-qrcode"></i> {{$category->slug}}
               </td>
               <td class="d-xl-table-cell single-line">
-                <i class="align-middle me-2 fas fa-fw fa-arrows-alt-v"></i>{{$category->order}}<br>
                 <i class="align-middle me-2 fas fa-fw fa-toggle-on"></i>{{ $category->is_active?"Active":"Not active" }}<br>
                 <i class="align-middle me-2 fas fa-fw fa-calendar"></i>{{$category->created_at}}
               </td>
@@ -87,7 +88,7 @@
                 @endif
                 
                 @if($data["can_delete"])
-                <button type="button" class="btn btn-danger rounded-pill" data-bs-toggle="modal" data-bs-target="#deleteConfirmationModal9">
+                <button type="button" class="btn btn-danger rounded-pill" data-bs-toggle="modal" data-bs-target="#categoryDeleteModal{{$category->id}}">
                   <i class="align-middle" data-feather="trash"></i>
                 </button>
                 @endif
@@ -99,8 +100,54 @@
       </div>
     </div>
   </div>
-  <div>
-  {{ $data["categories"]->links('components.pagination') }}
-  </div>
 </div>
+
+
+@foreach($data["categories"] as $category)
+<div class="modal fade" id="categoryDeleteModal{{$category->id}}" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+        <h5 class="modal-title">Confirm Deletion</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body m-3">
+        <p class="mb-0">Are you sure you want to delete this category?</p>
+			</div>
+			<div class="modal-footer">
+        <form action="{{ route('webmaster_categories_destroy', $category->id) }}" method="POST">
+          @csrf
+          @method('DELETE')
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-danger">Delete</button>
+        </form>
+			</div>
+		</div>
+	</div>
+</div>
+@endforeach
+@endsection
+@section('scripts')
+<script src="{{asset('js/datatables.js')}}"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+	$("#categories_table").DataTable({
+		responsive: true
+	});
+});
+</script>
+@if(session('success'))
+<script>
+	document.addEventListener("DOMContentLoaded", function() {
+			var message = '{{ session('success') }}';
+			var type = "success";
+			var duration = 5000;
+			var ripple = false;
+			var dismissible = true;
+			var positionX = "right";
+			var positionY = "top";
+			window.notyf.open({type, message, duration, ripple, dismissible, position:{x: positionX, y: positionY}});
+	});
+</script>
+@endif
 @endsection

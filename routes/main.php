@@ -6,6 +6,14 @@ use App\Http\Controllers\main\MainController;
 
 Route::name('main_')->controller(MainController::class)->group(function() {
     Route::get('', 'index')->name('index');
+    
+    Route::get('contact', 'contact')->name('contact');
+    Route::post('contact', 'contact_store')->name('contact_store');
+    Route::get('echange', 'echange')->name('echange');
+    Route::post('echange', 'echange_store')->name('echange_store');
+    Route::get('tracking', 'tracking_orders')->name('tracking');
+    Route::post('tracking', 'tracking_lookup')->name('tracking_lookup');
+
     Route::name('pages_')->prefix('pages')->group(function(){
         Route::get('{page}', 'page')->name('show');
     });
@@ -13,7 +21,8 @@ Route::name('main_')->controller(MainController::class)->group(function() {
         Route::get('{product}', 'product')->name('show');
         Route::post('{product}/order', 'order')->name('order');
     });
-    Route::name('categories_')->prefix('categories')->group(function(){
-        Route::get('{category}', 'category')->name('show');
+    Route::name('orders_')->prefix('orders')->group(function(){
+        Route::get('{order}/tracking', 'tracking')->name('tracking');
+        Route::get('{order}/thankyou', 'thankyou')->name('thankyou');
     });
 });
