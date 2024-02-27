@@ -585,7 +585,7 @@ class Order extends Model
         {
             echo 'Error: Can\'t send api request\n';
             sleep(10);
-            return Send_API($url, $data, $type);
+            return self::Send_API($url, $data, $type);
         }
         elseif($result)
         {
@@ -595,7 +595,7 @@ class Order extends Model
             {
                 echo 'Error: Too Many Attempts\n';
                 sleep(10);
-                return Send_API($url, $data, $type);
+                return self::Send_API($url, $data, $type);
             }
             else
             {
@@ -606,7 +606,7 @@ class Order extends Model
         {
             echo 'Error: Can\'t send api request 2\n';
             sleep(10);
-            return Send_API($url, $data, $type);
+            return self::Send_API($url, $data, $type);
         }
 
     }
