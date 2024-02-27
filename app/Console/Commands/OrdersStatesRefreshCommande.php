@@ -39,7 +39,7 @@ class OrdersStatesRefreshCommande extends Command
             {
                 $order->Update_state();
             }
-            if($order->State() == "Delivery"){
+            if($order->State() == "Delivery" || $order->State() == "Shipped" || $order->State() == "Validated"){
                 $order->Get_information();
             }
             if($order->State() == "Pending" && $order->tracking != null){
