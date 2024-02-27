@@ -564,6 +564,8 @@ class Order extends Model
     {
         if($type == "GET"){
             $submitUrl .= '?' . http_build_query($data);
+        }else{
+            $submitUrl = $url;
         }
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $submitUrl);
