@@ -42,7 +42,7 @@ class OrdersStatesRefreshCommande extends Command
             if($order->State() == "Delivery"){
                 $order->Get_information();
             }
-            if($order->tracking != null && $order->State() == "Pending"){
+            if($order->State() == "Pending" && $order->tracking != null){
                 $order->Update_state();
             }
         }
