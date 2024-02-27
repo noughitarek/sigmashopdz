@@ -563,7 +563,7 @@ class Order extends Model
     public static function Send_API($url, $data, $type="POST")
     {
         if($type == "GET"){
-            $submitUrl .= '?' . http_build_query($data);
+            $submitUrl = $url.'?' . http_build_query($data);
         }else{
             $submitUrl = $url;
         }
