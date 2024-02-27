@@ -27,7 +27,7 @@ class OrdersStatesRefreshCommande extends Command
     public function handle()
     {
         #Order::Save_orders();
-        $orders = Order::All();
+        $orders = Order::orderBy('updated_at', 'desc')->get();
         foreach($orders as $order){
             if($order->State() != "Archived" && 
                 $order->State() != "Doubled" && 
