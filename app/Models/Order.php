@@ -563,10 +563,10 @@ class Order extends Model
     public static function Send_API($url, $data, $type="POST")
     {
         if($type == "GET"){
-            $url .= '?' . http_build_query($data);
+            $submitUrl .= '?' . http_build_query($data);
         }
         $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_URL, $submitUrl);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         if($type == "POST"){
             

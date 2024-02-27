@@ -82,8 +82,6 @@
           </tbody>
         </table>
 		</div>
-    
-  {{ $data["orders"]->links('components.pagination') }}
   </div>
 </div>
 
