@@ -26,7 +26,6 @@ class OrdersStatesRefreshCommande extends Command
      */
     public function handle()
     {
-        print("here");
         #Order::Save_orders();
         $orders = Order::All();
         foreach($orders as $order){
@@ -35,12 +34,16 @@ class OrdersStatesRefreshCommande extends Command
                 $order->State() != "Canceled" && 
                 $order->State() != "Failure" && 
                 $order->State() != "Back ready" &&
-                $order->State() != "Recovered")
+                $order->State() != "Recovered" &&
+                $order->State() != "Pending")
             {
                 $order->Update_state();
             }
             if($order->State() == "Delivery"){
                 $order->Get_information();
+            }
+            if($order->tracking != null && $order->State() == "Pending"){
+                $order->Update_state();
             }
         }
     }
