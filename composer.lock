@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e3990b381330d8d344f26f8f4655cd0e",
+    "content-hash": "38170f3083723502ea2dd34aec9d9db3",
     "packages": [
         {
             "name": "brick/math",
@@ -571,6 +571,51 @@
                 }
             ],
             "time": "2023-10-12T05:21:21+00:00"
+        },
+        {
+            "name": "gidix/pushnotifier-php",
+            "version": "2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/GIDIX/pushnotifier-php.git",
+                "reference": "0fedaccb1950222366f485dbe61a65a31ee29495"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/GIDIX/pushnotifier-php/zipball/0fedaccb1950222366f485dbe61a65a31ee29495",
+                "reference": "0fedaccb1950222366f485dbe61a65a31ee29495",
+                "shasum": ""
+            },
+            "require": {
+                "mashape/unirest-php": "^3.0",
+                "php": ">=7.0.0"
+            },
+            "require-dev": {
+                "squizlabs/php_codesniffer": "^2.5"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "GIDIX\\PushNotifier\\SDK\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "proprietary"
+            ],
+            "authors": [
+                {
+                    "name": "Benjamin Schmidt",
+                    "email": "github@bfx.re",
+                    "homepage": "https://bluefirex.de"
+                }
+            ],
+            "description": "PushNotifier library for PHP",
+            "support": {
+                "issues": "https://github.com/GIDIX/pushnotifier-php/issues",
+                "source": "https://github.com/GIDIX/pushnotifier-php/tree/master"
+            },
+            "time": "2018-01-01T23:02:36+00:00"
         },
         {
             "name": "graham-campbell/result-type",
@@ -1892,6 +1937,57 @@
                 }
             ],
             "time": "2024-01-28T23:22:08+00:00"
+        },
+        {
+            "name": "mashape/unirest-php",
+            "version": "v3.0.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Mashape/unirest-php.git",
+                "reference": "842c0f242dfaaf85f16b72e217bf7f7c19ab12cb"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Mashape/unirest-php/zipball/842c0f242dfaaf85f16b72e217bf7f7c19ab12cb",
+                "reference": "842c0f242dfaaf85f16b72e217bf7f7c19ab12cb",
+                "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*",
+                "php": ">=5.4.0"
+            },
+            "require-dev": {
+                "codeclimate/php-test-reporter": "0.1.*",
+                "phpunit/phpunit": "~4.4"
+            },
+            "suggest": {
+                "ext-json": "Allows using JSON Bodies for sending and parsing requests"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Unirest\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Unirest PHP",
+            "homepage": "https://github.com/Mashape/unirest-php",
+            "keywords": [
+                "client",
+                "curl",
+                "http",
+                "https",
+                "rest"
+            ],
+            "support": {
+                "email": "opensource@mashape.com",
+                "issues": "https://github.com/Mashape/unirest-php/issues",
+                "source": "https://github.com/Mashape/unirest-php/tree/master"
+            },
+            "time": "2016-08-11T17:49:21+00:00"
         },
         {
             "name": "monolog/monolog",

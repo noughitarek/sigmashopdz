@@ -10,6 +10,7 @@ use App\Models\Message;
 use App\Models\Product;
 use App\Models\Category;
 use Illuminate\Support\Str;
+use App\Models\Notification;
 use Illuminate\Http\Request;
 use App\Models\AttributeValue;
 use App\Http\Controllers\Controller;
@@ -31,6 +32,9 @@ class MainController extends Controller
     public function product($slug)
     {
         $data["product"] = Product::where("slug", $slug)->first();
+        if(!$data["product"]){
+            return abort(404);
+        }
         $data["title"] = $data["product"]->name;
         $data["wilayas"] = Wilaya::all();
         $data["communes"] = Commune::all();
@@ -43,6 +47,9 @@ class MainController extends Controller
     public function page($slug)
     {
         $data["page"] = Page::where("slug", $slug)->first();
+        if(!$data["page"]){
+            return abort(404);
+        }
         $data["title"] = $data["page"]->name;
         $data['current_page'] = $data["page"]->slug;
         $data["header_pages"] = Page::where("position", "Header")->where("is_active", true)->get();
@@ -58,6 +65,9 @@ class MainController extends Controller
         $uniqueNumber = $timestamp . $randomNumber;
         $intern_tracking = str_pad($uniqueNumber, 14, '0', STR_PAD_RIGHT);
         $product = Product::where("slug", $product)->first();
+        if(!$product){
+            return abort(404);
+        }
         $data = array(
             "name" => $request->name,
             "phone" => $request->phone,
@@ -77,6 +87,14 @@ class MainController extends Controller
             "campaign"  => isset($_COOKIE['campaign'])?$_COOKIE['campaign']:null,
         );
         $order = Order::create($data);
+        Notification::Send([
+            "icon" => "shopping-cart",
+            "icon_color" => "success",
+            "title" => "New order from ".$order->name,
+            "content" => $order->clean_price.' DZD',
+            "link" => route('webmaster_orders_all_index'),
+        ], "consult_all_orders", true);
+
         if($request->input('attributes') != null){
         foreach($request->input('attributes') as $key=>$attribute)
         {
@@ -96,6 +114,9 @@ class MainController extends Controller
         $data['current_page'] = $order;
         $data["title"] = "شكرا";
         $data['order'] = Order::where("intern_tracking", $order)->first();
+        if(!$data['order']){
+            return abort(404);
+        }
         $data["categories"] = Category::where("id", $data['order']->Product()->Category()->id)->where("deleted_by", null)->get();
         $data["header_pages"] = Page::where("position", "Header")->where("is_active", true)->get();
         $data["footer_pages1"] = Page::where("position", "Footer1")->where("is_active", true)->get();
@@ -110,6 +131,9 @@ class MainController extends Controller
         $data['current_page'] = $order;
         $data["title"] = "تتبع الطرود";
         $data['order'] = Order::where("intern_tracking", $order)->first();
+        if(!$data['order']){
+            return abort(404);
+        }
         $data["categories"] = Category::where("id", $data['order']->Product()->Category()->id)->where("deleted_by", null)->get();
         $data["header_pages"] = Page::where("position", "Header")->where("is_active", true)->get();
         $data["footer_pages1"] = Page::where("position", "Footer1")->where("is_active", true)->get();
@@ -149,7 +173,17 @@ class MainController extends Controller
             "tracking" => $request->input('tracking'),
             "ip" => $_SERVER['REMOTE_ADDR'],
         ];
-        Message::create($data);
+
+        $message = Message::create($data);
+        
+        Notification::Send([
+            "icon" => "repeat",
+            "icon_color" => "warning",
+            "title" => $message->subject,
+            "content" => $message->message,
+            "link" => route('webmaster_messages_index'),
+        ], "consult_all_orders", true);
+
         return redirect()->route('main_pages_echange')->with('success', 'تمت عملية الإرسال سيتم الرد قريبا');
     }
 
@@ -162,7 +196,16 @@ class MainController extends Controller
             "message" => $request->input('message'),
             "ip" => $_SERVER['REMOTE_ADDR'],
         ];
-        Message::create($data);
+        $message = Message::create($data);
+        
+        Notification::Send([
+            "icon" => "envelope-open-text",
+            "icon_color" => "success",
+            "title" => $message->subject,
+            "content" => $message->message,
+            "link" => route('webmaster_messages_index'),
+        ], "consult_all_orders", true);
+
         return redirect()->route('main_pages_contact')->with('success', 'تمت عملية الإرسال سيتم الرد قريبا');
     }
 

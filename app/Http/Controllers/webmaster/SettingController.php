@@ -42,6 +42,13 @@ class SettingController extends Controller
             $request->file('icon')->move(public_path('img/images'), $logoTallName);
             $data['icon'] = 'images/'.$logoTallName;
         }
+
+        $data['icon'] = config('settings.icon');
+        if ($request->hasFile('icon')) {
+            $logoTallName = time() . '_' . $request->file('icon')->getClientOriginalName();
+            $request->file('icon')->move(public_path('img/images'), $logoTallName);
+            $data['icon'] = 'images/'.$logoTallName;
+        }
         for($i=1;$i<=6;$i++)
         {
             $data['feature'.$i]['picture'] = config('settings.feature'.$i)['picture'];
@@ -52,6 +59,15 @@ class SettingController extends Controller
                     $request->file('feature'.$i)['picture']->move(public_path('img/website/features/'), $picture);
                     $data['feature'.$i]['picture'] = 'website/features/'.$picture;
                 }
+            }
+        }
+        $data['slider']['picture'] = config('settings.slider')['picture'];
+        if ($request->hasFile('slider')) {
+            if(array_key_exists('picture', $request['slider']))
+            {
+                $picture = time() . '_' . $request->file('slider')['picture']->getClientOriginalName();
+                $request->file('slider')['picture']->move(public_path('img/website/slider/'), $picture);
+                $data['slider']['picture'] = 'website/slider/'.$picture;
             }
         }
         

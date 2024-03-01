@@ -70,7 +70,10 @@ class User extends Authenticatable
         if($user)return $user;
         return new User(['name'=>'n/a']);
     }
-    
+    public function Notifications()
+    {
+        return Notification::where("sent_to", $this->id)->where('readed', false)->orderBy('created_at', 'desc')->get();
+    }
     public function Amount():float
     {
         $payements = Payement::where("payed_by", $this->id)->orWhere('payed_to', $this->id)->get();

@@ -3,12 +3,12 @@ return [
     "id" => "SSD",
     "title" => "Sigmashop",
 
-    "logo" => 'images/gizmo.png',
-    "logo_tall" => 'images/gizmo_tall.png',
-    'icon' => 'icons/icon-48x48.png',
+    "logo" => 'icons/sigma.png',
+    "logo_tall" => 'icons/sigma_tall_fr.png',
+    'icon' => 'icons/sigma.png',
     
     'slider' => array(
-        'picture' => 'website/slider.png',
+        'picture' => 'website/slider/slider.png',
         'text1' => 'عروووض شهر رمضان',
         'text2' => 'تخفيضات كبييرة',
         'text3' => 'على كل المنتوجات',
@@ -19,11 +19,18 @@ return [
     'contact' => array(
         'address' => 'ولاية الجزائر - الجزائر 16000',
         'phone' => '+213 6 99 89 44 17',
-        'email' => 'contact@gizmodz.shop',
+        'email' => 'contact@sigmashopdz.com',
 
         'facebook' => '',
         'instagram' => '',
         'twitter' => '',
+    ),
+
+    'notifications' => array(
+        'username' => 'gizmo',
+        'password' => 'GizmoChwaker',
+        'api_token' => 'BV46575BV2VB63CVD4DDEV46E5IZ6BV46BFBFFBKFT',
+        'package' => 'com.sigmashop.app'
     ),
 
     'footer' => array(

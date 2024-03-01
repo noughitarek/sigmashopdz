@@ -137,6 +137,7 @@ Route::middleware('auth')->name('webmaster_')->namespace('App\Http\Controllers\w
 
 
 Route::middleware('guest')->name('webmaster_')->prefix("webmaster")->group(function() {
+    Route::get('', [AuthenticatedSessionController::class, 'create']);
     Route::get('login', [AuthenticatedSessionController::class, 'create'])->name('login');
     Route::post('login', [AuthenticatedSessionController::class, 'store']);
 

@@ -110,7 +110,7 @@ body {
 
 #navbar li a:hover,
 #navbar li a.active {
-    color: #17BAA7;
+    color: #ed0d91;
 }
 
 #navbar li a:hover::after,
@@ -118,7 +118,7 @@ body {
     content: "";
     width: 30%;
     height: 2px;
-    background: #17BAA7;
+    background: #ed0d91;
     position: absolute;
     bottom: -4px;
     right: 20px;
@@ -152,12 +152,12 @@ body {
 }
 
 #hero h1 {
-    color: #17BAA7;
+    color: #ed0d91;
 }
 
 #hero button {
     background-color: transparent;
-    color: #17BAA7;
+    color: #ed0d91;
     border: 0;
     padding: 14px 80px 14px 65px;
     background-repeat: no-repeat;
@@ -197,7 +197,7 @@ body {
     padding: 9px 8px 6px 8px;
     line-height: 1;
     border-radius: 4px;
-    color: #17BAA7;
+    color: #ed0d91;
     background-color: #fddde4;
 }
 
@@ -280,7 +280,7 @@ body {
     padding-top: 7px;
     font-size: 15px;
     font-weight: 700;
-    color: #17BAA7;
+    color: #ed0d91;
 }
 
 #product1 .pro .cart {
@@ -290,7 +290,7 @@ body {
     border-radius: 50px;
     background-color: #e8f6ea;
     font-weight: 500;
-    color: #17BAA7;
+    color: #ed0d91;
     border: 1px solid #cce7d0;
     position: absolute;
     bottom: 20px;
@@ -326,7 +326,7 @@ body {
 }
 
 #banner button:hover {
-    background-color: #17BAA7;
+    background-color: #ed0d91;
     color: #fff;
 }
 
@@ -370,8 +370,8 @@ body {
 }
 
 #sm-banner .banner-box:hover button{
-    background-color: #17BAA7;
-    border: 1px solid #17BAA7;
+    background-color: #ed0d91;
+    border: 1px solid #ed0d91;
 }
 
 #sm-banner .banner-box:nth-child(2) {
@@ -468,7 +468,7 @@ body {
 }
 
 #newsletter button {
-    background-color: #17BAA7;
+    background-color: #ed0d91;
     color: #fff;
     white-space: nowrap;
     border-top-left-radius: 0;
@@ -525,14 +525,14 @@ footer .follow i{
 }
 
 footer .install .row img{
-    border: 1px solid #17BAA7;
+    border: 1px solid #ed0d91;
     border-radius: 6px;
     margin: 10px 0 15px 0;
 }
 
 footer .follow i:hover,
 footer a:hover {
-    color: #17BAA7;
+    color: #ed0d91;
 }
 
 footer .copyright {
@@ -565,7 +565,7 @@ footer .copyright {
 
 #pagination a {
     text-decoration: none;
-    background-color: #17BAA7;
+    background-color: #ed0d91;
     padding: 15px 20px;
     border-radius: 4px;
     color: #fff;
@@ -625,7 +625,7 @@ footer .copyright {
 }
 
 #productdetails .single-pro-details button {
-    background-color: #17BAA7;
+    background-color: #ed0d91;
     color: #fff;
 }
 
@@ -690,11 +690,11 @@ footer .copyright {
 }
 
 #blog .blog-details a:hover {
-    color: #17BAA7;
+    color: #ed0d91;
 }
 
 #blog .blog-details a:hover::after {
-    background-color: #17BAA7;
+    background-color: #ed0d91;
 }
 
 #blog .blog-box h1 {
@@ -819,7 +819,7 @@ footer .copyright {
 }
 
 #form-details form button {
-    background-color: #17BAA7;
+    background-color: #ed0d91;
     color: #fff;
 }
 
@@ -940,7 +940,7 @@ footer .copyright {
 
 #cart-add .coupon button,
 #cart-add .subtotal button {
-    background-color: #17BAA7;
+    background-color: #ed0d91;
     color: #fff;
     padding: 12px 20px;
 }

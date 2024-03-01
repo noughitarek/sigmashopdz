@@ -40,6 +40,12 @@
 				<a class="list-group-item list-group-item-action" data-bs-toggle="list" href="#features" role="tab">
 					Features
 				</a>
+				<a class="list-group-item list-group-item-action" data-bs-toggle="list" href="#hero" role="tab">
+					Hero
+				</a>
+				<a class="list-group-item list-group-item-action" data-bs-toggle="list" href="#notifications" role="tab">
+					Notifications
+				</a>
 			</div>
 		</div>
 	</div>
@@ -255,6 +261,82 @@
 				</div>
 
 				@endfor
+				@if($data["can_edit"])
+				<button type="submit" class="btn btn-primary">Save changes</button>
+				@endif
+			</div>
+			<div class="tab-pane fade" id="hero" role="tabpanel">
+				<div class="card">
+					<div class="card-header">
+						<h5 class="card-title mb-0">Hero</h5>
+					</div>
+					<div class="card-body mb-2">
+						<div class="row mb-2 d-flex align-items-center">
+							
+								
+							<div class="col-md-8">
+								<div class="mb-3">
+									<label for="herotext1">Text 1</label>
+									<input type="text" class="form-control" name="slider[text1]" id="herotext1" value="{{config('settings.slider')['text1']}}">
+								</div>
+								<div class="mb-3">
+									<label for="herotext2">Text 2</label>
+									<input type="text" class="form-control" name="slider[text2]" id="herotext2" value="{{config('settings.slider')['text2']}}">
+								</div>
+								<div class="mb-3">
+									<label for="herotext3">Text 3</label>
+									<input type="text" class="form-control" name="slider[text3]" id="herotext3" value="{{config('settings.slider')['text3']}}">
+								</div>
+								<div class="mb-3">
+									<label for="herotext4">Text 4</label>
+									<input type="text" class="form-control" name="slider[text4]" id="herotext4" value="{{config('settings.slider')['text4']}}">
+								</div>
+								<div class="mb-3">
+									<label for="herotext4">Button</label>
+									<input type="text" class="form-control" name="slider[button]" id="herobutton" value="{{config('settings.slider')['button']}}">
+								</div>
+							</div>
+							<div class="col-md-4">
+								<img src="{{asset('img/'.config('settings.slider')['picture'])}}" class="rounded-circle img-responsive mt-2" width="128" height="128" />
+								<div class="mt-2">
+									<input type="file" name="slider[picture]" class="form-control" id="logo">
+								</div>
+							</div><br>
+						</div>
+					</div>
+				</div>
+				@if($data["can_edit"])
+				<button type="submit" class="btn btn-primary">Save changes</button>
+				@endif
+			</div>
+			<div class="tab-pane fade" id="notifications" role="tabpanel">
+				<div class="card">
+					<div class="card-header">
+						<h5 class="card-title mb-0">Notifications</h5>
+					</div>
+					<div class="card-body mb-2">
+						<div class="row mb-2 d-flex align-items-center">
+							<div class="col-md-12">
+								<div class="mb-3">
+									<label for="username">Username</label>
+									<input type="text" class="form-control" name="notifications[username]" id="username" value="{{config('settings.notifications.username')}}">
+								</div>
+								<div class="mb-3">
+									<label for="password">Password</label>
+									<input type="text" class="form-control" name="notifications[password]" id="password" value="{{config('settings.notifications.password')}}">
+								</div>
+								<div class="mb-3">
+									<label for="api_token">Api token</label>
+									<input type="text" class="form-control" name="notifications[api_token]" id="api_token" value="{{config('settings.notifications.api_token')}}">
+								</div>
+								<div class="mb-3">
+									<label for="package">Package</label>
+									<input type="text" class="form-control" name="notifications[package]" id="package" value="{{config('settings.notifications.package')}}">
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
 				@if($data["can_edit"])
 				<button type="submit" class="btn btn-primary">Save changes</button>
 				@endif
