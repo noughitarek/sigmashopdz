@@ -23,9 +23,9 @@ class MainController extends Controller
         $data["title"] = 'الصفحة الرئيسية';
         $data["show_custom_category_name"] = false;
         $data["current_page"] = 'home';
-        $data["header_pages"] = Page::where("position", "Header")->where("is_active", true)->get();
-        $data["footer_pages1"] = Page::where("position", "Footer1")->where("is_active", true)->get();
-        $data["footer_pages2"] = Page::where("position", "Footer2")->where("is_active", true)->get();
+        $data["header_pages"] = Page::where("position", "Header")->where("is_active", true)->orderBy('created_at', 'desc')->get();
+        $data["footer_pages1"] = Page::where("position", "Footer1")->where("is_active", true)->orderBy('created_at', 'desc')->get();
+        $data["footer_pages2"] = Page::where("position", "Footer2")->where("is_active", true)->orderBy('created_at', 'desc')->get();
         $data["categories"] = Category::where("is_active", true)->where("deleted_by", null)->get();
         return view("main.index")->with("data", $data);
     }
@@ -39,9 +39,9 @@ class MainController extends Controller
         $data["wilayas"] = Wilaya::all();
         $data["communes"] = Commune::all();
         $data['current_page'] = $data["product"]->slug;
-        $data["header_pages"] = Page::where("position", "Header")->where("is_active", true)->get();
-        $data["footer_pages1"] = Page::where("position", "Footer1")->where("is_active", true)->get();
-        $data["footer_pages2"] = Page::where("position", "Footer2")->where("is_active", true)->get();
+        $data["header_pages"] = Page::where("position", "Header")->where("is_active", true)->orderBy('created_at', 'desc')->get();
+        $data["footer_pages1"] = Page::where("position", "Footer1")->where("is_active", true)->orderBy('created_at', 'desc')->get();
+        $data["footer_pages2"] = Page::where("position", "Footer2")->where("is_active", true)->orderBy('created_at', 'desc')->get();
         return view("main.product")->with("data", $data);
     }
     public function page($slug)
@@ -52,9 +52,9 @@ class MainController extends Controller
         }
         $data["title"] = $data["page"]->name;
         $data['current_page'] = $data["page"]->slug;
-        $data["header_pages"] = Page::where("position", "Header")->where("is_active", true)->get();
-        $data["footer_pages1"] = Page::where("position", "Footer1")->where("is_active", true)->get();
-        $data["footer_pages2"] = Page::where("position", "Footer2")->where("is_active", true)->get();
+        $data["header_pages"] = Page::where("position", "Header")->where("is_active", true)->orderBy('created_at', 'desc')->get();
+        $data["footer_pages1"] = Page::where("position", "Footer1")->where("is_active", true)->orderBy('created_at', 'desc')->get();
+        $data["footer_pages2"] = Page::where("position", "Footer2")->where("is_active", true)->orderBy('created_at', 'desc')->get();
         return view("main.page")->with("data", $data);
 
     }
@@ -118,9 +118,9 @@ class MainController extends Controller
             return abort(404);
         }
         $data["categories"] = Category::where("id", $data['order']->Product()->Category()->id)->where("deleted_by", null)->get();
-        $data["header_pages"] = Page::where("position", "Header")->where("is_active", true)->get();
-        $data["footer_pages1"] = Page::where("position", "Footer1")->where("is_active", true)->get();
-        $data["footer_pages2"] = Page::where("position", "Footer2")->where("is_active", true)->get();
+        $data["header_pages"] = Page::where("position", "Header")->where("is_active", true)->orderBy('created_at', 'desc')->get();
+        $data["footer_pages1"] = Page::where("position", "Footer1")->where("is_active", true)->orderBy('created_at', 'desc')->get();
+        $data["footer_pages2"] = Page::where("position", "Footer2")->where("is_active", true)->orderBy('created_at', 'desc')->get();
         return view("main.thankyou")->with("data", $data);
 
     }
@@ -135,9 +135,9 @@ class MainController extends Controller
             return abort(404);
         }
         $data["categories"] = Category::where("id", $data['order']->Product()->Category()->id)->where("deleted_by", null)->get();
-        $data["header_pages"] = Page::where("position", "Header")->where("is_active", true)->get();
-        $data["footer_pages1"] = Page::where("position", "Footer1")->where("is_active", true)->get();
-        $data["footer_pages2"] = Page::where("position", "Footer2")->where("is_active", true)->get();
+        $data["header_pages"] = Page::where("position", "Header")->where("is_active", true)->orderBy('created_at', 'desc')->get();
+        $data["footer_pages1"] = Page::where("position", "Footer1")->where("is_active", true)->orderBy('created_at', 'desc')->get();
+        $data["footer_pages2"] = Page::where("position", "Footer2")->where("is_active", true)->orderBy('created_at', 'desc')->get();
         return view("main.tracking")->with("data", $data);
     }
 
@@ -145,9 +145,9 @@ class MainController extends Controller
     {
         $data['current_page'] = "echange";
         $data["title"] = "طلب تغيير منتج";
-        $data["header_pages"] = Page::where("position", "Header")->where("is_active", true)->get();
-        $data["footer_pages1"] = Page::where("position", "Footer1")->where("is_active", true)->get();
-        $data["footer_pages2"] = Page::where("position", "Footer2")->where("is_active", true)->get();
+        $data["header_pages"] = Page::where("position", "Header")->where("is_active", true)->orderBy('created_at', 'desc')->get();
+        $data["footer_pages1"] = Page::where("position", "Footer1")->where("is_active", true)->orderBy('created_at', 'desc')->get();
+        $data["footer_pages2"] = Page::where("position", "Footer2")->where("is_active", true)->orderBy('created_at', 'desc')->get();
         $data["products"] = Product::all();
         return view("main.echange")->with("data", $data);
     }
@@ -156,9 +156,9 @@ class MainController extends Controller
     {
         $data['current_page'] = "contact";
         $data["title"] = "إتصل بنا";
-        $data["header_pages"] = Page::where("position", "Header")->where("is_active", true)->get();
-        $data["footer_pages1"] = Page::where("position", "Footer1")->where("is_active", true)->get();
-        $data["footer_pages2"] = Page::where("position", "Footer2")->where("is_active", true)->get();
+        $data["header_pages"] = Page::where("position", "Header")->where("is_active", true)->orderBy('created_at', 'desc')->get();
+        $data["footer_pages1"] = Page::where("position", "Footer1")->where("is_active", true)->orderBy('created_at', 'desc')->get();
+        $data["footer_pages2"] = Page::where("position", "Footer2")->where("is_active", true)->orderBy('created_at', 'desc')->get();
         $data["products"] = Product::all();
         return view("main.contact")->with("data", $data);
     }
@@ -213,9 +213,9 @@ class MainController extends Controller
     {
         $data['current_page'] = "contact";
         $data["title"] = "تتبع الطرود";
-        $data["header_pages"] = Page::where("position", "Header")->where("is_active", true)->get();
-        $data["footer_pages1"] = Page::where("position", "Footer1")->where("is_active", true)->get();
-        $data["footer_pages2"] = Page::where("position", "Footer2")->where("is_active", true)->get();
+        $data["header_pages"] = Page::where("position", "Header")->where("is_active", true)->orderBy('created_at', 'desc')->get();
+        $data["footer_pages1"] = Page::where("position", "Footer1")->where("is_active", true)->orderBy('created_at', 'desc')->get();
+        $data["footer_pages2"] = Page::where("position", "Footer2")->where("is_active", true)->orderBy('created_at', 'desc')->get();
         $data["products"] = Product::all();
         return view("main.tracking_orders")->with("data", $data);
     }
