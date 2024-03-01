@@ -60,10 +60,46 @@
                     <input type="text" id="phone2" name="phone2">
                     <span style="color: red;font-size: 15px;"> &nbsp; </span>
                 </div>
+                @foreach($data['product']->Attributes() as $attribute)
+                <div class="container" style="width: 100%;">
+                    <div class="label-container">
+                        <label for="attributes" dir="rtl">{{$attribute->title_ar}} <span style="color: red;">*</span></label>
+                        <label for="attributes" dir="ltr">{{$attribute->title}} <span style="color: red;">*</span></label>
+                    </div>
+                    <select dir="ltr" id="attributes" name="attributes[{{$attribute->id}}]" required>
+                        @php
+                            $i=0
+                        @endphp
+                        @while(true)
+                            @if(isset(explode(",", $attribute->values)[$i]))
+                            <option value="{{explode(',', $attribute->values)[$i]}}">
+                                {{explode(",", $attribute->values)[$i]}}
+                                @if(isset(explode(",", $attribute->values_ar)[$i]) && explode(",", $attribute->values_ar)[$i] != "")
+                                    &nbsp;-&nbsp;
+                                    {{explode(",", $attribute->values_ar)[$i]}}
+                                @endif
+                            </option>
+                            @elseif(isset(explode(",", $attribute->values_ar)[$i]))
+                            <option value="{{explode(',', $attribute->values_ar)[$i]}}">
+                                @if(isset(explode(",", $attribute->values)[$i]) && explode(",", $attribute->values)[$i] != "")
+                                    {{explode(",", $attribute->values)[$i]}}&nbsp;-&nbsp;
+                                @endif
+                                {{explode(",", $attribute->values_ar)[$i]}}
+                            </option>
+                            @else
+                                @break
+                            @endif
+                            @php
+                                $i++;
+                            @endphp
+                        @endwhile
+                    </select>
+                </div>
+                @endforeach
 
                 <div class="container" style="width: 100%;">
                     <div class="label-container">
-                        <label for="wilaya" dir="rtl">ولاية <span style="color: red;ba">*</span></label>
+                        <label for="wilaya" dir="rtl">ولاية <span style="color: red;">*</span></label>
                         <label for="wilaya" dir="ltr">Wilaya <span style="color: red;">*</span></label>
                     </div>
                     <select dir="ltr" id="wilaya" name="wilaya" required>

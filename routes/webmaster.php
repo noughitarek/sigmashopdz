@@ -7,11 +7,15 @@ use App\Http\Controllers\webmaster\StockController;
 use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\Auth\VerifyEmailController;
 use App\Http\Controllers\webmaster\WilayaController;
+use App\Http\Controllers\webmaster\MessageController;
 use App\Http\Controllers\webmaster\ProductController;
+use App\Http\Controllers\webmaster\ProfileController;
 use App\Http\Controllers\webmaster\SettingController;
 use App\Http\Controllers\webmaster\CampaignController;
 use App\Http\Controllers\webmaster\CategoryController;
 use App\Http\Controllers\Auth\RegisteredUserController;
+use App\Http\Controllers\webmaster\AttributeController;
+use App\Http\Controllers\webmaster\DashboardController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\ConfirmablePasswordController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
@@ -20,8 +24,8 @@ use App\Http\Controllers\Auth\EmailVerificationNotificationController;
 
 
 Route::middleware('auth')->name('webmaster_')->namespace('App\Http\Controllers\webmaster')->prefix("webmaster")->group(function() {
-    Route::middleware('permission:consult_dashboard')->name('dashboard_')->controller(CategoryController::class)->prefix('dashboard')->group(function(){
-        Route::get('', function(){return "";})->name('index');
+    Route::middleware('permission:consult_dashboard')->name('dashboard_')->controller(DashboardController::class)->prefix('dashboard')->group(function(){
+        Route::get('', 'index')->name('index');
     });
     Route::middleware('permission:consult_campaigns')->name('campaigns_')->controller(CampaignController::class)->prefix('campaigns')->group(function(){
         Route::get('', 'index')->name('index');
@@ -50,6 +54,15 @@ Route::middleware('auth')->name('webmaster_')->namespace('App\Http\Controllers\w
         Route::put('{product}/edit', 'update')->name('update')->middleware('permission:edit_products');
         Route::delete('{product}/destroy', 'destroy')->name('destroy')->middleware('permission:delete_products');
     });
+    Route::middleware('permission:consult_attributes')->name('attributes_')->controller(AttributeController::class)->prefix('attributes')->group(function(){
+        Route::get('', 'index')->name('index');
+        Route::get('create', 'create')->name('create')->middleware('permission:create_attributes');
+        Route::post('create', 'store')->name('store')->middleware('permission:create_attributes');
+        Route::get('{attribute}', 'show')->name('show');
+        Route::get('{attribute}/edit', 'edit')->name('edit')->middleware('permission:edit_attributes');
+        Route::put('{attribute}/edit', 'update')->name('update')->middleware('permission:edit_attributes');
+        Route::delete('{attribute}/destroy', 'destroy')->name('destroy')->middleware('permission:delete_attributes');
+    });
     Route::middleware('permission:consult_pages')->name('pages_')->controller(PageController::class)->prefix('pages')->group(function(){
         Route::get('', 'index')->name('index');
         Route::get('create', 'create')->name('create')->middleware('permission:create_pages');
@@ -75,13 +88,9 @@ Route::middleware('auth')->name('webmaster_')->namespace('App\Http\Controllers\w
         Route::get('{order}/edit', 'edit')->name('edit')->middleware('permission:edit_orders');
         Route::put('{order}/edit', 'update')->name('update')->middleware('permission:edit_orders');
     });
-    Route::middleware('permission:consult_messages')->name('messages_')->controller(CategoryController::class)->prefix('messages')->group(function(){
+    Route::middleware('permission:consult_messages')->name('messages_')->controller(MessageController::class)->prefix('messages')->group(function(){
         Route::get('', 'index')->name('index');
-        Route::get('create', 'create')->name('create')->middleware('permission:create_messages');
-        Route::post('create', 'store')->name('store')->middleware('permission:create_messages');
         Route::get('{message}', 'show')->name('show');
-        Route::get('{message}/edit', 'edit')->name('edit')->middleware('permission:edit_messages');
-        Route::put('{message}/edit', 'update')->name('update')->middleware('permission:edit_messages');
         Route::delete('{message}/destroy', 'destroy')->name('destroy')->middleware('permission:delete_messages');
     });
     Route::middleware('permission:consult_stock')->name('stock_')->controller(StockController::class)->prefix('stock')->group(function(){
@@ -118,10 +127,10 @@ Route::middleware('auth')->name('webmaster_')->namespace('App\Http\Controllers\w
         Route::get('', 'index')->name('index');
         Route::post('edit', 'edit')->name('edit')->middleware('permission:edit_settings');
     });
-    Route::name('profile_')->controller(SettingController::class)->prefix('profile')->group(function(){
-        Route::get('', 'profile')->name('index');
+    Route::name('profile_')->controller(ProfileController::class)->prefix('profile')->group(function(){
+        Route::get('', 'index')->name('index');
         Route::post('edit', 'update')->name('edit');
-        Route::post('password/edit', 'password_edit')->name('password_edit');
+        Route::put('password/edit', 'password_edit')->name('password_edit');
     });
     Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
 });

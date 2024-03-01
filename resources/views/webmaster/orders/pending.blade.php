@@ -45,6 +45,11 @@
                     Home  
                   </span>
                   @endif
+                  @foreach($order->Attributes() as $attribute)
+                  <span class="badge bg-primary">
+                    {{$attribute->value}}
+                  </span>
+                  @endforeach
                 </p>
               </td>
               <td >

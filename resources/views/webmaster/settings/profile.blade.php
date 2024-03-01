@@ -28,6 +28,7 @@
 		<div class="tab-content">
 			<div class="tab-pane fade show active" id="account" role="tabpanel">
 				<form action="{{route('webmaster_profile_edit')}}" method="POST" enctype="multipart/form-data">
+					@csrf
 					<div class="card">
 						<div class="card-header">
 							<h5 class="card-title mb-0">Public info</h5>
@@ -45,11 +46,11 @@
 										</div>
 										<div class="mb-3">
 											<label class="form-label" for="phone">Phone</label>
-											<input type="email" class="form-control" name="phone" id="phone" value="{{$data['user']->phone}}">
+											<input type="phone" class="form-control" name="phone" id="phone" value="{{$data['user']->phone}}">
 										</div>
 										<div class="mb-3">
 											<label class="form-label" for="phone2">Phone2</label>
-											<input type="email" class="form-control" name="phone2" id="phone2" value="{{$data['user']->phone2}}">
+											<input type="phone" class="form-control" name="phone2" id="phone2" value="{{$data['user']->phone2}}">
 										</div>
 									</div>
 									<div class="col-md-4">
@@ -70,6 +71,8 @@
 			</div>
 			<div class="tab-pane fade" id="password" role="tabpanel">
 				<form action="{{route('webmaster_profile_password_edit')}}" method="POST">
+					@csrf
+					@method('put')
 					<div class="card">
 						<div class="card-body">
 							<h5 class="card-title">Password</h5>

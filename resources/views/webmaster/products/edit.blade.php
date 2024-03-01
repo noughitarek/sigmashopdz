@@ -32,13 +32,6 @@
                         <div class="text-danger">{{ $message }}</div>
                         @enderror
                     </div>
-                    <div class="mb-3">
-                        <label for="order" class="form-label">Order</label>
-                        <input type="number" name="order" class="form-control" id="order" value="{{$data['product']->order}}">
-                        @error('order')
-                        <div class="text-danger">{{ $message }}</div>
-                        @enderror
-                    </div>
                 </div>
             </div>
         </div>

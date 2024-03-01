@@ -16,7 +16,6 @@ return new class extends Migration
             
             $table->string('name');
             $table->string('slug')->unique();
-            $table->integer('order');
 
             $table->double('price');
             $table->double('old_price')->nullable();

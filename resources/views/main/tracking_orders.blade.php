@@ -5,7 +5,7 @@
     <p>يرجى ملئ النموذج</p>
 </section>
 <section id="form-details">
-    <form method="POST" action="{{route('main_tracking_lookup')}}">
+    <form method="POST" action="{{route('main_pages_tracking_lookup')}}">
         @csrf
         <h2>يرجى ملئ النموذج </h2>
         

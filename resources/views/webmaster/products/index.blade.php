@@ -13,7 +13,7 @@
   </div>
   @foreach($data["products"] as $product)
   <div class="col-12 col-lg-4 col-xxl-3 d-flex">
-    <div class="card flex-fill">
+    <div class="card flex-fill img-thumbnail">
       <a href="{{route('webmaster_products_show', $product->id)}}">
         <img style="height: 300px;object-fit: cover;" class="card-img-top" src="{{asset('/img/products/'.explode(',', $product->photos)[0])}}" alt="{{$product->name}}">
       </a>

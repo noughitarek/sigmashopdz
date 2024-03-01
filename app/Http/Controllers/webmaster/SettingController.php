@@ -18,12 +18,6 @@ class SettingController extends Controller
         $data["can_edit"] = Auth::user()->Has_permission("edit_settings");
         return view("webmaster.settings.index")->with("data", $data);
     }
-    public function profile()
-    {
-        $data["title"] = 'Settings';
-        $data["user"] = Auth::user();
-        return view("webmaster.settings.profile")->with("data", $data);
-    }
     
     public function edit(Request $request)
     {
@@ -48,7 +42,18 @@ class SettingController extends Controller
             $request->file('icon')->move(public_path('img/images'), $logoTallName);
             $data['icon'] = 'images/'.$logoTallName;
         }
-
+        for($i=1;$i<=6;$i++)
+        {
+            $data['feature'.$i]['picture'] = config('settings.feature'.$i)['picture'];
+            if ($request->hasFile('feature'.$i)) {
+                if(array_key_exists('picture', $request['feature'.$i]))
+                {
+                    $picture = time() . '_' . $request->file('feature'.$i)['picture']->getClientOriginalName();
+                    $request->file('feature'.$i)['picture']->move(public_path('img/website/features/'), $picture);
+                    $data['feature'.$i]['picture'] = 'website/features/'.$picture;
+                }
+            }
+        }
         
         foreach($data as $key=>$value){
             if(is_array($value)){

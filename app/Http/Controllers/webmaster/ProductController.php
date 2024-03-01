@@ -50,7 +50,6 @@ class ProductController extends Controller
         $product = Product::create([
             'name'  => $request->input('name'),
             'slug'  => $request->input('slug'),
-            'order' => $request->input('order'),
 
             'price' => $request->input('price'),
             'old_price' => $request->input('old_price')?$request->input('old_price'):null,
@@ -127,7 +126,6 @@ class ProductController extends Controller
         $product->update([
             'name'  => $request->input('name'),
             'slug'  => $request->input('slug'),
-            'order' => $request->input('order'),
 
             'price' => $request->input('price'),
             'old_price' => $request->input('old_price')?$request->input('old_price'):null,

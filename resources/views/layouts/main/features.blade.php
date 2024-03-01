@@ -1,8 +1,8 @@
 <section id="feature" class="section-p1">
-    @foreach(config('settings.features') as $feature)
+    @for($i=1;$i<=6;$i++)
     <div class="fe-box">
-        <img src="{{asset('/img/'.$feature['picture'])}}" alt="{{$feature['content']}}">
-        <h6>{{$feature['content']}}</h6>
+        <img src="{{asset('/img/'.config('settings.feature'.$i)['picture'])}}" alt="{{config('settings.feature'.$i)['content']}}">
+        <h6>{{config('settings.feature'.$i)['content']}}</h6>
     </div>
-    @endforeach
+    @endfor
 </section>

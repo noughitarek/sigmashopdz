@@ -33,31 +33,29 @@ return [
         'side4' => 'تطبيقاتنا',
     ),
 
-    'features' => array(
-        array(
-            'picture' => 'website/features/f1.png',
-            'content' => 'توصيل متوفر 58 ولاية',
-        ),
-        array(
-            'picture' => 'website/features/f2.png',
-            'content' => 'توصيل في وقت قياسي',
-        ),
-        array(
-            'picture' => 'website/features/f3.png',
-            'content' => 'توفير أموال',
-        ),
-        array(
-            'picture' => 'website/features/f4.png',
-            'content' => 'عروض و تخفيضات',
-        ),
-        array(
-            'picture' => 'website/features/f5.png',
-            'content' => 'إرضاء العملاء',
-        ),
-        array(
-            'picture' => 'website/features/f6.png',
-            'content' => 'دعم متوفر',
-        ),
+    'feature1' => array(
+        'picture' => 'website/features/f1.png',
+        'content' => 'توصيل متوفر 58 ولاية',
+    ),
+    'feature2' => array(
+        'picture' => 'website/features/f2.png',
+        'content' => 'توصيل في وقت قياسي',
+    ),
+    'feature3' => array(
+        'picture' => 'website/features/f3.png',
+        'content' => 'توفير أموال',
+    ),
+    'feature4' => array(
+        'picture' => 'website/features/f4.png',
+        'content' => 'عروض و تخفيضات',
+    ),
+    'feature5' => array(
+        'picture' => 'website/features/f5.png',
+        'content' => 'إرضاء العملاء',
+    ),
+    'feature6' => array(
+        'picture' => 'website/features/f6.png',
+        'content' => 'دعم متوفر',
     ),
 
     "ecotrack_link" => "https://rblivraison.ecotrack.dz/",

@@ -37,7 +37,7 @@
         <div class="col-12 col-lg-12 col-xxl-12 d-flex">
             <div class="card flex-fill">
                 <div class="card-header d-flex justify-content-between align-items-center row">
-                <div class="mb-3">
+                    <div class="mb-3">
                         <label for="product" class="form-label">Product</label>
                         <select class="form-select mb-3" name="product">
                             @foreach($data["products"] as $product)

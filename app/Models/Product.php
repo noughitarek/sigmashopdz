@@ -172,15 +172,29 @@ class Product extends Model
         foreach($restock as $order){
             $stock += $order->quantity;
         }
-        foreach($this->Delivery_orders() as $order){
+        $orders = Order::
+        where('shipped_at', "!=", null)
+        ->orWhere('validated_at', "!=", null)
+        ->orWhere('delivery_at', "!=", null)
+        ->orWhere('delivered_at', "!=", null)
+        ->orWhere('ready_at', "!=", null)
+        ->orWhere('recovered_at', "!=", null)
+        ->orWhere('back_at', "!=", null)
+        ->get();
+
+        foreach($orders as $order){
             $stock -= $order->quantity;
         }
-        foreach($this->Delivered_orders() as $order){
-            $stock -= $order->quantity;
-        }
-        foreach($this->Back_orders() as $order){
+        $orders = Order::where('back_ready_at', "!=", null)
+        ->get();
+
+        foreach($orders as $order){
             $stock += $order->quantity;
         }
         return $stock;
+    }
+    public function Attributes()
+    {
+        return Attribute::where('product', $this->id)->get();
     }
 }

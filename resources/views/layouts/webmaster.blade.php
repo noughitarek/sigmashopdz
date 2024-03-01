@@ -22,6 +22,21 @@
 @endsection
 @section('main_scripts')
 	<script src="{{asset('js/app.js')}}"></script>
+    
+    @if(session('success'))
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+                var message = '{{ session('success') }}';
+                var type = "success";
+                var duration = 5000;
+                var ripple = false;
+                var dismissible = true;
+                var positionX = "right";
+                var positionY = "top";
+                window.notyf.open({type, message, duration, ripple, dismissible, position:{x: positionX, y: positionY}});
+        });
+    </script>
+    @endif
 	<!--<script src="{{asset('js/settings.js')}}"></script>-->
     @yield('scripts')
 @endsection

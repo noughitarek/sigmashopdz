@@ -5,7 +5,7 @@
     <p>يرجى ملئ النموذج</p>
 </section>
 <section id="form-details">
-    <form method="POST" action="{{route('main_contact_store')}}">
+    <form method="POST" action="{{route('main_pages_contact_store')}}">
         @csrf
         <h2>يرجى ملئ النموذج </h2>
 

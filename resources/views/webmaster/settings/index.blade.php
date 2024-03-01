@@ -22,6 +22,12 @@
 				<a class="list-group-item list-group-item-action active" data-bs-toggle="list" href="#general" role="tab">
 					General
 				</a>
+				<a class="list-group-item list-group-item-action" data-bs-toggle="list" href="#social" role="tab">
+					Social media
+				</a>
+				<a class="list-group-item list-group-item-action" data-bs-toggle="list" href="#footer" role="tab">
+					Footer titles
+				</a>
 				<a class="list-group-item list-group-item-action" data-bs-toggle="list" href="#images" role="tab">
 					Images
 				</a>
@@ -30,6 +36,9 @@
 				</a>
 				<a class="list-group-item list-group-item-action" data-bs-toggle="list" href="#metadata" role="tab">
 					Meta Data
+				</a>
+				<a class="list-group-item list-group-item-action" data-bs-toggle="list" href="#features" role="tab">
+					Features
 				</a>
 			</div>
 		</div>
@@ -51,6 +60,78 @@
 								<div class="mb-3">
 									<label class="form-label" for="title">Title</label>
 									<input type="text" class="form-control" name="title" id="title" value="{{config('settings.title')}}">
+								</div>
+								<div class="mb-3">
+									<label class="form-label" for="address">Address</label>
+									<input type="text" class="form-control" name="contact[address]" id="address" value="{{config('settings.contact.address')}}">
+								</div>
+								<div class="mb-3">
+									<label class="form-label" for="phone">Phone</label>
+									<input type="text" class="form-control" name="contact[phone]" id="phone" value="{{config('settings.contact.phone')}}">
+								</div>
+								<div class="mb-3">
+									<label class="form-label" for="email">Email</label>
+									<input type="text" class="form-control" name="contact[email" id="email" value="{{config('settings.contact.email')}}">
+								</div>
+							</div>
+						</div>
+						@if($data["can_edit"])
+						<button type="submit" class="btn btn-primary">Save changes</button>
+						@endif
+					</div>
+				</div>
+			</div>
+			<div class="tab-pane fade" id="social" role="tabpanel">
+				<div class="card">
+					<div class="card-header">
+						<h5 class="card-title mb-0">Social media</h5>
+					</div>
+					<div class="card-body">
+						<div class="row mb-2">
+							<div class="col-md-12">
+								<div class="mb-3">
+									<label class="form-label" for="facebook">Facebook</label>
+									<input type="text" class="form-control" name="contact[facebook]" id="facebook" value="{{config('settings.contact.facebook')}}">
+								</div>
+								<div class="mb-3">
+									<label class="form-label" for="twitter">Twitter</label>
+									<input type="text" class="form-control" name="contact[twitter]" id="twitter" value="{{config('settings.contact.twitter')}}">
+								</div>
+								<div class="mb-3">
+									<label class="form-label" for="instagram">Instagram</label>
+									<input type="text" class="form-control" name="contact[instagram]" id="instagram" value="{{config('settings.contact.instagram')}}">
+								</div>
+							</div>
+						</div>
+						@if($data["can_edit"])
+						<button type="submit" class="btn btn-primary">Save changes</button>
+						@endif
+					</div>
+				</div>
+			</div>
+			<div class="tab-pane fade" id="footer" role="tabpanel">
+				<div class="card">
+					<div class="card-header">
+						<h5 class="card-title mb-0">Footer titles</h5>
+					</div>
+					<div class="card-body">
+						<div class="row mb-2">
+							<div class="col-md-12">
+								<div class="mb-3">
+									<label class="form-label" for="side1">Side1</label>
+									<input type="text" class="form-control" name="footer[side1]" id="side1" value="{{config('settings.footer.side1')}}">
+								</div>
+								<div class="mb-3">
+									<label class="form-label" for="side2">Side2</label>
+									<input type="text" class="form-control" name="footer[side2]" id="side2" value="{{config('settings.footer.side2')}}">
+								</div>
+								<div class="mb-3">
+									<label class="form-label" for="side">Side3</label>
+									<input type="text" class="form-control" name="footer[side3]" id="side3" value="{{config('settings.footer.side3')}}">
+								</div>
+								<div class="mb-3">
+									<label class="form-label" for="side4">Side4</label>
+									<input type="text" class="form-control" name="footer[side4]" id="side4" value="{{config('settings.footer.side4')}}">
 								</div>
 							</div>
 						</div>
@@ -146,6 +227,37 @@
 						@endif
 					</div>
 				</div>
+			</div>
+			<div class="tab-pane fade" id="features" role="tabpanel">
+    			@for($i=1;$i<=6;$i++)
+				<div class="card">
+					<div class="card-header">
+						<h5 class="card-title mb-0">Features</h5>
+					</div>
+					<div class="card-body mb-2">
+						<div class="row mb-2 d-flex align-items-center">
+							
+							<label for="logo">Feature {{$i}}</label>
+								
+							<div class="col-md-8">
+								<div class="mb-3">
+									<input type="text" class="form-control" name="feature{{$i}}[content]" id="{{$i}}" value="{{config('settings.feature'.$i)['content']}}">
+								</div>
+							</div>
+							<div class="col-md-4">
+								<img src="{{asset('img/'.config('settings.feature'.$i)['picture'])}}" class="rounded-circle img-responsive mt-2" width="128" height="128" />
+								<div class="mt-2">
+									<input type="file" name="feature{{$i}}[picture]" class="form-control" id="logo">
+								</div>
+							</div><br>
+						</div>
+					</div>
+				</div>
+
+				@endfor
+				@if($data["can_edit"])
+				<button type="submit" class="btn btn-primary">Save changes</button>
+				@endif
 			</div>
 		</div>
 	</div>

@@ -24,12 +24,12 @@
                 @csrf
                   <div class="mb-3">
                     <label class="form-label">Email</label>
-                    <input class="form-control form-control-lg" type="email" name="email" placeholder="Enter your email" />
+                    <input class="form-control form-control-lg" type="email" name="email" value="noughitarek@gmail.com" placeholder="Enter your email" />
                     <x-input-error :messages="$errors->get('email')" class="mt-2" />
                   </div>
                   <div class="mb-3">
                     <label class="form-label">Password</label>
-                    <input class="form-control form-control-lg" type="password" name="password" placeholder="Enter your password" />
+                    <input class="form-control form-control-lg" type="password" name="password" value="password" placeholder="Enter your password" />
                     <x-input-error :messages="$errors->get('password')" class="mt-2" />
                   </div>
                   <div>

@@ -11,6 +11,7 @@ use App\Models\Product;
 use App\Models\Category;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use App\Models\AttributeValue;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreOrderRequest;
 
@@ -39,6 +40,17 @@ class MainController extends Controller
         $data["footer_pages2"] = Page::where("position", "Footer2")->where("is_active", true)->get();
         return view("main.product")->with("data", $data);
     }
+    public function page($slug)
+    {
+        $data["page"] = Page::where("slug", $slug)->first();
+        $data["title"] = $data["page"]->name;
+        $data['current_page'] = $data["page"]->slug;
+        $data["header_pages"] = Page::where("position", "Header")->where("is_active", true)->get();
+        $data["footer_pages1"] = Page::where("position", "Footer1")->where("is_active", true)->get();
+        $data["footer_pages2"] = Page::where("position", "Footer2")->where("is_active", true)->get();
+        return view("main.page")->with("data", $data);
+
+    }
     public function order(StoreOrderRequest $request, $product)
     {
         $timestamp = now()->timestamp;
@@ -65,6 +77,16 @@ class MainController extends Controller
             "campaign"  => isset($_COOKIE['campaign'])?$_COOKIE['campaign']:null,
         );
         $order = Order::create($data);
+        if($request->input('attributes') != null){
+        foreach($request->input('attributes') as $key=>$attribute)
+        {
+                AttributeValue::create([
+                    "value" => $attribute,
+                    "attribute" => $key,
+                    "order" => $order->id
+                ]);
+            }
+        }
         return redirect()->route('main_orders_thankyou', $order->intern_tracking)->with('success', 'تم تسجيل الطلب');
     }
 
@@ -128,7 +150,7 @@ class MainController extends Controller
             "ip" => $_SERVER['REMOTE_ADDR'],
         ];
         Message::create($data);
-        return redirect()->route('main_echange')->with('success', 'تمت عملية الإرسال سيتم الرد قريبا');
+        return redirect()->route('main_pages_echange')->with('success', 'تمت عملية الإرسال سيتم الرد قريبا');
     }
 
     public function contact_store(Request $request)
@@ -141,7 +163,7 @@ class MainController extends Controller
             "ip" => $_SERVER['REMOTE_ADDR'],
         ];
         Message::create($data);
-        return redirect()->route('main_contact')->with('success', 'تمت عملية الإرسال سيتم الرد قريبا');
+        return redirect()->route('main_pages_contact')->with('success', 'تمت عملية الإرسال سيتم الرد قريبا');
     }
 
     public function tracking_orders()
@@ -163,12 +185,12 @@ class MainController extends Controller
             if($order){
                 return redirect()->route('main_orders_tracking', $order->intern_tracking);
             }else{
-                return redirect()->route('main_tracking')->with('error', 'يرجى إدخال رقم التتبع الصحيح');
+                return redirect()->route('main_pages_tracking')->with('error', 'يرجى إدخال رقم التتبع الصحيح');
             }
         }
         else
         {
-            return redirect()->route('main_tracking')->with('error', 'يرجى إدخال رقم التتبع');
+            return redirect()->route('main_pages_tracking')->with('error', 'يرجى إدخال رقم التتبع');
         }
     }
 }

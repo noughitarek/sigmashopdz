@@ -2,9 +2,9 @@
     <div class="col">
         <h4>{{config('settings.footer.side1')}}</h4>
         <img src="{{asset('img/'.config('settings.logo'))}}" class="logo" alt="{{config('settings.title')}}">
-        <p><strong>العنوان:</strong> {{config('settings.contact')["address"]}}</p>
-        <p><strong>رقم الهاتف:</strong> <span dir="ltr">{{config('settings.contact')["phone"]}}</span></p>
-        <p><strong>البريد الإلكتروني:</strong> <span dir="ltr">{{config('settings.contact')["email"]}}</span></p>
+        <p><strong>العنوان:</strong> {!!config('settings.contact')["address"]!!}</p>
+        <p><strong>رقم الهاتف:</strong> <span dir="ltr">{!!config('settings.contact')["phone"]!!}</span></p>
+        <p><strong>البريد الإلكتروني:</strong> <span dir="ltr">{!!config('settings.contact')["email"]!!}</span></p>
         <p>
             <a href="{{config('settings.contact')["facebook"]}}"><i class="fab fa-facebook-f"></i></a> &nbsp;
             <a href="{{config('settings.contact')["twitter"]}}"><i class="fab fa-twitter"></i></a> &nbsp;
@@ -16,15 +16,15 @@
         @foreach($data["footer_pages1"] as $page)
         <a href="{{route('main_pages_show', $page->slug)}}">{{$page->title}}</a>
         @endforeach
-        <a href="{{route('main_echange')}}">طلب تغيير منتج</a>
-        <a href="{{route('main_contact')}}">إتصل بنا</a>
+        <a href="{{route('main_pages_echange')}}">طلب تغيير منتج</a>
+        <a href="{{route('main_pages_contact')}}">إتصل بنا</a>
     </div>
     <div class="col">
         <h4>{{config('settings.footer.side3')}}</h4>
         @foreach($data["footer_pages2"] as $page)
         <a href="{{route('main_pages_show', $page->slug)}}">{{$page->title}}</a>
         @endforeach
-        <a href="{{route('main_tracking')}}">تتبع الطرود</a>
+        <a href="{{route('main_pages_tracking')}}">تتبع الطرود</a>
     </div>
     <div class="col install">
         <h4>{{config('settings.footer.side4')}}</h4>

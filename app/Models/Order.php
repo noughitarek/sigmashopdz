@@ -610,4 +610,9 @@ class Order extends Model
         }
 
     }
+
+    public function Attributes()
+    {
+        return AttributeValue::where('order', $this->id)->get();
+    }
 }
