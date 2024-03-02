@@ -12,10 +12,11 @@
         </div>
     </div>
     <div class="single-pro-details">
-        <h6 id="product_navigation" >
-            <a href="{{route('main_index')}}">الصفحة الرئيسية</a> /
-            {{$data['product']->Category()->name}}
-        </h6>
+        <h5 id="product_navigation" >
+            الصفحة الرئيسية /
+            {{$data['product']->Category()->name}} /
+            {{$data['product']->name}}
+        </h5>
         <h4 id="product_name">{{$data['product']->name}}</h4>
         <center dir="ltr">
             <h4>
@@ -34,7 +35,7 @@
 			<form id="orderForm" action="{{route('main_products_order', $data['product']->slug)}}" method="POST">
                 @csrf
                 
-			    <h2 id="order">للطلب</h2>
+			    <center><h2 id="order">للطلب</h2></center>
                 <div class="container" style="width: 100%;">
                     <div class="label-container">
                         <label for="name" dir="rtl">الإسم الكامل <span style="color: red;ba">*</span></label>
