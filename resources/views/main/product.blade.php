@@ -161,10 +161,12 @@
 					<label for="totalPrice">السعر الإجمالي:</label>
 					<h2 style="color: green; text-align: center;" id="totalPrice">يرجى إدخال الولاية و البلدية</h2>
 					<input type="hidden" name="total_price" class="form-control" id="totalPriceInput" value="0" readonly>
-				</div>
-				<button id="submitButton" type="submit" class="normal" ><b>أرسل الطلب</b></button><br>
-                <span id="errorMessage" style="color: red;font-size: 15px;">يرجى إدخال معلوماتك بالشكل الصحيح لتقديم الطلب</span>
-			</form>
+				</div><br>
+                <center>
+                    <button id="submitButton" type="submit" class="normal" ><b>أرسل الطلب</b></button><br>
+                    <span id="errorMessage" style="color: red;font-size: 15px;">يرجى إدخال معلوماتك بالشكل الصحيح لتقديم الطلب</span>
+                </center>
+            </form>
         </section>
         <div>
             {!!$data['product']->description!!}
