@@ -112,7 +112,9 @@ body {
 #navbar li a.active {
     color: #ed0d91;
 }
-
+#product_description{
+    margin-right: 40px;
+}
 #navbar li a:hover::after,
 #navbar li a.active::after {
     content: "";

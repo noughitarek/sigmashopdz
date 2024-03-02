@@ -168,7 +168,7 @@
                 </center>
             </form>
         </section>
-        <div>
+        <div id="product_description">
             {!!$data['product']->description!!}
         </div>
     </div>
