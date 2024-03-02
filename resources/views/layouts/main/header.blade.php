@@ -18,12 +18,12 @@
             <li>
                 <a class="{{$data['current_page']=='contact'?'active':''}}" href="{{route('main_pages_contact')}}">إتصل بنا</a>
             </li>
-            <li id="lg-bag"><a href="cart.html"><i class="far fa-shopping-bag"></i></a></li>
+            <li id="lg-bag"><a href="#"><i class="far fa-shopping-bag"></i></a></li>
             <a href="#" id="close"><i class="far fa-times"></i></a>
         </ul>
     </div>
     <div id="mobile">
-        <a href="cart.html"><i class="far fa-shopping-bag"></i></a>
+        <a href="#"><i class="far fa-shopping-bag"></i></a>
         <i id="bar" class="fas fa-outdent"></i>
     </div>
 </section>
