@@ -25,7 +25,7 @@ class Category extends Model
     }
     public function Products()
     {
-        $products = Product::where("category", $this->id)->where("is_active", true)->get();
+        $products = Product::where("category", $this->id)->get();
         return $products;
     }
     public function Orders()

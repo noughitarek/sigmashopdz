@@ -22,6 +22,16 @@ class UserSeeder extends Seeder
         }
         
         $user = User::create([
+            'name' => 'System',
+            'email' => 'admin@gmail.com',
+            'phone' => '',
+            'role' => 'System',
+            'password' => Hash::make('password'),
+            'is_active' => false,
+            'email_verified_at' => now(),
+        ]);
+        
+        $user = User::create([
             'name' => 'Tarek',
             'email' => 'noughitarek@gmail.com',
             'phone' => '0699894417',
@@ -30,6 +40,7 @@ class UserSeeder extends Seeder
             'password' => Hash::make('password'),
             'profile_image' => '',
             'is_active' => true,
+            'created_by' => 1,
             'email_verified_at' => now(),
         ]);
         
@@ -42,6 +53,7 @@ class UserSeeder extends Seeder
             'password' => Hash::make('password'),
             'profile_image' => '',
             'is_active' => true,
+            'created_by' => 1,
             'email_verified_at' => now(),
         ]);
     }

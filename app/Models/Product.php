@@ -172,20 +172,26 @@ class Product extends Model
         foreach($restock as $order){
             $stock += $order->quantity;
         }
-        $orders = Order::
-        where('shipped_at', "!=", null)
-        ->orWhere('validated_at', "!=", null)
-        ->orWhere('delivery_at', "!=", null)
-        ->orWhere('delivered_at', "!=", null)
-        ->orWhere('ready_at', "!=", null)
-        ->orWhere('recovered_at', "!=", null)
-        ->orWhere('back_at', "!=", null)
+        
+        $orders = Order::where(function ($query) {
+            $query->where(function ($subquery) {
+                $subquery->where('shipped_at', '<>', null)
+                    ->orWhere('validated_at', "!=", null)
+                    ->orWhere('delivery_at', "!=", null)
+                    ->orWhere('delivered_at', "!=", null)
+                    ->orWhere('ready_at', "!=", null)
+                    ->orWhere('recovered_at', "!=", null)
+                    ->orWhere('back_at', "!=", null);
+            })
+            ->where('product', $this->id);
+        })
         ->get();
 
         foreach($orders as $order){
             $stock -= $order->quantity;
         }
         $orders = Order::where('back_ready_at', "!=", null)
+        ->where('product', $this->id)
         ->get();
 
         foreach($orders as $order){

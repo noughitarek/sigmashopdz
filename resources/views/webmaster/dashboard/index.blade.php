@@ -12,6 +12,22 @@
     </div>
     <div class="row">
         @if(Auth::user()->Has_permission("consult_all_orders"))
+        <div class="col-12 col-lg-12 col-xxl-3 d-flex">
+            <div class="card flex-fill">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col mt-0">
+                            <h5 class="card-title">Unvalidated payments</h5>
+                        </div>
+                        <div class="col-auto">
+                            <a href="{{route('webmaster_admins_payement_validate')}}" class="btn btn-sm btn-primary" for="send">Validate</a>
+                        </div>
+                    </div>
+                    <h1 class="mt-1 mb-3">{{$data["payedUnvalidated"]}} DZD</h1>
+                </div>
+            </div>
+        </div>
+
         <div class="col-sm-6 col-xl-3">
             <div class="card">
                 <div class="card-body">
@@ -120,8 +136,8 @@ var options = {
     name: 'Delivery',
     data: [
         @foreach(\Carbon\CarbonPeriod::create(Carbon\Carbon::now()->subMonth(), Carbon\Carbon::now()) as $date)
-            @if(isset($data['totalOrdersPerDay'][$date->format("Y-m-d")]))
-                {{count($data['totalOrdersPerDay'][$date->format("Y-m-d")])}}
+            @if(isset($data['deliveryOrdersPerDay'][$date->format("Y-m-d")]))
+                {{count($data['deliveryOrdersPerDay'][$date->format("Y-m-d")])}}
             @else
                 0
             @endif
@@ -156,8 +172,8 @@ var options = {
       name: 'Canceled',
       data: [
         @foreach(\Carbon\CarbonPeriod::create(Carbon\Carbon::now()->subMonth(), Carbon\Carbon::now()) as $date)
-            @if(isset($data['backOrdersPerDay'][$date->format("Y-m-d")]))
-                {{count($data['backOrdersPerDay'][$date->format("Y-m-d")])}}
+            @if(isset($data['canceledOrdersPerDay'][$date->format("Y-m-d")]))
+                {{count($data['canceledOrdersPerDay'][$date->format("Y-m-d")])}}
             @else
                 0
             @endif
@@ -168,8 +184,8 @@ var options = {
       name: 'Pending',
       data: [
         @foreach(\Carbon\CarbonPeriod::create(Carbon\Carbon::now()->subMonth(), Carbon\Carbon::now()) as $date)
-            @if(isset($data['backOrdersPerDay'][$date->format("Y-m-d")]))
-                {{count($data['backOrdersPerDay'][$date->format("Y-m-d")])}}
+            @if(isset($data['pendingOrdersPerDay'][$date->format("Y-m-d")]))
+                {{count($data['pendingOrdersPerDay'][$date->format("Y-m-d")])}}
             @else
                 0
             @endif

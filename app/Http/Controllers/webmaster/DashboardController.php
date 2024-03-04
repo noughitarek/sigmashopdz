@@ -59,9 +59,20 @@ class DashboardController extends Controller
         ->where('created_at', '>', Carbon::now()->subMonths(2))
         ->sum('amount');
 
-        $data['unconfirmedOrdersPerDay'] = Order::
+
+        $data['totalOrdersPerDay'] = Order::
         where('created_at', '>', Carbon::now()->subMonth())
-        ->where("confirmed_at", null)
+        ->get()
+        ->groupBy(function ($item) {
+            return $item->created_at->format('Y-m-d');
+        });
+
+        $data['deliveryOrdersPerDay'] = Order::
+        where('created_at', '>', Carbon::now()->subMonth())
+        ->where("delivery_at", "!=", null)
+        ->where("canceled_at", null)
+        ->where("delivered_at", null)
+        ->where("back_at", null)
         ->get()
         ->groupBy(function ($item) {
             return $item->created_at->format('Y-m-d');
@@ -69,14 +80,7 @@ class DashboardController extends Controller
 
         $data['canceledOrdersPerDay'] = Order::
         where('created_at', '>', Carbon::now()->subMonth())
-        ->where("canceled_at", null)
-        ->get()
-        ->groupBy(function ($item) {
-            return $item->created_at->format('Y-m-d');
-        });
-
-        $data['totalOrdersPerDay'] = Order::
-        where('created_at', '>', Carbon::now()->subMonth())
+        ->where("canceled_at", "!=", null)
         ->get()
         ->groupBy(function ($item) {
             return $item->created_at->format('Y-m-d');
@@ -98,24 +102,32 @@ class DashboardController extends Controller
             return $item->created_at->format('Y-m-d');
         });
 
+        $data['pendingOrdersPerDay'] = $data['totalOrdersPerDay']->count()
+            - $data['backOrdersPerDay']->count()
+            - $data['deliveredOrdersPerDay']->count()
+            - $data['canceledOrdersPerDay']->count()
+            - $data['deliveryOrdersPerDay']->count();
+
+
+        $data['payedUnvalidated'] = Order::where("recovered_by", null)->where("recovered_at", "!=", null)->sum("clean_price");
 
         if($data["last2MonthIncome"] != 0)
-            $data["lastMonthIncomeVar"] = ($data["lastMonthIncome"] - $data["last2MonthIncome"])/$data["last2MonthIncome"]*100;
+            $data["lastMonthIncomeVar"] = (int)(($data["lastMonthIncome"] - $data["last2MonthIncome"])/$data["last2MonthIncome"]*100);
         else 
             $data["lastMonthIncomeVar"] = 0;
         
         if($data["last2MonthOrders"] != 0)
-            $data["lastMonthOrdersVar"] = ($data["lastMonthOrders"] - $data["last2MonthOrders"])/$data["last2MonthOrders"]*100;
+            $data["lastMonthOrdersVar"] = (int)(($data["lastMonthOrders"] - $data["last2MonthOrders"])/$data["last2MonthOrders"]*100);
         else 
             $data["lastMonthOrdersVar"] = 0;
         
         if($data["last2MonthActivity"] != 0)
-            $data["lastMonthActivityVar"] = ($data["lastMonthActivity"] - $data["last2MonthActivity"])/$data["last2MonthActivity"]*100;
+            $data["lastMonthActivityVar"] = (int)(($data["lastMonthActivity"] - $data["last2MonthActivity"])/$data["last2MonthActivity"]*100);
         else 
             $data["lastMonthActivityVar"] = 0;
         
         if($data["last2MonthRevenue"] != 0)
-            $data["lastMonthRevenueVar"] = ($data["lastMonthRevenue"] - $data["last2MonthRevenue"])/$data["last2MonthRevenue"]*100;
+            $data["lastMonthRevenueVar"] = (int)(($data["lastMonthRevenue"] - $data["last2MonthRevenue"])/$data["last2MonthRevenue"]*100);
         else 
             $data["lastMonthRevenueVar"] = 0;
 

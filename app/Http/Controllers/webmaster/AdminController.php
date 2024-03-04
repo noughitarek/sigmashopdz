@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\webmaster;
 
 use App\Models\Admin;
+use App\Models\Order;
 use App\Models\Payement;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -26,7 +27,14 @@ class AdminController extends Controller
        $data["can_make_payement"] = Auth::user()->Has_permission("make_payement_admins");
        return view("webmaster.admins.index")->with("data", $data);
    }
-
+   public function payement_validate()
+   {
+        Order::where("recovered_by", null)->where("recovered_at", "!=", null)->update([
+            "recovered_by" => Auth::user()->id
+        ]);
+        
+        return redirect()->route('webmaster_dashboard_index')->with('success', 'Paiement created successfully');
+   } 
    /**
    * Display a listing of the resource.
    */

@@ -66,7 +66,7 @@
                   <i class="align-middle me-2 fas fa-fw fa-dollar-sign"></i>{{$category->Total_delivery_orders_amount()}} DZD
                 </span><br>
                 <span class="text-success">
-                  <i class="align-middle me-2 fas fa-fw fa-dollar-sign"></i>{{$category->Total_delivered_orders_number()}} DZD
+                  <i class="align-middle me-2 fas fa-fw fa-dollar-sign"></i>{{$category->Total_delivered_orders_amount()}} DZD
                 </span><br>
                 <span class="text-danger">
                   <i class="align-middle me-2 fas fa-fw fa-dollar-sign"></i>{{$category->Total_back_orders_amount()}} DZD

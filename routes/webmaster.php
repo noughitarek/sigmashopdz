@@ -121,6 +121,7 @@ Route::middleware('auth')->name('webmaster_')->namespace('App\Http\Controllers\w
         Route::put('{admin}/edit', 'update')->name('update')->middleware('permission:edit_admins');
         Route::get('{admin}/payement', 'payement')->name('payement')->middleware('permission:make_payement_admins');
         Route::post('{admin}/payement', 'payement_store')->name('payement_store')->middleware('permission:make_payement_admins');
+        Route::get('payement/validate', 'payement_validate')->name('payement_validate')->middleware('permission:make_payement_admins');
         Route::delete('{admin}/destroy', 'destroy')->name('destroy')->middleware('permission:delete_admins');
     });
     Route::middleware('permission:consult_settings')->name('settings_')->controller(SettingController::class)->prefix('settings')->group(function(){
