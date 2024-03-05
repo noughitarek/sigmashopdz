@@ -560,7 +560,7 @@ class Order extends Model
         }
     }
 
-    public static function Send_API($url, $data, $type="POST")
+    public static function Send_API0($url, $data, $type="POST")
     {
         if($type == "GET"){
             $submitUrl = $url.'?' . http_build_query($data);
@@ -610,7 +610,47 @@ class Order extends Model
         }
 
     }
+    public static function Send_API($url, $data, $type="POST")
+    {
+        $data = array(
+            'api_token' => config("settings.ecotrack_api"),
+            'url' => base64_encode($url),
+            'typeRequest' => $type=="POST"?'post':'get'
+        );
 
+        $helperUrl = "https://sigma-helper.000webhostapp.com/".'?' . http_build_query($data);
+
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $helperUrl);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+            'Content-Type: application/x-www-form-urlencoded',
+        ));
+        $result = curl_exec($ch);
+        
+        if (curl_errno($ch))
+        {
+            echo 'Error: Can\'t send api request\n';
+        }
+        elseif($result)
+        {
+            $resultData = json_decode($result, true);
+            curl_close($ch);
+            if(isset($resultData['message']) && $resultData['message'] == "Too Many Attempts.")
+            {
+                echo 'Error: Too Many Attempts\n';
+            }
+            else
+            {
+                return $resultData;
+            }
+        }
+        else
+        {
+            echo 'Error: Can\'t send api request 2\n';
+        }
+
+    }
     public function Attributes()
     {
         return AttributeValue::where('order', $this->id)->get();

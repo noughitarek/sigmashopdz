@@ -24,7 +24,7 @@ class Wilaya extends Model
         $data = array(
             'api_token' => config("settings.ecotrack_api"),
             'url' => base64_encode($apiUrl),
-            'type' => 'get'
+            'typeRequest' => 'get'
         );
 
         $helperUrl = "https://sigma-helper.000webhostapp.com/".'?' . http_build_query($data);
