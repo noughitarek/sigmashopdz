@@ -16,6 +16,7 @@ class OrderSeeder extends Seeder
      */
     public function run(): void
     {
+        return ;
         $file = fopen("database/seeds/payed_orders.csv", "r");
         $header = fgetcsv($file);
         while (($row = fgetcsv($file)) !== false) {
