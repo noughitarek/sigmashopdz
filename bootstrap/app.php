@@ -14,7 +14,7 @@
 $app = new Illuminate\Foundation\Application(
     $_ENV['APP_BASE_PATH'] ?? dirname(__DIR__)
 );
-if(isset($_SERVER["USERNAME"]) && $_SERVER["USERNAME"] != 'tr3h2')$app->usePublicPath($app->basePath('../public_html'));
+if(!isset($_SERVER["USERNAME"]))$app->usePublicPath($app->basePath('../public_html'));
 
 /*
 |--------------------------------------------------------------------------
