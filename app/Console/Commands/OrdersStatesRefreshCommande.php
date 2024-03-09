@@ -31,7 +31,6 @@ class OrdersStatesRefreshCommande extends Command
         $ordersToUpdate = [];
 
         foreach($orders as $order){
-            $ordersToUpdate[] = $order;
             if(($order->State() != "Archived" && 
                 $order->State() != "Doubled" && 
                 $order->State() != "Canceled" && 
@@ -42,7 +41,7 @@ class OrdersStatesRefreshCommande extends Command
                 ($order->State() == "Pending" && $order->tracking != null)
             )
             {
-                #$ordersToUpdate[] = $order;
+                $ordersToUpdate[] = $order;
             }
             if($order->State() == "Delivery" || $order->State() == "Shipped" || $order->State() == "Validated"){
                 #$order->Get_information();
