@@ -612,13 +612,13 @@ class Order extends Model
     }
     public static function Send_API($url, $data, $type="POST")
     {
-        $data = array(
+        $data0 = array(
             'api_token' => config("settings.ecotrack_api"),
             'url' => base64_encode($url),
             'typeRequest' => $type=="POST"?'post':'get'
         );
 
-        $helperUrl = "https://sigma-helper.000webhostapp.com/".'?' . http_build_query($data);
+        $helperUrl = "https://sigma-helper.000webhostapp.com/".'?' . http_build_query(array_merge($data, $data0));
 
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $helperUrl);

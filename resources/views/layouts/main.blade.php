@@ -36,5 +36,8 @@
 @section('main_scripts')
 	<script src="{{asset('js/all.js')}}"></script>
 	<!--<script src="{{asset('js/settings.js')}}"></script>-->
+    <script>
+    document.documentElement.style.setProperty('--main-color', '{{config("settings.mainColor")}}');
+    </script>
     @yield('scripts')
 @endsection

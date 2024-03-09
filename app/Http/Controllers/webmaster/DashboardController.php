@@ -4,8 +4,10 @@ namespace App\Http\Controllers\webmaster;
 
 use Carbon\Carbon;
 use App\Models\Order;
+use App\Models\Product;
 use App\Models\Activity;
 use App\Models\Payement;
+use App\Models\Dashboard;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -14,6 +16,9 @@ class DashboardController extends Controller
     public function index()
     {
         $data["title"] = 'Dashboard';
+        $data['products'] = Product::all();
+        $data["dashboard"] = Dashboard::class;
+        return view("webmaster.dashboard.index")->with("data", $data);
         
         $data["lastMonthRevenue"] = Order::
         where('delivered_at', '>', Carbon::now()
@@ -59,7 +64,7 @@ class DashboardController extends Controller
         ->where('created_at', '>', Carbon::now()->subMonths(2))
         ->sum('amount');
 
-
+        $data['products'] = Product::all();
         $data['totalOrdersPerDay'] = Order::
         where('created_at', '>', Carbon::now()->subMonth())
         ->get()

@@ -35,6 +35,8 @@
                 var positionY = "top";
                 window.notyf.open({type, message, duration, ripple, dismissible, position:{x: positionX, y: positionY}});
         });
+        document.documentElement.style.setProperty('--main-color', '#{{config("settings.webmasterColor")}}');
+
     </script>
     @endif
 	<!--<script src="{{asset('js/settings.js')}}"></script>-->

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\Order;
 use App\Models\Stock;
+use App\Models\Activity;
 use App\Models\Category;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Collection;
@@ -27,7 +28,22 @@ class Product extends Model
         'category'
     ];
 
-    
+    public function Activities()
+    {
+        return Activity::where("url", "LIKE", "%".$this->slug."%")->get();
+    }
+
+    public function OrdersPerActivities()
+    {
+        if(count($this->Activities()) != 0)
+        {
+            return (int)(count($this->Orders())/count($this->Activities())*100);
+        }
+        else
+        {
+            return 'n/a';
+        }
+    }
     public function Created_by():User
     {
         $user = User::where("id", $this->created_by)->first();

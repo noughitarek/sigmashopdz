@@ -5,6 +5,8 @@ use App\Http\Controllers\main\MainController;
 
 
 Route::name('main_')->controller(MainController::class)->group(function() {
+    Route::get('css/style.css', function (){ return view('css.style');} )->name('css');
+    
     Route::get('', 'index')->name('index');
 
     Route::name('pages_')->prefix('pages')->group(function(){

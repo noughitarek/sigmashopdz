@@ -77,7 +77,15 @@
 								</div>
 								<div class="mb-3">
 									<label class="form-label" for="email">Email</label>
-									<input type="text" class="form-control" name="contact[email" id="email" value="{{config('settings.contact.email')}}">
+									<input type="text" class="form-control" name="contact[email]" id="email" value="{{config('settings.contact.email')}}">
+								</div>
+								<div class="mb-3">
+									<label class="form-label" for="stockAlertThreshold">Stock alert threshold</label>
+									<input type="number" class="form-control" name="stockAlertThreshold" id="stockAlertThreshold" value="{{config('settings.stockAlertThreshold')}}">
+								</div>
+								<div class="mb-3">
+									<label class="form-label" for="mainColor">Main color</label><br>
+									<input type="color"  name="mainColor" id="mainColor" value="{{config('settings.mainColor')}}">
 								</div>
 							</div>
 						</div>

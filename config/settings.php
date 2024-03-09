@@ -6,6 +6,8 @@ return [
     "logo" => 'icons/sigma.png',
     "logo_tall" => 'icons/sigma_tall_fr.png',
     'icon' => 'icons/sigma.png',
+
+    'mainColor' => '#ed0d91',
     
     'slider' => array(
         'picture' => 'website/slider/slider.png',
@@ -16,6 +18,8 @@ return [
         'button' => 'تسوق الأن',
     ), 
 
+    'stockAlertThreshold' => 10,
+    
     'contact' => array(
         'address' => 'ولاية الجزائر - الجزائر 16000',
         'phone' => '+213 6 99 89 44 17',
