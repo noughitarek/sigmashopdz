@@ -182,7 +182,6 @@ class OrderController extends Controller
     public function shipp(Order $order)
     {
         $order->Add_to_ecotrack();
-        exit;
         return redirect()->route('webmaster_orders_shipped_index')->with('success', 'Order shipped successfully');
     }
 
