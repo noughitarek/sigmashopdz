@@ -15,7 +15,7 @@ class Dashboard extends Model
 
     public static function months()
     {
-        $firstOrder = Order::where('delivered_at', "!=", null)->get();
+        $firstOrder = Order::where('delivered_at', "!=", null)->first();
         if($firstOrder)
         {
             $firstOrderDate = Carbon::parse(Order::where('delivered_at', "!=", null)->orderBy('delivered_at', 'asc')->first()->delivered_at);
