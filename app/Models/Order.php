@@ -164,6 +164,8 @@ class Order extends Model
         );
         $apiUrl = config("settings.ecotrack_link")."api/v1/create/order";
         $resultData = self::Send_API($apiUrl, $data, "POST");
+        print_r($resultData);
+        exit;
         if ($resultData && isset($resultData['tracking']))
         {
             $this->tracking = $resultData['tracking'];
