@@ -148,8 +148,8 @@ class Order extends Model
         $data = array(
             'referece' => $this->intern_tracking,
             'nom_client' => $this->name,
-            'telephone' => $this->phone,
-            'telephone_2' => $this->phone2,
+            'telephone' => preg_replace("/[^0-9]/", "", $this->phone),
+            'telephone_2' => preg_replace("/[^0-9]/", "", $this->phone2),
             'adresse' => $this->address,
             'fragile' => true,
             'quantity' => 5,
