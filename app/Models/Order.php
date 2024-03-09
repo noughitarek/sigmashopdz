@@ -158,7 +158,7 @@ class Order extends Model
             'stop_desk' => $this->stopdesk,
             'montant' => $this->total_price,
             'remarque' => implode(' | ', $remarques),
-            'produit' => $this->Product()->name,
+            'produit' => $this->Product()->slug,
             'type' => 1,
             'api_token' => config("settings.ecotrack_api")
         );
@@ -185,7 +185,7 @@ class Order extends Model
             'api_token' => config("settings.ecotrack_api")
         );
         $apiUrl = config("settings.ecotrack_link")."api/v1/valid/order";
-        $resultData = self::Send_API($apiurl, $data, "POST");
+        $resultData = self::Send_API($apiUrl, $data, "POST");
         if ($resultData && isset($resultData['success']) && $resultData['success'])
         {
             $this->validated_at = now();
