@@ -43,6 +43,7 @@ class UserSeeder extends Seeder
             'created_by' => 1,
             'email_verified_at' => now(),
         ]);
+        return;
         
         $user = User::create([
             'name' => 'Mehdi',
