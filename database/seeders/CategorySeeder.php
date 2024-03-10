@@ -13,6 +13,7 @@ class CategorySeeder extends Seeder
      */
     public function run(): void
     {
+        return;
         Category::create([
             'name' => 'Unadded products',
             'slug' => 'unadded-products',
