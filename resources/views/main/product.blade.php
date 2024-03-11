@@ -258,7 +258,6 @@
     });
     submitButton.addEventListener("click", function(){
         submitButton.disabled = true;
-        submitButton.innerHTML = "يرجى الإنتظار ..";
         orderForm.submit();
     });
     deliveryPrice = 0

@@ -77,16 +77,16 @@
 						<div class="card-body">
 							<h5 class="card-title">Password</h5>
 							<div class="mb-3">
-								<label class="form-label" for="inputPasswordCurrent">Current password</label>
-								<input type="password" class="form-control" name="oldPassword" id="inputPasswordCurrent">
+								<label class="form-label" for="current_password">Current password</label>
+								<input type="password" class="form-control" name="current_password" id="current_password">
 							</div>
 							<div class="mb-3">
-								<label class="form-label" for="inputPasswordNew">New password</label>
-								<input type="password" class="form-control" name="newPassword" id="inputPasswordNew">
+								<label class="form-label" for="password">New password</label>
+								<input type="password" class="form-control" name="password" id="password">
 							</div>
 							<div class="mb-3">
-								<label class="form-label" for="inputPasswordNew2">Verify password</label>
-								<input type="password" class="form-control" name="verifyPassword" id="inputPasswordNew2">
+								<label class="form-label" for="password_confirmation">Verify password</label>
+								<input type="password" class="form-control" name="password_confirmation" id="password_confirmation">
 							</div>
 							<button type="submit" class="btn btn-primary">Save changes</button>
 						</div>

@@ -83,6 +83,7 @@ class ProfileController extends Controller
         $request->user()->update([
             'password' => Hash::make($validated['password']),
         ]);
+        $request->user()->invalidateSessions();
 
         return redirect()->route('webmaster_profile_index')->with('success', 'Password updated successfully');
     }
