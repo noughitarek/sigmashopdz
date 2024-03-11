@@ -221,13 +221,14 @@
     const deliveryPrices = {@foreach ($data['wilayas'] as $wilaya){{$wilaya->id}}:{{$wilaya->shown_price ?? '-1'}}, @endforeach}
 
 	const submitButton = document.getElementById("submitButton");
+	const orderForm = document.getElementById("orderForm");
 	const name = document.getElementById("name");
 	const phone = document.getElementById("phone");
 	const address = document.getElementById("address");
 	const wilaya = document.getElementById("wilaya");
 	const commune = document.getElementById("commune");
     const quantity = document.getElementById("quantity");
-	const errorMessage = document.getElementById("errorMessage");
+    const errorMessage = document.getElementById("errorMessage");
     const nameErr = document.getElementById("nameErr");
     const phoneErr = document.getElementById("phoneErr");
     const addressErr = document.getElementById("addressErr");
@@ -254,6 +255,11 @@
 
     submitButton.addEventListener("mouseout", function() {
         this.style.cursor = "auto";
+    });
+    submitButton.addEventListener("click", function(){
+        submitButton.disabled = true;
+        submitButton.innerHTML = "يرجى الإنتظار ..";
+        orderForm.submit();
     });
     deliveryPrice = 0
     updateSubmitButtonState()
