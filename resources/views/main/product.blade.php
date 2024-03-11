@@ -258,6 +258,11 @@
     });
     submitButton.addEventListener("click", function(){
         submitButton.disabled = true;
+        submitButton.innerHTML = "يرجى الإنتظار ..";
+        fbq('track', 'Purchase', {
+            value: {{$data['product']->price}},
+            currency: 'DZD'
+        });
         orderForm.submit();
     });
     deliveryPrice = 0
