@@ -68,6 +68,7 @@ class MainController extends Controller
         if(!$product){
             return abort(404);
         }
+        $wilaya = Wilaya::where('id', $request->wilaya)->first();
         $data = array(
             "name" => $request->name,
             "phone" => $request->phone,
@@ -79,8 +80,8 @@ class MainController extends Controller
 
             "intern_tracking" => config("settings.id").$intern_tracking,
             "total_price" => $request->total_price,
-            "delivery_price" => $request->delivery_price,
-            "clean_price" => $request->clean_price,
+            "delivery_price" => $wilaya->real_price,
+            "clean_price" => $request->total_price - $wilaya->real_price,
 
             "ip" => $_SERVER['REMOTE_ADDR'],
             "product" => $product->id,
